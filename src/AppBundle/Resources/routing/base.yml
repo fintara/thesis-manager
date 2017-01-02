@@ -1,0 +1,14 @@
+app_home_get:
+  path: /
+  defaults: { _controller: AppBundle:Default:index }
+  methods: [GET]
+
+app_login_get:
+  path: /login
+  defaults: { _controller: AppBundle:Auth:getLogin }
+  methods: [GET]
+
+app_login_post:
+  path: /login
+  defaults: { _controller: AppBundle:Auth:postLogin }
+  methods: [POST]
