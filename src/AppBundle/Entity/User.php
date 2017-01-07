@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
@@ -28,6 +29,7 @@ abstract class User implements UserInterface
     /**
      * @var string
      *
+     * @Assert\Email()
      * @ORM\Column(name="email", type="string", length=100, unique=true)
      */
     private $email;
