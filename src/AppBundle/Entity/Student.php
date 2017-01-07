@@ -16,4 +16,18 @@ use Doctrine\ORM\Mapping as ORM;
 class Student extends User
 {
     const TYPE = 'student';
+
+
+    /**
+     * @var Thesis[]
+     * @ORM\ManyToMany(targetEntity="Thesis", inversedBy="students")
+     * @ORM\JoinTable(name="students_theses")
+     */
+    private $theses;
+
+    /**
+     * @var Reservation[]
+     * @ORM\OneToMany(targetEntity="Reservation", mappedBy="student")
+     */
+    private $reservations;
 }
