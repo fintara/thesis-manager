@@ -15,5 +15,28 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Worker extends User
 {
+    /**
+     * @var Topic[]
+     *
+     * @ORM\OneToMany(targetEntity="Topic",mappedBy="supervisor")
+     */
+    private $topics;
+
+    /**
+     * @return Topic[]
+     */
+    public function getTopics()
+    {
+        return $this->topics;
+    }
+
+    /**
+     * @param Topic[] $topics
+     */
+    public function setTopics($topics)
+    {
+        $this->topics = $topics;
+    }
+
 
 }
