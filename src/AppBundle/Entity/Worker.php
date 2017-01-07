@@ -15,6 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Worker extends User
 {
+    const TYPE = 'worker';
+
+  
     /**
      * @var Topic[]
      *
@@ -37,6 +40,4 @@ class Worker extends User
     {
         $this->topics = $topics;
     }
-
-
 }

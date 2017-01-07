@@ -1,9 +1,14 @@
 <?php
 namespace AppBundle\Security;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
@@ -14,8 +19,17 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
  * Date: 02/01/2017
  * Time: 23:41
  */
-class UserAuthenticator extends AbstractGuardAuthenticator
+class FormAuthenticator extends AbstractGuardAuthenticator
 {
+
+    private $passwordEncoder;
+    private $router;
+
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder, RouterInterface $router)
+    {
+        $this->passwordEncoder = $passwordEncoder;
+        $this->router = $router;
+    }
 
     /**
      * Returns a response that directs the user to authenticate.
@@ -37,7 +51,9 @@ class UserAuthenticator extends AbstractGuardAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        return new Response('403: Authentication needed');
+        $url = $this->router->generate('app_login_get');
+
+        return new RedirectResponse($url);
     }
 
     /**
@@ -68,9 +84,18 @@ class UserAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        dump($request->request->get('_email'));
-        dump($request->request->get('_pass'));
-        return [];
+        if ($request->getMethod() !== Request::METHOD_POST) {
+            return;
+        }
+
+        $email = $request->request->get('_email', '');
+
+        $request->getSession()->set(Security::LAST_USERNAME, $email);
+
+        return [
+            'email' => $email,
+            'password' => $request->request->get('_pass', ''),
+        ];
     }
 
     /**
@@ -90,7 +115,7 @@ class UserAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        // TODO: Implement getUser() method.
+        return $userProvider->loadUserByUsername($credentials['email']);
     }
 
     /**
@@ -111,7 +136,11 @@ class UserAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        // TODO: Implement checkCredentials() method.
+        if (!$this->passwordEncoder->isPasswordValid($user, $credentials['password'])) {
+            throw new AuthenticationException();
+        }
+
+        return true;
     }
 
     /**
@@ -130,7 +159,9 @@ class UserAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        // TODO: Implement onAuthenticationFailure() method.
+        $url = $this->router->generate('app_login_get');
+
+        return new RedirectResponse($url);
     }
 
     /**
@@ -150,7 +181,13 @@ class UserAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        // TODO: Implement onAuthenticationSuccess() method.
+        $targetPath = $request->getSession()->get('_security.'.$providerKey.'.target_path');
+
+        if (!$targetPath) {
+            $targetPath = $this->router->generate('app_home_get');
+        }
+
+        return new RedirectResponse($targetPath);
     }
 
     /**
@@ -168,6 +205,6 @@ class UserAuthenticator extends AbstractGuardAuthenticator
      */
     public function supportsRememberMe()
     {
-        // TODO: Implement supportsRememberMe() method.
+        return false;
     }
 }

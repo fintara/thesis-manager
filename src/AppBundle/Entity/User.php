@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 abstract class User implements UserInterface
 {
+    const TYPE = 'user';
     /**
      * @var int
      *
@@ -66,7 +67,6 @@ abstract class User implements UserInterface
      * @ORM\Column(name="roles", type="array")
      */
     private $roles = ['ROLE_USER'];
-
 
 
     public function getId(): int
@@ -180,6 +180,11 @@ abstract class User implements UserInterface
     public function eraseCredentials()
     {
         $this->plainPassword = '';
+    }
+
+    public function getType()
+    {
+        return static::TYPE;
     }
 }
 

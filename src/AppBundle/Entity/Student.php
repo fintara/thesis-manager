@@ -15,6 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Student extends User
 {
+    const TYPE = 'student';
+
 
     /**
      * @var Thesis[]
