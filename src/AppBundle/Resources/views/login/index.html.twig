@@ -9,7 +9,7 @@
             <h2 class="form-signin-heading">Please sign in</h2>
 
             {% if error %}
-                <span>{{ error.messageData }}</span>
+                <span>Error: {{ error.messageData | join(', ') }}</span>
             {% endif %}
 
             <label for="inputEmail" class="sr-only">Email address</label>

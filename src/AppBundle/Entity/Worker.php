@@ -15,5 +15,5 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Worker extends User
 {
-
+    const TYPE = 'worker';
 }

@@ -9,5 +9,6 @@ class UserModel
     public $password;
     public $firstName;
     public $lastName;
+    public $type;
 
 }
