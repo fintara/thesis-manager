@@ -4,8 +4,11 @@ security:
 
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
+        db:
+            id: user.provider
+
+    encoders:
+        AppBundle\Entity\User: bcrypt
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -14,11 +17,18 @@ security:
             security: false
 
         main:
-            anonymous: ~
-            # activate different ways to authenticate
+            pattern: ^/
+            anonymous: true
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+#            form_login:
+#                check_path: app_login_post
+#                login_path: app_login_get
+                #csrf_provider: security.csrf.token_manager
 
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+            guard:
+                authenticators:
+                    - form_authenticator
+
+#            logout:
+#                path: app_logout
+#                target: app_home_get

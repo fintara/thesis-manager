@@ -4,6 +4,27 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+  user.provider:
+    class: AppBundle\Security\User\MultiUserProvider
+    arguments: [ "@user.repository" ]
+
+  user.factory:
+    class: AppBundle\Factory\UserFactory
+
+  user.repository:
+    class: AppBundle\Repository\UserRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [ "AppBundle:User" ]
+
+  user.service:
+    class: AppBundle\Services\UserService
+    arguments:
+      - "@user.repository"
+      - "@user.factory"
+      - "@security.password_encoder"
+
+  form_authenticator:
+    class: AppBundle\Security\FormAuthenticator
+    arguments:
+      - "@security.password_encoder"
+      - "@router"

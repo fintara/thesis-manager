@@ -12,3 +12,14 @@ app_login_post:
   path: /login
   defaults: { _controller: AppBundle:Auth:postLogin }
   methods: [POST]
+
+app_logout:
+  path: /logout
+  defaults: { _controller: AppBundle:Default:index }
+  methods: [GET]
+
+app_thesis_submit_review:
+  path: /thesis/{thesis_id}/submit
+  defaults: { _controller: AppBundle:Default:submitReview }
+  methods: [GET, POST]
+

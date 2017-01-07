@@ -3,13 +3,21 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\InheritanceType(value="SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({
+ *     "student" = "AppBundle\Entity\Student",
+ *     "worker" = "AppBundle\Entity\Worker"
+ * })
  */
-class User
+abstract class User implements UserInterface
 {
+    const TYPE = 'user';
     /**
      * @var int
      *
@@ -22,6 +30,7 @@ class User
     /**
      * @var string
      *
+     * @Assert\Email()
      * @ORM\Column(name="email", type="string", length=100, unique=true)
      */
     private $email;
@@ -58,7 +67,6 @@ class User
      * @ORM\Column(name="roles", type="array")
      */
     private $roles = ['ROLE_USER'];
-
 
 
     public function getId(): int
@@ -139,6 +147,44 @@ class User
     public function getRoles(): array
     {
         return $this->roles;
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        return '';
+    }
+
+    /**
+     * Returns the username used to authenticate the user.
+     *
+     * @return string The username
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+        $this->plainPassword = '';
+    }
+
+    public function getType()
+    {
+        return static::TYPE;
     }
 }
 
