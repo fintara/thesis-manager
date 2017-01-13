@@ -7,9 +7,9 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
         <script src="https://use.fontawesome.com/0e53e6d1a4.js"></script>
         {% stylesheets filter='cssrewrite'
-            '@AppBundle/Resources/assets/css/main.css'
-            '@AppBundle/Resources/assets/css/tether.css'
-            '@AppBundle/Resources/assets/css/tether-theme-basic.css'
+            'bundles/app/css/main.css'
+            'bundles/app/css/tether.css'
+            'bundles/app/css/tether-theme-basic.css'
         %}
         <link rel="stylesheet" href="{{ asset_url }}">
         {% endstylesheets %}
@@ -69,7 +69,7 @@
 
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
-        {% javascripts '@AppBundle/Resources/assets/js/*' %}
+        {% javascripts 'bundles/app/js/*' %}
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
 

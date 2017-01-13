@@ -1,3 +1,7 @@
+body {
+    background: url(../img/squared_metal.png) repeat;
+}
+
 .form-signin {
     max-width: 330px;
     padding: 15px;
