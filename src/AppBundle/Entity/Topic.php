@@ -46,7 +46,7 @@ class Topic
 
     /**
      * @var Reservation[]
-     * @ORM\OneToMany(targetEntity="Reservation", mappedBy="topic")
+     * @ORM\ManyToOne(targetEntity="Reservation", inversedBy="topic")
      */
     private $reservations;
     /**

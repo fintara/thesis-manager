@@ -46,7 +46,7 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
 
         $dean = new UserModel();
         $dean->type = Worker::TYPE;
-        $dean->email = 'abc@worker.org';
+        $dean->email = 'abc@dean.org';
         $dean->password = '123';
         $dean->firstName = 'Bob';
         $dean->lastName = 'Marley';

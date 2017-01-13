@@ -124,6 +124,11 @@ abstract class User implements UserInterface
         return $this->lastName;
     }
 
+    public function getFullName(): string
+    {
+        return $this->firstName.' '.$this->lastName;
+    }
+
     public function addRole(string $role): void
     {
         if (in_array($role, $this->roles)) {
