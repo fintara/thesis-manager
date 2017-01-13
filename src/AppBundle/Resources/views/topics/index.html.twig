@@ -1,0 +1,55 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block content %}
+
+    <div class="container">
+
+        <div class="box topics-list">
+            <div class="box-header"><h2>Topics Available</h2></div>
+            <div class="box-body">
+
+                <div class="clearfix topics-list--panel">
+                    <div class="pull-left topics-list--panel--info">
+                        213 topics
+                    </div>
+                    <div class="pull-right topics-list--panel--filter">
+                        <div class="input-group">
+                            <input class="form-control" type="text" placeholder="Search...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-secondary" type="button">
+                                    <span class="fa fa-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div><!-- /topics-list--panel -->
+
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="thead-default">
+                    <tr>
+                        <th>Topic</th>
+                        <th>Supervisor</th>
+                        <th>Taken</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in range(0, 10) %}
+                        <tr>
+                            <td>An application supporting the organization of social sport events</td>
+                            <td>Krzystof Chudik</td>
+                            <td>0</td>
+                            <td>
+                                <button class="btn btn-link" type="button">Apply</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div> <!-- /container -->
+
+{% endblock %}

@@ -18,8 +18,13 @@ app_logout:
   defaults: { _controller: AppBundle:Default:index }
   methods: [GET]
 
-app_thesis_submit_review:
-  path: /thesis/{thesis_id}/submit
-  defaults: { _controller: AppBundle:Default:submitReview }
-  methods: [GET, POST]
+app_topics_get:
+  path: /topics
+  defaults: { _controller: AppBundle:Topics:getTopics }
+  methods: [GET]
+
+#app_thesis_submit_review:
+#  path: /thesis/{thesis_id}/submit
+#  defaults: { _controller: AppBundle:Default:submitReview }
+#  methods: [GET, POST]
 
