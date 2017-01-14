@@ -86,15 +86,20 @@ implements OrderedFixtureInterface, ContainerAwareInterface
         }
 
         $teachers = [
-            ['abc@teacher.org', '123', 'Jane', 'Doe', ['ROLE_TEACHER']]
+            ['abc@teacher.org',         'Jane',      'Doe'],        // 0
+            ['chudzik@krzystof.com',    'Krzystof',  'Chudzik'],    // 1
+            ['drapala@jaroslaw.com',    'Jarosław',  'Drapała'],    // 2
+            ['fras@mariusz.com',        'Mariusz',   'Fraś'],       // 3
+            ['fryzlewicz@zbigniew.com', 'Zbigniew',  'Fryżlewicz'], // 4
+            ['gasior@dariusz',          'Dariusz',   'Gąsior']      // 5
         ];
         for ($i = 0; $i < count($teachers); $i++) {
             $teacher = $this->createWorker(
                 $teachers[$i][0],
+                '123',
                 $teachers[$i][1],
                 $teachers[$i][2],
-                $teachers[$i][3],
-                $teachers[$i][4]
+                ['ROLE_TEACHER']
             );
 
             $this->addReference('teacher-'.$i, $teacher);

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,10 +49,18 @@ class Topic
     private $supervisor;
 
     /**
-     * @var Reservation[]
-     * @ORM\ManyToOne(targetEntity="Reservation", inversedBy="topic")
+     * @var Reservation[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="Reservation", mappedBy="topic")
      */
     private $reservations;
+
+
+    public function __construct()
+    {
+        $this->status = self::STATUS_NEW;
+        $this->reservations = new ArrayCollection();
+    }
+
     /**
      * Get id
      *
@@ -109,5 +118,35 @@ class Topic
     {
         return $this->status;
     }
+
+    /**
+     * @return Worker
+     */
+    public function getSupervisor(): Worker
+    {
+        return $this->supervisor;
+    }
+
+    /**
+     * @param Worker $supervisor
+     */
+    public function setSupervisor(Worker $supervisor = null)
+    {
+        $this->supervisor = $supervisor;
+    }
+
+    /**
+     * @return Reservation[]|ArrayCollection
+     */
+    public function getReservations()
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation)
+    {
+        $this->reservations->add($reservation);
+    }
+
 }
 
