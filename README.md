@@ -25,7 +25,7 @@ A Symfony project created on December 23, 2016, 10:23 am.
 0. Create new branch from `develop`: `git checkout -b feature-name`
 1. Implement it, `commit`ing the more important checkpoints.
 2. Push it to github `git push -u origin feature-name`
-3. Repeat 1. and 2. as many times as needed.
+3. Repeat 2. and 3. as many times as needed.
 4. When finished, create a Pull request with base `develop` and your branch.
 
 ## Load data
