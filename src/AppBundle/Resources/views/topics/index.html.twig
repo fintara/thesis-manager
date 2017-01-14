@@ -10,21 +10,15 @@
 
                 <div class="clearfix topics-list--panel">
                     <div class="pull-left topics-list--panel--info">
-                        213 topics
+                        {% set topicsLength = topics | length %}
+                        {{ topicsLength }} topic{% if topicsLength != 1 %}s{% endif %}
                     </div>
                     <div class="pull-right topics-list--panel--filter">
-                        <div class="input-group">
-                            <input class="form-control" type="text" placeholder="Search...">
-                            <span class="input-group-btn">
-                                <button class="btn btn-secondary" type="button">
-                                    <span class="fa fa-search"></span>
-                                </button>
-                            </span>
-                        </div>
+                        <input class="form-control" id="" type="text" placeholder="Search...">
                     </div>
                 </div><!-- /topics-list--panel -->
 
-                <table class="table table-bordered table-hover table-sm">
+                <table class="table table-bordered table-hover table-sm topics-list--table">
                     <thead class="thead-default">
                     <tr>
                         <th>Topic</th>
@@ -52,4 +46,46 @@
 
     </div> <!-- /container -->
 
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    var filterInput = $('.topics-list--panel--filter input');
+    var table = $('.topics-list--table');
+    var rows = table.find('tbody tr');
+    var panelInfo = $('.topics-list--panel--info');
+
+    $(function() {
+        showRelevantRows();
+        filterInput.on('keyup', showRelevantRows);
+    });
+
+    function showRelevantRows() {
+        var q = filterInput.val().trim().toLowerCase();
+        var visibleTopics = 0;
+
+        if (q.length === 0) {
+            for (var i = 0; i < rows.length; i++) {
+                $(rows[i]).show();
+                visibleTopics++;
+            }
+        } else {
+            for (var i = 0; i < rows.length; i++) {
+                var row = $(rows[i]);
+
+                var title = $(row.find('td')[0]).text().toLowerCase();
+                var sv = $(row.find('td')[1]).text().toLowerCase();
+
+                if (title.indexOf(q) > -1 || sv.indexOf(q) > -1) {
+                    row.show();
+                    visibleTopics++;
+                } else {
+                    row.hide();
+                }
+            }
+        }
+
+        panelInfo.text(visibleTopics + ' topic' + (visibleTopics != 1 ? 's' : ''));
+    }
+</script>
 {% endblock %}
