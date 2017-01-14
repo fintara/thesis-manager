@@ -53,6 +53,8 @@ DirectoryIndex app.php
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]
 
+    RewriteRule ^(bundles/app/css|bundles/app/js) - [F,L,NC]
+
     # Rewrite all other queries to the front controller.
     RewriteRule ^ %{ENV:BASE}/app.php [L]
 </IfModule>

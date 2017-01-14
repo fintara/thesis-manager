@@ -15,6 +15,6 @@ A Symfony project created on December 23, 2016, 10:23 am.
 1. `bin/console doctrine:migrations:diff`
 2. `bin/console doctrine:migrations:migrate`
 
-## Load default users
-0. `bin/console doctrine:fixtures:load --append` 
+## Load data
+0. `bin/console doctrine:fixtures:load [--append]` 
 

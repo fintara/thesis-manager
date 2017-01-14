@@ -37,7 +37,7 @@ class Reservation
 
     /**
      * @var Topic
-     * @ORM\OneToMany(targetEntity="Topic", mappedBy="reservations")
+     * @ORM\ManyToOne(targetEntity="Topic", inversedBy="reservations")
      * @ORM\JoinColumn(name="topic_id", referencedColumnName="id")
      */
     private $topic;
