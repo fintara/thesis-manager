@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * topic
  *
  * @ORM\Table(name="topic")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\topicRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TopicRepository")
  */
 class Topic
 {

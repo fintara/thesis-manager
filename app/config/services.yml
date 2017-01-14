@@ -23,6 +23,11 @@ services:
       - "@user.factory"
       - "@security.password_encoder"
 
+  topic.repository:
+    class: AppBundle\Repository\TopicRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [ "AppBundle:Topic" ]
+
   form_authenticator:
     class: AppBundle\Security\FormAuthenticator
     arguments:

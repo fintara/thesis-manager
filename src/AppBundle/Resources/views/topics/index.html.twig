@@ -34,11 +34,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for i in range(0, 10) %}
+                    {% for topic in topics %}
                         <tr>
-                            <td>An application supporting the organization of social sport events</td>
-                            <td>Krzystof Chudik</td>
-                            <td>0</td>
+                            <td>{{ topic.title }}</td>
+                            <td>{{ topic.supervisor.fullName }}</td>
+                            <td>{{ topic.reservations.count }}</td>
                             <td>
                                 <button class="btn btn-link" type="button">Apply</button>
                             </td>
