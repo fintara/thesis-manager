@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Topic
 {
+    const STATUS_PENDING = 'pending';
+    const STATUS_NEW = 'new';
+    const STATUS_APPROVED = 'approved';
     /**
      * @var int
      *
