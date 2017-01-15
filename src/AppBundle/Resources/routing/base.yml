@@ -23,6 +23,11 @@ app_topics_get:
   defaults: { _controller: AppBundle:Topics:getTopics }
   methods: [GET]
 
+app_topics_ajax:
+  path: /topics/ajax
+  defaults: { _controller: AppBundle:Topics:ajaxGetTopics }
+  methods: [GET]
+
 #app_thesis_submit_review:
 #  path: /thesis/{thesis_id}/submit
 #  defaults: { _controller: AppBundle:Default:submitReview }

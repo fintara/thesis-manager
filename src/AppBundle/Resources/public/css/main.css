@@ -2,6 +2,15 @@ body {
     background: url(../img/squared_metal.png) repeat;
 }
 
+.loader {
+    display : block;
+    width: 100%;
+    font-size: 3em;
+    padding: 3em 0;
+    text-align: center;
+    color: #0275d8;
+}
+
 .box {
     background: #b8b8b8;
     padding-bottom: 0.5em;
