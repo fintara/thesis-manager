@@ -11,6 +11,11 @@ services:
   user.factory:
     class: AppBundle\Factory\UserFactory
 
+  user.normalizer:
+    class: AppBundle\Serializer\Normalizer\UserNormalizer
+    tags:
+      - { name: serializer.normalizer }
+
   user.repository:
     class: AppBundle\Repository\UserRepository
     factory: ["@doctrine", getRepository]
@@ -22,6 +27,12 @@ services:
       - "@user.repository"
       - "@user.factory"
       - "@security.password_encoder"
+
+
+  topic.normalizer:
+    class: AppBundle\Serializer\Normalizer\TopicNormalizer
+    tags:
+      - { name: serializer.normalizer }
 
   topic.repository:
     class: AppBundle\Repository\TopicRepository

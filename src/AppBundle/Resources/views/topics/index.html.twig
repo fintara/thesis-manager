@@ -4,21 +4,24 @@
 
     <div class="container">
 
-        <div class="box topics-list">
+        <div class="box topics-list" id="topics-list">
             <div class="box-header"><h2>Topics Available</h2></div>
             <div class="box-body">
 
                 <div class="clearfix topics-list--panel">
-                    <div class="pull-left topics-list--panel--info">
-                        {% set topicsLength = topics | length %}
-                        {{ topicsLength }} topic{% if topicsLength != 1 %}s{% endif %}
+                    <div class="pull-left topics-list--panel--info" v-show="loaded">
+                        {#{% set topicsLength = topics | length %}#}
+                        {#{{ topicsLength }} topic{% if topicsLength != 1 %}s{% endif %}#}
+                        {{ '{{ filteredTopics.length }} topics' }}
                     </div>
-                    <div class="pull-right topics-list--panel--filter">
-                        <input class="form-control" id="" type="text" placeholder="Search...">
+                    <div class="pull-right topics-list--panel--filter" v-show="loaded">
+                        <input class="form-control" v-model.trim="query" type="text" placeholder="Search...">
                     </div>
                 </div><!-- /topics-list--panel -->
 
-                <table class="table table-bordered table-hover table-sm topics-list--table">
+                <span class="fa fa-spin fa-circle-o-notch loader" v-show="!loaded"></span>
+
+                <table class="table table-bordered table-hover table-sm topics-list--table" v-show="loaded" style="display: none;">
                     <thead class="thead-default">
                     <tr>
                         <th>Topic</th>
@@ -28,16 +31,14 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for topic in topics %}
-                        <tr>
-                            <td>{{ topic.title }}</td>
-                            <td>{{ topic.supervisor.fullName }}</td>
-                            <td>{{ topic.reservations.count }}</td>
+                        <tr v-for="topic in filteredTopics">
+                            <td>{{ '{{ topic.title }}' }}</td>
+                            <td>{{ '{{ topic.supervisor.fullName }}' }}</td>
+                            <td>{{ '{{ topic.reservations.count }}' }}</td>
                             <td>
-                                <button class="btn btn-link" type="button">Apply</button>
+                                <button v-on:click="apply(topic.id)" class="btn btn-link" type="button">Apply</button>
                             </td>
                         </tr>
-                    {% endfor %}
                     </tbody>
                 </table>
 
@@ -50,42 +51,37 @@
 
 {% block javascripts %}
 <script>
-    var filterInput = $('.topics-list--panel--filter input');
-    var table = $('.topics-list--table');
-    var rows = table.find('tbody tr');
-    var panelInfo = $('.topics-list--panel--info');
-
-    $(function() {
-        showRelevantRows();
-        filterInput.on('keyup', showRelevantRows);
-    });
-
-    function showRelevantRows() {
-        var q = filterInput.val().trim().toLowerCase();
-        var visibleTopics = 0;
-
-        if (q.length === 0) {
-            for (var i = 0; i < rows.length; i++) {
-                $(rows[i]).show();
-                visibleTopics++;
-            }
-        } else {
-            for (var i = 0; i < rows.length; i++) {
-                var row = $(rows[i]);
-
-                var title = $(row.find('td')[0]).text().toLowerCase();
-                var sv = $(row.find('td')[1]).text().toLowerCase();
-
-                if (title.indexOf(q) > -1 || sv.indexOf(q) > -1) {
-                    row.show();
-                    visibleTopics++;
+    new Vue({
+        el: '#topics-list',
+        data: {
+            loaded: false,
+            query: '',
+            topics: []
+        },
+        computed: {
+            filteredTopics: function() {
+                var q = this.query.toLowerCase();
+                if (q.length == 0) {
+                    return this.topics;
                 } else {
-                    row.hide();
+                    return this.topics.filter(function(t) {
+                        return t.title.toLowerCase().indexOf(q) > -1
+                            || t.supervisor.fullName.toLowerCase().indexOf(q) > -1;
+                    });
                 }
             }
+        },
+        created: function() {
+            $.get('/topics/ajax', function(data) {
+                this.$data.topics = data.list;
+                this.$data.loaded = true;
+            }.bind(this));
+        },
+        methods: {
+            apply: function(id) {
+                alert(id);
+            }
         }
-
-        panelInfo.text(visibleTopics + ' topic' + (visibleTopics != 1 ? 's' : ''));
-    }
+    });
 </script>
 {% endblock %}
