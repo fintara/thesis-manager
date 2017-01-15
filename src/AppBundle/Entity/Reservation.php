@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Reservation
 {
+    const STATUS_NEW        = 0;
+    const STATUS_APPROVED   = 1;
+    const STATUS_REJECTED   = 2;
     /**
      * @var int
      *
@@ -48,6 +51,13 @@ class Reservation
      * @ORM\JoinColumn(name="student_id", referencedColumnName="id")
      */
     private $student;
+
+
+    public function __construct()
+    {
+        $this->status = self::STATUS_NEW;
+    }
+
     /**
      * Get id
      *
@@ -104,6 +114,38 @@ class Reservation
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * @return Topic
+     */
+    public function getTopic(): Topic
+    {
+        return $this->topic;
+    }
+
+    /**
+     * @param Topic $topic
+     */
+    public function setTopic(Topic $topic)
+    {
+        $this->topic = $topic;
+    }
+
+    /**
+     * @return Student
+     */
+    public function getStudent(): Student
+    {
+        return $this->student;
+    }
+
+    /**
+     * @param Student $student
+     */
+    public function setStudent(Student $student)
+    {
+        $this->student = $student;
     }
 }
 

@@ -25,4 +25,24 @@ class TopicsController extends Controller
             }, $topics),
         ]);
     }
+
+    public function ajaxReserveTopicAction(Request $request, int $id)
+    {
+        $topic = $this->get('topic.repository')->findOneBy([
+            'id' => $id,
+            'status' => Topic::STATUS_APPROVED
+        ]);
+
+        if (!$topic) {
+            return new JsonResponse([
+                'message' => 'not found'
+            ]);
+        }
+
+        $reservation = $this->get('topic.service')->reserve($topic, $this->getUser());
+
+        return new JsonResponse([
+            'message' => 'ok'
+        ]);
+    }
 }

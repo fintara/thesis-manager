@@ -4,6 +4,8 @@ parameters:
 #    parameter_name: value
 
 services:
+  ##################################
+  ## USER
   user.provider:
     class: AppBundle\Security\User\MultiUserProvider
     arguments: [ "@user.repository" ]
@@ -28,7 +30,8 @@ services:
       - "@user.factory"
       - "@security.password_encoder"
 
-
+  #################################
+  ## TOPICS
   topic.normalizer:
     class: AppBundle\Serializer\Normalizer\TopicNormalizer
     tags:
@@ -39,6 +42,20 @@ services:
     factory: ["@doctrine", getRepository]
     arguments: [ "AppBundle:Topic" ]
 
+  topic.service:
+    class: AppBundle\Services\TopicService
+    arguments:
+      - "@topic.repository"
+      - "@reservation.repository"
+
+  ##################################
+  ## RESERVATIONS
+  reservation.repository:
+    class: AppBundle\Repository\ReservationRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [ "AppBundle:Reservation" ]
+  ##################################
+  ## MISC
   form_authenticator:
     class: AppBundle\Security\FormAuthenticator
     arguments:

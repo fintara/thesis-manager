@@ -36,7 +36,7 @@
                             <td>{{ '{{ topic.supervisor.fullName }}' }}</td>
                             <td>{{ '{{ topic.reservations.count }}' }}</td>
                             <td>
-                                <button v-on:click="apply(topic.id)" class="btn btn-link" type="button">Apply</button>
+                                <button @click="apply($event, topic.id)" class="btn btn-link" type="button">Apply</button>
                             </td>
                         </tr>
                     </tbody>
@@ -73,13 +73,16 @@
         },
         created: function() {
             $.get('/topics/ajax', function(data) {
-                this.$data.topics = data.list;
-                this.$data.loaded = true;
+                this.topics = data.list;
+                this.loaded = true;
             }.bind(this));
         },
         methods: {
-            apply: function(id) {
-                alert(id);
+            apply: function(event, id) {
+//                this.topics.
+                $.post('/topics/'+id+'/reserve', function(data) {
+
+                }.bind(this));
             }
         }
     });
