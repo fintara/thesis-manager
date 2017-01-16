@@ -46,6 +46,27 @@ td.nowrap {
     line-height :38px;
 }
 
+.topics-list--table .action span > span {
+    display: block;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.topics-list--table .action span.applied {
+    color: #000;
+}
+
+.topics-list--table .action span.rejected {
+    color: rgba(170, 0, 0, 0.6);
+}
+
+.topics-list--table .action span.approved {
+    color: #009d00;
+}
+
+
+
 .thead-default th {
     text-align: center;
 }

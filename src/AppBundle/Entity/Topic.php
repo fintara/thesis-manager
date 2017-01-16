@@ -151,6 +151,23 @@ class Topic
         return $this->reservations;
     }
 
+    /**
+     * @param Student $student
+     * @return bool|Reservation
+     */
+    public function getReservationFor(Student $student)
+    {
+        return $this->reservations->filter(function ($reservation) use ($student) {
+            /** @var Reservation $reservation */
+            return $reservation->getStudent() === $student;
+        })->first();
+    }
+
+    public function isReservedFor(Student $student): bool
+    {
+        return $this->getReservationFor($student) !== false;
+    }
+
     public function addReservation(Reservation $reservation)
     {
         $this->reservations->add($reservation);

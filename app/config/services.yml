@@ -34,6 +34,7 @@ services:
   ## TOPICS
   topic.normalizer:
     class: AppBundle\Serializer\Normalizer\TopicNormalizer
+    arguments: ["@security.token_storage"]
     tags:
       - { name: serializer.normalizer }
 

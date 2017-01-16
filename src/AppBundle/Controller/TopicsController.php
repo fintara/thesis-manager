@@ -3,17 +3,31 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Topic;
+use AppBundle\Exceptions\TopicReservedException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class TopicsController extends Controller
 {
+    /**
+     * @Security("has_role('ROLE_STUDENT')")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function getTopicsAction(Request $request)
     {
         return $this->render('@App/topics/index.html.twig');
     }
 
+    /**
+     * @Security("has_role('ROLE_STUDENT')")
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function ajaxGetTopicsAction(Request $request)
     {
         $topics = $this->get('topic.repository')->findByStatus(Topic::STATUS_APPROVED);
@@ -26,12 +40,16 @@ class TopicsController extends Controller
         ]);
     }
 
+    /**
+     * @Security("has_role('ROLE_STUDENT')")
+     *
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
     public function ajaxReserveTopicAction(Request $request, int $id)
     {
-        $topic = $this->get('topic.repository')->findOneBy([
-            'id' => $id,
-            'status' => Topic::STATUS_APPROVED
-        ]);
+        $topic = $this->get('topic.repository')->findByIdAndStatus($id, Topic::STATUS_APPROVED);
 
         if (!$topic) {
             return new JsonResponse([
@@ -39,10 +57,17 @@ class TopicsController extends Controller
             ]);
         }
 
-        $reservation = $this->get('topic.service')->reserve($topic, $this->getUser());
+        try {
+            $reservation = $this->get('topic.service')->reserve($topic, $this->getUser());
 
-        return new JsonResponse([
-            'message' => 'ok'
-        ]);
+            return new JsonResponse([
+                'message' => 'ok',
+                'topic' => $this->get('serializer')->normalize($topic),
+            ]);
+        } catch (TopicReservedException $e1) {
+            return new JsonResponse([
+                'message' => 'already reserved',
+            ]);
+        }
     }
 }

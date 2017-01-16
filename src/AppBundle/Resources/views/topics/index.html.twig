@@ -31,12 +31,21 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="topic in paginatedTopics">
+                        <tr v-for="(topic, idx) in paginatedTopics">
                             <td>{{ '{{ topic.title }}' }}</td>
                             <td class="nowrap">{{ '{{ topic.supervisor.fullName }}' }}</td>
                             <td>{{ '{{ topic.reservations.count }}' }}</td>
-                            <td>
-                                <button @click="apply($event, topic.id)" class="btn btn-link" type="button">Apply</button>
+                            <td class="action center">
+                                <span v-if="topic.$applying">
+                                    <span class="fa fa-spin fa-circle-o-notch"></span>
+                                </span>
+                                <span v-if="!topic.$applying">
+                                    <button v-if="topic.reservation == false" @click="apply($event, idx, topic.id)" class="btn btn-link" type="button">Apply</button>
+
+                                    <span v-if="topic.reservation != false && topic.reservation.status == 0" class="applied">Applied</span>
+                                    <span v-if="topic.reservation != false && topic.reservation.status == 1" class="approved">Approved</span>
+                                    <span v-if="topic.reservation != false && topic.reservation.status == 2" class="rejected">Rejected</span>
+                                </span>
                             </td>
                         </tr>
                     </tbody>
@@ -80,6 +89,7 @@
                 if (q.length == 0) {
                     return this.topics;
                 } else {
+                    this.page = 1;
                     return this.topics.filter(function(t) {
                         return t.title.toLowerCase().indexOf(q) > -1
                             || t.supervisor.fullName.toLowerCase().indexOf(q) > -1;
@@ -100,9 +110,15 @@
             }.bind(this));
         },
         methods: {
-            apply: function(event, id) {
+            apply: function(event, index, id) {
+                index = (this.page-1) * this.perPage + index;
+                var topic = this.topics[index];
+                topic.$applying = true;
+                Vue.set(this.topics, index, topic);
                 $.post('/topics/'+id+'/reserve', function(data) {
-
+                    if (data.message === 'ok') {
+                        Vue.set(this.topics, index, data.topic);
+                    }
                 }.bind(this));
             },
             nextPage: function(event) {

@@ -12,12 +12,14 @@ namespace AppBundle\Services;
 use AppBundle\Entity\Reservation;
 use AppBundle\Entity\Student;
 use AppBundle\Entity\Topic;
+use AppBundle\Exceptions\TopicReservedException;
 use AppBundle\Repository\ReservationRepository;
 use AppBundle\Repository\TopicRepository;
 
 class TopicService
 {
-    private $repository;
+    private $topicRepo;
+    private $reservationRepo;
 
     public function __construct(TopicRepository $topicRepository, ReservationRepository $reservationRepository)
     {
@@ -27,6 +29,10 @@ class TopicService
 
     public function reserve(Topic $topic, Student $student): Reservation
     {
+        if ($topic->isReservedFor($student)) {
+            throw new TopicReservedException();
+        }
+
         $reservation = new Reservation();
 
         $reservation->setTopic($topic);
@@ -34,6 +40,8 @@ class TopicService
         $reservation->setCreatedAt(new \DateTime());
 
         $this->reservationRepo->save($reservation);
+
+        $topic->addReservation($reservation);
 
         return $reservation;
     }
