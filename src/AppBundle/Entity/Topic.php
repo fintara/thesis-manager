@@ -54,6 +54,14 @@ class Topic
      */
     private $reservations;
 
+    public static function getStatuses()
+    {
+        return [
+            self::STATUS_APPROVED,
+            self::STATUS_NEW,
+            self::STATUS_PENDING,
+        ];
+    }
 
     public function __construct()
     {
