@@ -2,7 +2,10 @@
 
 namespace AppBundle\Serializer\Normalizer;
 
+use AppBundle\Entity\Student;
 use AppBundle\Entity\Topic;
+use AppBundle\Entity\User;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\scalar;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -11,6 +14,13 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class TopicNormalizer implements NormalizerInterface, SerializerAwareInterface {
     use SerializerAwareTrait;
+
+    private $tokenStorage;
+
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
 
     /**
      * @param Topic $object
@@ -25,18 +35,40 @@ class TopicNormalizer implements NormalizerInterface, SerializerAwareInterface {
             throw new \Exception('Cannot normalize, injected serializer is not a normalizer');
         }
 
-        return [
+        $arr = [
             'id'            => $object->getId(),
             'title'         => $object->getTitle(),
             'supervisor'    => $this->serializer->normalize($object->getSupervisor()),
+            'reservation'   => false,
             'reservations'  => [
                 'count' => $object->getReservations()->count(),
             ],
         ];
+
+        $user = $this->getUser();
+        if ($user && $user->getType() === Student::TYPE && $object->isReservedFor($user)) {
+            $arr['reservation'] = [
+                'status' => $object->getReservationFor($user)->getStatus(),
+            ];
+        }
+
+        return $arr;
     }
 
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof Topic;
+    }
+
+    /**
+     * @return null|User
+     */
+    protected function getUser()
+    {
+        if (($token = $this->tokenStorage->getToken()) === null) {
+            return null;
+        }
+
+        return $token->getUser();
     }
 }

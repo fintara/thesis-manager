@@ -11,6 +11,14 @@ body {
     color: #0275d8;
 }
 
+.center {
+    text-align: center;
+}
+
+td.nowrap {
+    white-space :nowrap;
+}
+
 .box {
     background: #b8b8b8;
     padding-bottom: 0.5em;
@@ -37,6 +45,27 @@ body {
 .topics-list .topics-list--panel .topics-list--panel--info {
     line-height :38px;
 }
+
+.topics-list--table .action span > span {
+    display: block;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.topics-list--table .action span.applied {
+    color: #000;
+}
+
+.topics-list--table .action span.rejected {
+    color: rgba(170, 0, 0, 0.6);
+}
+
+.topics-list--table .action span.approved {
+    color: #009d00;
+}
+
+
 
 .thead-default th {
     text-align: center;
