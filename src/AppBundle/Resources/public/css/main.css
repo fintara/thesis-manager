@@ -11,6 +11,14 @@ body {
     color: #0275d8;
 }
 
+.center {
+    text-align: center;
+}
+
+td.nowrap {
+    white-space :nowrap;
+}
+
 .box {
     background: #b8b8b8;
     padding-bottom: 0.5em;

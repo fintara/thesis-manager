@@ -31,9 +31,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="topic in filteredTopics">
+                        <tr v-for="topic in paginatedTopics">
                             <td>{{ '{{ topic.title }}' }}</td>
-                            <td>{{ '{{ topic.supervisor.fullName }}' }}</td>
+                            <td class="nowrap">{{ '{{ topic.supervisor.fullName }}' }}</td>
                             <td>{{ '{{ topic.reservations.count }}' }}</td>
                             <td>
                                 <button @click="apply($event, topic.id)" class="btn btn-link" type="button">Apply</button>
@@ -42,6 +42,19 @@
                     </tbody>
                 </table>
 
+                <nav v-if="loaded" class="center">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <button class="btn btn-link page-link" @click="prevPage">Previous</button>
+                        </li>
+                        {#<li v-for="p in mp" class="page-item">#}
+                            {#<button class="btn btn-link page-link" @click="setPage(p)">{{ '{{ p }}' }}</button>#}
+                        {#</li>#}
+                        <li class="page-item">
+                            <button class="btn btn-link page-link" @click="nextPage">Next</button>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
 
@@ -55,6 +68,9 @@
         el: '#topics-list',
         data: {
             loaded: false,
+            page: 1,
+            perPage: 5,
+            maxPages: 2,
             query: '',
             topics: []
         },
@@ -69,20 +85,40 @@
                             || t.supervisor.fullName.toLowerCase().indexOf(q) > -1;
                     });
                 }
+            },
+            paginatedTopics: function() {
+                var page = this.page;
+                var pp = this.perPage;
+                return this.filteredTopics.slice((page - 1) * pp, page * pp);
             }
         },
         created: function() {
             $.get('/topics/ajax', function(data) {
                 this.topics = data.list;
+                this.maxPages = this.topics.length / this.perPage + 1;
                 this.loaded = true;
             }.bind(this));
         },
         methods: {
             apply: function(event, id) {
-//                this.topics.
                 $.post('/topics/'+id+'/reserve', function(data) {
 
                 }.bind(this));
+            },
+            nextPage: function(event) {
+                if (this.page + 1 <= this.maxPages) {
+                    this.page++;
+                }
+            },
+            prevPage: function(event) {
+                if (this.page - 1 > 0) {
+                    this.page--;
+                }
+            },
+            setPage: function(page) {
+                if (page > 0 && page < this.maxPages) {
+                    this.page = page;
+                }
             }
         }
     });
