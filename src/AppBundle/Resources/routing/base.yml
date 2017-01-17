@@ -28,6 +28,15 @@ app_topics_ajax:
   defaults: { _controller: AppBundle:Topics:ajaxGetTopics }
   methods: [GET]
 
+app_topics_ajax:
+  path: /reviewers
+  defaults: { _controller: AppBundle:Topics:ChooseReviewer }
+  methods: [GET]
+
+app_topics_ajax:
+  path: /reviewers/ajax
+  defaults: { _controller: AppBundle:Topics:ajaxChooseReviewer }
+  methods: [GET]
 #app_thesis_submit_review:
 #  path: /thesis/{thesis_id}/submit
 #  defaults: { _controller: AppBundle:Default:submitReview }

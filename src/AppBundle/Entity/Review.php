@@ -167,5 +167,14 @@ class Review
     {
         return $this->filename;
     }
+    /**
+     * Get reviewer
+     *
+     * @return Worker
+     */
+    public function getReviewer()
+    {
+        return $this->reviewer;
+    }
 }
 
