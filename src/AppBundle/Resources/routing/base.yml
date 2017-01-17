@@ -28,15 +28,17 @@ app_topics_ajax:
   defaults: { _controller: AppBundle:Topics:ajaxGetTopics }
   methods: [GET]
 
-app_topics_ajax:
+app_topics_reserve:
+  path: /topics/{id}/reserve
+  defaults: { _controller: AppBundle:Topics:ajaxReserveTopic }
+  methods: [POST]
+#  condition: "request.isXmlHttpRequest()"
+
+app_choose_reviewers_get:
   path: /reviewers
   defaults: { _controller: AppBundle:Topics:ChooseReviewer }
   methods: [GET]
 
-app_topics_ajax:
-  path: /reviewers/ajax
-  defaults: { _controller: AppBundle:Topics:ajaxChooseReviewer }
-  methods: [GET]
 #app_thesis_submit_review:
 #  path: /thesis/{thesis_id}/submit
 #  defaults: { _controller: AppBundle:Default:submitReview }

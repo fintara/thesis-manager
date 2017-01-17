@@ -14,6 +14,8 @@ class AuthController extends Controller
         $error = $authUtils->getLastAuthenticationError();
         $lastEmail = $authUtils->getLastUsername();
 
+
+
         return $this->render('@App/login/index.html.twig', [
             'error' => $error,
             'lastEmail' => $lastEmail,
