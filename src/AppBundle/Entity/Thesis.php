@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Thesis
 {
+    const STATUS_DRAFT = 'draft';
+    const STATUS_FINAL = 'final';
     /**
      * @var int
      *
@@ -36,6 +38,12 @@ class Thesis
      */
     private $topic;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=50)
+     */
+    private $status;
     /**
      * @var Student[]
      *
@@ -90,6 +98,22 @@ class Thesis
     public function setTopic($topic)
     {
         $this->topic = $topic;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus(string $status)
+    {
+        $this->status = $status;
     }
 
 }

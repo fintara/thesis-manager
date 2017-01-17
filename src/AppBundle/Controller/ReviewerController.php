@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Thesis;
 use AppBundle\Entity\Worker;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,13 +16,20 @@ class ReviewerController extends Controller
     }
     public function ajaxGetReviewersAction(Request $request)
     {
-        $reviewer = $this->get('user.repository')->;
+        $reviewers = $this->get('user.repository')->findByType(Worker::TYPE);
+        $theses = $this->get('thesis.repository')->findByStatus(Thesis::STATUS_FINAL);
 
         return new JsonResponse([
-            'count' => count($reviewer),
+            'reviewers' => [
+            'count' => count($reviewers),
             'list'  => array_map(function($reviewer) {
                 return $this->get('serializer')->normalize($reviewer);
-            }, $reviewer),
-        ]);
+            }, $reviewers)],
+            'theses' => [
+                'count' => count($theses),
+                'list'  => array_map(function($thesis) {
+                    return $this->get('serializer')->normalize($thesis);
+                }, $theses)]
+            ]);
     }
 }

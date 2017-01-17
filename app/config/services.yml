@@ -50,7 +50,10 @@ services:
     arguments:
       - "@topic.repository"
       - "@reservation.repository"
-
+  thesis.repository:
+    class: AppBundle\Repository\ThesisRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [ "AppBundle:Thesis" ]
   ##################################
   ## RESERVATIONS
   reservation.repository:

@@ -23,7 +23,12 @@ class Worker extends User
      * @ORM\OneToMany(targetEntity="Topic",mappedBy="supervisor")
      */
     private $topics;
-
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="degrees", type="array")
+     */
+    private $degrees = [];
     /**
      * @return Topic[]
      */
@@ -43,5 +48,28 @@ class Worker extends User
     {
         return $thesis->getReviewrs;
     }
+    public function addDegree(string $degree): void
+    {
+        if (in_array($degree, $this->degrees)) {
+            return;
+        }
 
+        $this->degrees[] = $degree;
+    }
+
+    public function removeDegree(string $degree): void
+    {
+        $idx = array_search($degree, $this->degrees);
+
+        if ($idx === false) {
+            return;
+        }
+
+        unset($this->degrees[$idx]);
+    }
+
+    public function getDegrees(): array
+    {
+        return $this->degrees;
+    }
 }
