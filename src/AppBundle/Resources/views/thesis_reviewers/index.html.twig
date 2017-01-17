@@ -34,8 +34,8 @@
                     <tbody>
                     <tr v-for="thesis in theses">
                         <td>{{ '{{ thesis.title }}' }}</td>
-                        <td>{{ '{{ thesis.student.fullName }}' }}</td>
-                        <td>{{ '{{ thesis.supervisor.fullName }}' }}</td>
+                        <td class="nowrap">{{ '{{ thesis.students[0].fullName }}' }}</td>
+                        <td class="nowrap">{{ '{{ thesis.topic.supervisor.fullName }}' }}</td>
                         <td>
                             <select>
                                 <option value="1">asdf</option>

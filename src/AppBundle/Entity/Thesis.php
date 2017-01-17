@@ -46,9 +46,9 @@ class Thesis
      */
     private $status;
     /**
-     * @var Student[]
+     * @var Student[]|ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Student", mappedBy="theses")
+     * @ORM\ManyToMany(targetEntity="Student", mappedBy="theses", cascade={"all"})
      */
     private $students;
 
@@ -126,9 +126,9 @@ class Thesis
     }
 
     /**
-     * @return Student[]
+     * @return Student[]|ArrayCollection
      */
-    public function getStudents(): array
+    public function getStudents()
     {
         return $this->students;
     }

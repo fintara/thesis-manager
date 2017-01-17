@@ -62,7 +62,10 @@ implements OrderedFixtureInterface, ContainerAwareInterface
         $t->setStatus($data[0]);
         $t->addStudent($student);
 
+        $student->addThesis($t);
+
         $this->om->persist($t);
+        $this->om->persist($student);
 
         return $t;
     }
