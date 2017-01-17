@@ -57,7 +57,12 @@ implements OrderedFixtureInterface, ContainerAwareInterface
         $this->userService = $this->container->get('user.service');
 
         $students = [
-            ['abc@student.org', '123', 'John', 'Doe']
+            ['abc@student.org', '123', 'John', 'Doe'],
+            ['abc@galdamez.org', '123', 'Nancy', 'Galdamez'],
+            ['abc@todd.org', '123', 'James', 'Todd'],
+            ['abc@std.org', '123', 'Cynthia', 'Standard'],
+            ['abc@glover.org', '123', 'Walter', 'Glover'],
+            ['abc@thomas.org', '123', 'Scott', 'Thomas'],
         ];
         for ($i = 0; $i < count($students); $i++) {
             $student = $this->createStudent(

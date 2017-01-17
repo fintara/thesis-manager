@@ -15,7 +15,7 @@ class UserRepository extends EntityRepository
     public function findByType(string $type)
     {
         return $this->getEntityManager()->getRepository(
-            $this->userFactory->getUser($type)
+            $this->userFactory->getClass($type)
         )->findAll();
     }
 

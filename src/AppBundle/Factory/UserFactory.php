@@ -24,4 +24,15 @@ class UserFactory
 
         throw new \Exception('Unknown user type "'.$type.'"');
     }
+
+    public function getClass(string $type)
+    {
+        if ($type === Student::TYPE) {
+            return Student::class;
+        } elseif ($type === Worker::TYPE) {
+            return Worker::class;
+        }
+
+        throw new \Exception('Unknown user type "'.$type.'"');
+    }
 }

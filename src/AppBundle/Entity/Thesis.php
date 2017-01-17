@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -50,6 +51,14 @@ class Thesis
      * @ORM\ManyToMany(targetEntity="Student", mappedBy="theses")
      */
     private $students;
+
+
+    public function __construct()
+    {
+        $this->status = self::STATUS_DRAFT;
+        $this->students = new ArrayCollection();
+    }
+
     /**
      * Get id
      *
@@ -116,5 +125,17 @@ class Thesis
         $this->status = $status;
     }
 
+    /**
+     * @return Student[]
+     */
+    public function getStudents(): array
+    {
+        return $this->students;
+    }
+
+    public function addStudent(Student $student)
+    {
+        $this->students->add($student);
+    }
 }
 

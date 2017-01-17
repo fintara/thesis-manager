@@ -171,6 +171,8 @@ implements OrderedFixtureInterface, ContainerAwareInterface
 
         for($i = 0; $i < count($topics); $i++) {
             $topic = $this->createTopic($topics[$i]);
+
+            $this->addReference('topic-'.$i, $topic);
         }
 
         $this->om->flush();
