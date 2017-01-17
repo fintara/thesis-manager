@@ -22,6 +22,8 @@ services:
     class: AppBundle\Repository\UserRepository
     factory: ["@doctrine", getRepository]
     arguments: [ "AppBundle:User" ]
+    calls:
+      - [setUserFactory, ["@user.factory"]]
 
   user.service:
     class: AppBundle\Services\UserService
