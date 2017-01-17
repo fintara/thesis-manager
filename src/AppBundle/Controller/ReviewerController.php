@@ -13,9 +13,9 @@ class ReviewerController extends Controller
     {
         return $this->render('@App/reviewers/index.html.twig');
     }
-    public function ajaxGetTopicsAction(Request $request)
+    public function ajaxGetReviewersAction(Request $request)
     {
-        $reviewer = $this->get('worker.repository')->findByStatus(Worker::STATUS_APPROVED);
+        $reviewer = $this->get('user.repository')->;
 
         return new JsonResponse([
             'count' => count($reviewer),
