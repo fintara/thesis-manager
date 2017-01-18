@@ -44,6 +44,11 @@ app_theses_choose_reviewers_ajax:
   defaults: { _controller: AppBundle:Thesis:ajaxGetChooseReviewers }
   methods: [GET]
 
+app_theses_choose_reviewers_post:
+  path: /theses/reviewers
+  defaults: { _controller: AppBundle:Thesis:postChooseReviewers }
+  methods: [POST]
+
 #app_thesis_submit_review:
 #  path: /thesis/{thesis_id}/submit
 #  defaults: { _controller: AppBundle:Default:submitReview }

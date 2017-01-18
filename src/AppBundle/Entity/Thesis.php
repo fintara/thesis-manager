@@ -52,11 +52,18 @@ class Thesis
      */
     private $students;
 
+    /**
+     * @var Worker[]|ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Worker")
+     */
+    private $reviewers;
 
     public function __construct()
     {
         $this->status = self::STATUS_DRAFT;
         $this->students = new ArrayCollection();
+        $this->reviewers = new ArrayCollection();
     }
 
     /**
@@ -136,6 +143,19 @@ class Thesis
     public function addStudent(Student $student)
     {
         $this->students->add($student);
+    }
+
+    /**
+     * @return Worker[]|ArrayCollection
+     */
+    public function getReviewers()
+    {
+        return $this->reviewers;
+    }
+
+    public function addReviewer(Worker $worker)
+    {
+        $this->reviewers->add($worker);
     }
 }
 

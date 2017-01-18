@@ -23,6 +23,7 @@ class Worker extends User
      * @ORM\OneToMany(targetEntity="Topic",mappedBy="supervisor")
      */
     private $topics;
+
     /**
      * @var array
      *

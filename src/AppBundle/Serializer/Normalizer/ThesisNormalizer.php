@@ -26,12 +26,13 @@ class ThesisNormalizer implements NormalizerInterface, SerializerAwareInterface 
         }
 
         return [
-            'title' => $object->getTitle(),
-            'students' => array_map(function($student) {
+            'id'        => $object->getId(),
+            'title'     => $object->getTitle(),
+            'students'  => array_map(function($student) {
                 return $this->serializer->normalize($student);
             }, $object->getStudents()->toArray()),
-            'topic'    => $this->serializer->normalize($object->getTopic()),
-            'reviewer' => 0,
+            'topic'     => $this->serializer->normalize($object->getTopic()),
+            'reviewer'  => 0,
         ];
     }
 

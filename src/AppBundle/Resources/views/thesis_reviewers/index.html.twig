@@ -38,14 +38,15 @@
                         <td class="nowrap">{{ '{{ thesis.topic.supervisor.fullName }}' }}</td>
                         <td>
                             <span v-if="!thesis.$status || thesis.$status == 'editing'">
-                                <select v-model="thesis.reviewer">
-                                    <option v-for="reviewer in reviewers" v-bind:value="reviewer.id">
+                                <select v-model="theses[idx].reviewer">
+                                    <option value="0">(select)</option>
+                                    <option v-for="reviewer in getReviewersExcept(thesis.topic.supervisor.id)" v-bind:value="reviewer.id">
                                         {{ '{{ reviewer.fullName }}' }}
                                     </option>
                                 </select>
                             </span>
                             <span v-if="thesis.$status == 'saved'">
-                                {{ '{{ reviewers[thesis.reviewer].fullName }}' }}
+                                {{ '{{ reviewersById[thesis.reviewer].fullName }}' }}
                             </span>
                         </td>
                         <td>
@@ -81,6 +82,13 @@
                 theses: []
             },
             computed: {
+                reviewersById: function() {
+                    var obj = {};
+                    for (var i = 0; i < this.reviewers.length; i++) {
+                        obj[this.reviewers[i].id] = this.reviewers[i];
+                    }
+                    return obj;
+                }
             },
             created: function() {
                 $.get('/theses/reviewers/ajax', function(data) {
@@ -91,10 +99,20 @@
                 }.bind(this));
             },
             methods: {
+                getReviewersExcept: function(id) {
+                    return this.reviewers.filter(function(r) {
+                        return r.id != id;
+                    });
+                },
                 saveThesis: function(idx) {
                     var thesis = this.theses[idx];
+
+                    if (thesis.reviewer == 0) {
+                        alert('Select reviewer');
+                        return;
+                    }
+
                     thesis.$status = 'saved';
-                    console.log(thesis.reviewer);
                     Vue.set(this.theses, idx, thesis);
                 },
                 editThesis: function(idx) {
@@ -104,9 +122,31 @@
                 },
                 saveAll: function(event) {
                     this.saving = true;
-                    setTimeout(function() {
+
+                    var data = [];
+                    for (var i = 0; i < this.theses.length; i++) {
+                        var t = this.theses[i];
+
+                        if (t.$status == undefined || t.$status != 'saved') {
+                            alert('Apply all reviewers!');
+                            return;
+                        }
+
+                        data.push({
+                            thesis: t.id,
+                            reviewer: t.reviewer
+                        });
+                    }
+
+                    $.post('/theses/reviewers', { 'data': data }, function(res) {
                         this.saving = false;
-                    }.bind(this), 1000);
+
+                        if (res.message != 'ok') {
+                            alert(res.message);
+                        } else {
+                            alert('Saved successfully!');
+                        }
+                    }.bind(this));
                 }
             }
         });

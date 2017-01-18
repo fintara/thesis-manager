@@ -56,6 +56,11 @@ services:
     factory: ["@doctrine", getRepository]
     arguments: [ "AppBundle:Thesis" ]
 
+  thesis.service:
+    class: AppBundle\Services\ThesisService
+    arguments:
+      - "@thesis.repository"
+
   thesis.normalizer:
     class: AppBundle\Serializer\Normalizer\ThesisNormalizer
     tags:

@@ -25,6 +25,7 @@ class UserNormalizer implements NormalizerInterface, SerializerAwareInterface {
         }
 
         return [
+            'id'       => $object->getId(),
             'fullName' => $object->getFullName(),
         ];
     }
