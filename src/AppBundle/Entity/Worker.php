@@ -16,7 +16,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Worker extends User
 {
     const TYPE = 'worker';
-
   
     /**
      * @var Topic[]
@@ -25,6 +24,12 @@ class Worker extends User
      */
     private $topics;
 
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="degrees", type="array")
+     */
+    private $degrees = [];
     /**
      * @return Topic[]
      */
@@ -39,5 +44,33 @@ class Worker extends User
     public function setTopics($topics)
     {
         $this->topics = $topics;
+    }
+    public function canReview(Thesis $thesis)
+    {
+        return $thesis->getReviewrs;
+    }
+    public function addDegree(string $degree): void
+    {
+        if (in_array($degree, $this->degrees)) {
+            return;
+        }
+
+        $this->degrees[] = $degree;
+    }
+
+    public function removeDegree(string $degree): void
+    {
+        $idx = array_search($degree, $this->degrees);
+
+        if ($idx === false) {
+            return;
+        }
+
+        unset($this->degrees[$idx]);
+    }
+
+    public function getDegrees(): array
+    {
+        return $this->degrees;
     }
 }

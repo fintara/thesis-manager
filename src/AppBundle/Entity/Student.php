@@ -8,6 +8,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,7 +20,7 @@ class Student extends User
 
 
     /**
-     * @var Thesis[]
+     * @var Thesis[]|ArrayCollection
      * @ORM\ManyToMany(targetEntity="Thesis", inversedBy="students")
      * @ORM\JoinTable(name="students_theses")
      */
@@ -30,4 +31,23 @@ class Student extends User
      * @ORM\OneToMany(targetEntity="Reservation", mappedBy="student")
      */
     private $reservations;
+
+    public function __construct()
+    {
+        $this->theses = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
+    }
+
+    /**
+     * @return Thesis[]|ArrayCollection
+     */
+    public function getTheses()
+    {
+        return $this->theses;
+    }
+
+    public function addThesis(Thesis $thesis)
+    {
+        $this->theses->add($thesis);
+    }
 }

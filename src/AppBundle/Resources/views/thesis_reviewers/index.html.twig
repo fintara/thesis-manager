@@ -1,0 +1,154 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block content %}
+
+    <div class="container" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+        <div class="box theses-list" id="theses-list">
+            <div class="box-header"><h2>Choose a reviewer</h2></div>
+            <div class="box-body">
+
+                {#<div class="clearfix reviewers-list--panel">#}
+                    {#<div class="pull-left reviewer-list--panel--info" v-show="loaded">#}
+                        {#{% set topicsLength = topics | length %}#}
+                        {#{{ topicsLength }} reviewers{% if topicsLength != 1 %}s{% endif %}#}
+                        {#{{ '{{ filteredTopics.length }} reviewer' }}#}
+                    {#</div>#}
+                    {#<div class="pull-right reviewer-list--panel--filter" v-show="loaded">#}
+                        {#<input class="form-control" v-model.trim="query" type="text" placeholder="Search...">#}
+                    {#</div>#}
+                {#</div><!-- /reviewer-list--panel -->#}
+
+                <span class="fa fa-spin fa-circle-o-notch loader" v-show="!loaded"></span>
+
+                <table class="table table-bordered table-hover table-sm theses-list--table" v-show="loaded" style="display: none;">
+                    <thead class="thread-default">
+                    <tr>
+                        <th>Thesis</th>
+                        <th>Student</th>
+                        <th>Supervisor</th>
+                        <th>Reviewer</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(thesis, idx) in theses">
+                        <td>{{ '{{ thesis.title }}' }}</td>
+                        <td class="nowrap">{{ '{{ thesis.students[0].fullName }}' }}</td>
+                        <td class="nowrap">{{ '{{ thesis.topic.supervisor.fullName }}' }}</td>
+                        <td>
+                            <span v-if="!thesis.$status || thesis.$status == 'editing'">
+                                <select v-model="theses[idx].reviewer">
+                                    <option value="0">(select)</option>
+                                    <option v-for="reviewer in getReviewersExcept(thesis.topic.supervisor.id)" v-bind:value="reviewer.id">
+                                        {{ '{{ reviewer.fullName }}' }}
+                                    </option>
+                                </select>
+                            </span>
+                            <span v-if="thesis.$status == 'saved'">
+                                {{ '{{ reviewersById[thesis.reviewer].fullName }}' }}
+                            </span>
+                        </td>
+                        <td>
+                            <button v-if="!thesis.$status || thesis.$status == 'editing'" @click="saveThesis(idx)" class="btn btn-link" type="button">Save</button>
+                            <button v-if="thesis.$status == 'saved'" @click="editThesis(idx)" class="btn btn-link" type="button">Edit</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="center">
+                    <button v-if="!saving" @click="saveAll" class="btn btn-primary" type="button">Save</button>
+                    <button v-if="saving" disabled class="btn btn-primary" type="button">
+                        <span class="fa fa-spin fa-circle-o-notch"></span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div> <!-- /container -->
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        new Vue({
+            el: '#theses-list',
+            data: {
+                loaded: false,
+                saving: false,
+                reviewers: [],
+                theses: []
+            },
+            computed: {
+                reviewersById: function() {
+                    var obj = {};
+                    for (var i = 0; i < this.reviewers.length; i++) {
+                        obj[this.reviewers[i].id] = this.reviewers[i];
+                    }
+                    return obj;
+                }
+            },
+            created: function() {
+                $.get('/theses/reviewers/ajax', function(data) {
+                    this.$data.reviewers = data.reviewers.list;
+                    this.$data.theses = data.theses.list;
+
+                    this.$data.loaded = true;
+                }.bind(this));
+            },
+            methods: {
+                getReviewersExcept: function(id) {
+                    return this.reviewers.filter(function(r) {
+                        return r.id != id;
+                    });
+                },
+                saveThesis: function(idx) {
+                    var thesis = this.theses[idx];
+
+                    if (thesis.reviewer == 0) {
+                        alert('Select reviewer');
+                        return;
+                    }
+
+                    thesis.$status = 'saved';
+                    Vue.set(this.theses, idx, thesis);
+                },
+                editThesis: function(idx) {
+                    var thesis = this.theses[idx];
+                    thesis.$status = 'editing';
+                    Vue.set(this.theses, idx, thesis);
+                },
+                saveAll: function(event) {
+                    this.saving = true;
+
+                    var data = [];
+                    for (var i = 0; i < this.theses.length; i++) {
+                        var t = this.theses[i];
+
+                        if (t.$status == undefined || t.$status != 'saved') {
+                            alert('Apply all reviewers!');
+                            return;
+                        }
+
+                        data.push({
+                            thesis: t.id,
+                            reviewer: t.reviewer
+                        });
+                    }
+
+                    $.post('/theses/reviewers', { 'data': data }, function(res) {
+                        this.saving = false;
+
+                        if (res.message != 'ok') {
+                            alert(res.message);
+                        } else {
+                            alert('Saved successfully!');
+                        }
+                    }.bind(this));
+                }
+            }
+        });
+    </script>
+{% endblock %}

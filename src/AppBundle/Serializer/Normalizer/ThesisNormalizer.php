@@ -2,17 +2,18 @@
 
 namespace AppBundle\Serializer\Normalizer;
 
-use AppBundle\Entity\User;
+use AppBundle\Entity\Student;
+use AppBundle\Entity\Thesis;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\scalar;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
 
-class UserNormalizer implements NormalizerInterface, SerializerAwareInterface {
+class ThesisNormalizer implements NormalizerInterface, SerializerAwareInterface {
     use SerializerAwareTrait;
 
     /**
-     * @param User $object
+     * @param Thesis $object
      * @param null $format
      * @param array $context
      * @return array
@@ -25,13 +26,18 @@ class UserNormalizer implements NormalizerInterface, SerializerAwareInterface {
         }
 
         return [
-            'id'       => $object->getId(),
-            'fullName' => $object->getFullName(),
+            'id'        => $object->getId(),
+            'title'     => $object->getTitle(),
+            'students'  => array_map(function($student) {
+                return $this->serializer->normalize($student);
+            }, $object->getStudents()->toArray()),
+            'topic'     => $this->serializer->normalize($object->getTopic()),
+            'reviewer'  => 0,
         ];
     }
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof User;
+        return $data instanceof Thesis;
     }
 }

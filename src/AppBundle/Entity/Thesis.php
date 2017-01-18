@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Thesis
 {
+    const STATUS_DRAFT = 'draft';
+    const STATUS_FINAL = 'final';
     /**
      * @var int
      *
@@ -37,11 +40,32 @@ class Thesis
     private $topic;
 
     /**
-     * @var Student[]
+     * @var string
      *
-     * @ORM\ManyToMany(targetEntity="Student", mappedBy="theses")
+     * @ORM\Column(name="status", type="string", length=50)
+     */
+    private $status;
+    /**
+     * @var Student[]|ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Student", mappedBy="theses", cascade={"all"})
      */
     private $students;
+
+    /**
+     * @var Worker[]|ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Worker")
+     */
+    private $reviewers;
+
+    public function __construct()
+    {
+        $this->status = self::STATUS_DRAFT;
+        $this->students = new ArrayCollection();
+        $this->reviewers = new ArrayCollection();
+    }
+
     /**
      * Get id
      *
@@ -92,5 +116,46 @@ class Thesis
         $this->topic = $topic;
     }
 
+    /**
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus(string $status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return Student[]|ArrayCollection
+     */
+    public function getStudents()
+    {
+        return $this->students;
+    }
+
+    public function addStudent(Student $student)
+    {
+        $this->students->add($student);
+    }
+
+    /**
+     * @return Worker[]|ArrayCollection
+     */
+    public function getReviewers()
+    {
+        return $this->reviewers;
+    }
+
+    public function addReviewer(Worker $worker)
+    {
+        $this->reviewers->add($worker);
+    }
 }
 
