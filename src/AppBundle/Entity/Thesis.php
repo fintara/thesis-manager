@@ -53,6 +53,13 @@ class Thesis
     private $students;
 
     /**
+     * @var Review[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Review")
+     */
+    private $reviews;
+
+    /**
      * @var Worker[]|ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Worker")
@@ -63,6 +70,7 @@ class Thesis
     {
         $this->status = self::STATUS_DRAFT;
         $this->students = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
         $this->reviewers = new ArrayCollection();
     }
 
@@ -146,6 +154,19 @@ class Thesis
     }
 
     /**
+     * @return Review[]|ArrayCollection
+     */
+    public function getReviews()
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review)
+    {
+        $this->reviews->add($review);
+    }
+
+    /**
      * @return Worker[]|ArrayCollection
      */
     public function getReviewers()
@@ -156,6 +177,11 @@ class Thesis
     public function addReviewer(Worker $worker)
     {
         $this->reviewers->add($worker);
+    }
+
+    public function getSupervisor()
+    {
+        return $this->topic->getSupervisor();
     }
 }
 

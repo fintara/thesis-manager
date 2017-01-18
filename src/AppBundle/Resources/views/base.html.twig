@@ -37,6 +37,9 @@
                                 {% endif %}
 
                                 {% if is_granted('ROLE_DEAN') %}
+                                <li class="nav-item {% if route == 'app_theses_get' %}active{% endif %}">
+                                    <a class="nav-link" href="{{ url('app_theses_get') }}">Theses</a>
+                                </li>
                                 <li class="nav-item {% if route == 'app_theses_choose_reviewers_get' %}active{% endif %}">
                                     <a class="nav-link" href="{{ url('app_theses_choose_reviewers_get') }}">Choose Reviewers</a>
                                 </li>

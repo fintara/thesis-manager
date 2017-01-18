@@ -61,6 +61,16 @@ services:
     arguments:
       - "@thesis.repository"
 
+  review.repository:
+    class: AppBundle\Repository\ReviewRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [ "AppBundle:Review" ]
+
+  review.service:
+    class: AppBundle\Services\ReviewService
+    arguments:
+      - "@review.repository"
+
   thesis.normalizer:
     class: AppBundle\Serializer\Normalizer\ThesisNormalizer
     tags:

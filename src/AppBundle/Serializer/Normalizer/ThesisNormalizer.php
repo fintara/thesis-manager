@@ -32,6 +32,7 @@ class ThesisNormalizer implements NormalizerInterface, SerializerAwareInterface 
                 return $this->serializer->normalize($student);
             }, $object->getStudents()->toArray()),
             'topic'     => $this->serializer->normalize($object->getTopic()),
+            'supervisor'=> $this->serializer->normalize($object->getSupervisor()),
             'reviewer'  => 0,
         ];
     }

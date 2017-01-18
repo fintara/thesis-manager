@@ -34,6 +34,23 @@ app_topics_reserve:
   methods: [POST]
 #  condition: "request.isXmlHttpRequest()"
 
+app_theses_get:
+  path: /theses
+  defaults: { _controller: AppBundle:Thesis:getTheses }
+  methods: [GET]
+
+app_thesis_get:
+  path: /theses/{thesis}
+  defaults: { _controller: AppBundle:Thesis:getThesis }
+  requirements:
+    thesis: '\d+'
+  methods: [GET]
+
+app_thesis_review_new:
+  path: /theses/{thesis}/reviews/new
+  defaults: { _controller: AppBundle:Thesis:newReview }
+  methods: [GET, POST]
+
 app_theses_choose_reviewers_get:
   path: /theses/reviewers
   defaults: { _controller: AppBundle:Thesis:getChooseReviewers }

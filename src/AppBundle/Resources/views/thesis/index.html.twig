@@ -1,0 +1,39 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block content %}
+
+    <div class="container" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+        <div class="box theses-list" id="theses-list">
+            <div class="box-header"><h2>Theses</h2></div>
+            <div class="box-body">
+
+                <table class="table table-bordered table-hover table-sm theses-list--table">
+                    <thead class="thread-default">
+                    <tr>
+                        <th>Thesis</th>
+                        <th>Student</th>
+                        <th>Supervisor</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for thesis in theses %}
+                    <tr>
+                        <td>{{ thesis.title }}</td>
+                        <td class="nowrap">{{ thesis.students[0].fullName }}</td>
+                        <td class="nowrap">{{ thesis.supervisor.fullName }}</td>
+                        <td>
+                            <a href="{{ url('app_thesis_get', { thesis: thesis.id }) }}" class="btn btn-link">Details</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div> <!-- /container -->
+
+{% endblock %}

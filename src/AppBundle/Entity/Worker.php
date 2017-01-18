@@ -47,7 +47,7 @@ class Worker extends User
     }
     public function canReview(Thesis $thesis)
     {
-        return $thesis->getReviewrs;
+        return $thesis->getReviewers()->contains($this);
     }
     public function addDegree(string $degree): void
     {

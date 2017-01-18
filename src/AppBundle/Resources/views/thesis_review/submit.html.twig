@@ -1,0 +1,69 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block content %}
+
+    <div class="container" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="box theses-list" id="theses-list">
+                    <div class="box-header"><h2>Submit a review for "{{ thesis.title }}"</h2></div>
+                    <div class="box-body">
+
+                        <form enctype="multipart/form-data" action="{{ url('app_thesis_review_new', { thesis: thesis.id }) }}" method="post">
+
+                            {% set studentsNames = [] %}
+                            {% for student in thesis.students %}
+                                {% set studentsNames = studentsNames|merge([student.fullName]) %}
+                            {% endfor %}
+
+                            <div class="row mg-bottom">
+                                <div class="col-md-3 right">Student{% if thesis.students.count != 1 %}s{% endif %}</div>
+                                <div class="col-md-9"><strong>{{ studentsNames | join(', ') }}</strong></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3 right">Supervisor</div>
+                                <div class="col-md-9"><strong>{{ thesis.supervisor.fullName }}</strong></div>
+                            </div>
+
+                            <hr />
+
+                            <div class="row mg-bottom">
+                                <div class="col-md-3 right">File</div>
+                                <div class="col-md-9">
+                                    {{ form_widget(form.file) }}
+                                </div>
+                            </div>
+
+                            <div class="row mg-bottom">
+                                <div class="col-md-3 right">Title</div>
+                                <div class="col-md-9">
+                                    {{ form_widget(form.title) }}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3 right">Grade</div>
+                                <div class="col-md-9">
+                                    {{ form_widget(form.grade) }}
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <div class="center">
+                                {{ form_widget(form._token) }}
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- /container -->
+
+{% endblock %}

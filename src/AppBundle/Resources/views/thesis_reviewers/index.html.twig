@@ -4,7 +4,7 @@
 
     <div class="container" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 
-        <div class="box theses-list" id="theses-list">
+        <div class="box theses-list--choose-reviewer" id="theses-list--choose-reviewer">
             <div class="box-header"><h2>Choose a reviewer</h2></div>
             <div class="box-body">
 
@@ -21,7 +21,7 @@
 
                 <span class="fa fa-spin fa-circle-o-notch loader" v-show="!loaded"></span>
 
-                <table class="table table-bordered table-hover table-sm theses-list--table" v-show="loaded" style="display: none;">
+                <table class="table table-bordered table-hover table-sm theses-list--choose-reviewer--table" v-show="loaded" style="display: none;">
                     <thead class="thread-default">
                     <tr>
                         <th>Thesis</th>
@@ -35,12 +35,12 @@
                     <tr v-for="(thesis, idx) in theses">
                         <td>{{ '{{ thesis.title }}' }}</td>
                         <td class="nowrap">{{ '{{ thesis.students[0].fullName }}' }}</td>
-                        <td class="nowrap">{{ '{{ thesis.topic.supervisor.fullName }}' }}</td>
+                        <td class="nowrap">{{ '{{ thesis.supervisor.fullName }}' }}</td>
                         <td>
                             <span v-if="!thesis.$status || thesis.$status == 'editing'">
                                 <select v-model="theses[idx].reviewer">
                                     <option value="0">(select)</option>
-                                    <option v-for="reviewer in getReviewersExcept(thesis.topic.supervisor.id)" v-bind:value="reviewer.id">
+                                    <option v-for="reviewer in getReviewersExcept(thesis.supervisor.id)" v-bind:value="reviewer.id">
                                         {{ '{{ reviewer.fullName }}' }}
                                     </option>
                                 </select>
@@ -74,7 +74,7 @@
 {% block javascripts %}
     <script>
         new Vue({
-            el: '#theses-list',
+            el: '#theses-list--choose-reviewer',
             data: {
                 loaded: false,
                 saving: false,
