@@ -41,4 +41,22 @@ WHERE r = :worker'
 
         return $query->getResult();
     }
+
+    public function findAllSupervisedBy(Worker $worker)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery(
+                'SELECT th, t, s 
+FROM AppBundle:Thesis th
+INNER JOIN th.topic t 
+INNER JOIN t.supervisor sv
+LEFT JOIN th.reviewers r
+INNER JOIN th.students s
+WHERE sv = :worker'
+            );
+
+        $query->setParameter('worker', $worker);
+
+        return $query->getResult();
+    }
 }

@@ -19,3 +19,8 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     reviews_directory: "%kernel.root_dir%/../web/uploads/reviews"
+    reviews_directory_web: "uploads/reviews"
+    drafts_directory: "%kernel.root_dir%/../web/uploads/drafts"
+    drafts_directory_web: "uploads/drafts"
+    feedbacks_directory: "%kernel.root_dir%/../web/uploads/feedbacks"
+    feedbacks_directory_web: "uploads/feedbacks"

@@ -21,8 +21,7 @@ class Student extends User
 
     /**
      * @var Thesis[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Thesis", inversedBy="students")
-     * @ORM\JoinTable(name="students_theses")
+     * @ORM\ManyToMany(targetEntity="Thesis", mappedBy="students")
      */
     private $theses;
 
@@ -49,5 +48,19 @@ class Student extends User
     public function addThesis(Thesis $thesis)
     {
         $this->theses->add($thesis);
+    }
+
+    public function canUploadDraft(Thesis $thesis): bool
+    {
+        /** @var Draft|null $lastDraft */
+        $lastDraft = $thesis->getDrafts()->last();
+
+        if (!$lastDraft) {
+            return true;
+        }
+
+        $diff = $lastDraft->getCreatedAt()->diff(new \DateTime());
+
+        return $diff->d + $diff->m + $diff->y > 0;
     }
 }

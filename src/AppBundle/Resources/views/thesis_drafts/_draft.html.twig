@@ -1,0 +1,55 @@
+<div class="boxes mg-bottom">
+    <div class="box">
+        <div class="box-header">
+            <h4>Draft #{{ draft.version }}</h4>
+        </div>
+        <div class="box-body">
+
+            <div>
+                <a target="_blank" href="{{ asset(drafts_directory ~ '/' ~ draft.filename) }}" class="btn btn-primary">
+                    <span class="fa fa-download"></span> Download
+                </a>
+            </div>
+
+            <div>
+                {{ draft.comment }}
+            </div>
+
+        </div>
+    </div>
+
+    {% if draft.feedback %}
+    <div class="box">
+        <div class="box-header">
+            <h5>Feedback</h5>
+        </div>
+        <div class="box-body">
+
+            {% if draft.feedback.filename %}
+            <div>
+                <a target="_blank" href="{{ asset(feedbacks_directory ~ '/' ~ draft.feedback.filename) }}" class="btn btn-primary">
+                    <span class="fa fa-download"></span> Download
+                </a>
+            </div>
+            {% endif %}
+
+            <div>
+                {{ draft.feedback.content }}
+            </div>
+
+        </div>
+    </div>
+    {% else %}
+        <div class="box no-body">
+            <div class="box-header">
+                <h5>
+                    {% if not is_granted('ROLE_TEACHER') or draft.thesis.topic.supervisor != app.user %}
+                    No feedback yet
+                    {% else %}
+                    <a href="{{ url('app_thesis_draft_feedback_add', {thesis: draft.thesis.id, draft: draft.id}) }}" class="btn btn-primary btn-sm">Add feedback</a>
+                    {% endif %}
+                </h5>
+            </div>
+        </div>
+    {% endif %}
+</div>

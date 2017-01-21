@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Draft
@@ -29,6 +30,13 @@ class Draft
     private $filename;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="comment", type="text")
+     */
+    private $comment;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="version", type="integer")
@@ -49,13 +57,23 @@ class Draft
      */
     private $student;
 
-
     /**
      * @var Thesis
-     * @ORM\ManyToOne(targetEntity="Thesis")
+     * @ORM\ManyToOne(targetEntity="Thesis", inversedBy="drafts")
      * @ORM\JoinColumn(name="thesis_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $thesis;
+
+    /**
+     * @var Feedback|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Feedback", mappedBy="draft")
+     */
+    private $feedback;
+
+    /** @var null|UploadedFile */
+    private $file;
+
     /**
      * Get id
      *
@@ -91,6 +109,22 @@ class Draft
     }
 
     /**
+     * @return string
+     */
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param string $comment
+     */
+    public function setComment(string $comment)
+    {
+        $this->comment = $comment;
+    }
+
+    /**
      * Set version
      *
      * @param integer $version
@@ -115,6 +149,38 @@ class Draft
     }
 
     /**
+     * @return Student
+     */
+    public function getStudent(): Student
+    {
+        return $this->student;
+    }
+
+    /**
+     * @param Student $student
+     */
+    public function setStudent(Student $student)
+    {
+        $this->student = $student;
+    }
+
+    /**
+     * @return Thesis
+     */
+    public function getThesis(): Thesis
+    {
+        return $this->thesis;
+    }
+
+    /**
+     * @param Thesis $thesis
+     */
+    public function setThesis(Thesis $thesis)
+    {
+        $this->thesis = $thesis;
+    }
+
+    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
@@ -136,6 +202,30 @@ class Draft
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * @return Feedback|null
+     */
+    public function getFeedback()
+    {
+        return $this->feedback;
+    }
+
+    /**
+     * @return null|UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param null|UploadedFile $file
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
     }
 }
 

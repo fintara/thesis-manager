@@ -48,9 +48,17 @@ class Thesis
     /**
      * @var Student[]|ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Student", mappedBy="theses", cascade={"all"})
+     * @ORM\ManyToMany(targetEntity="Student", inversedBy="theses", cascade={"all"})
+     * @ORM\JoinTable(name="thesis_students")
      */
     private $students;
+
+    /**
+     * @var Draft[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Draft", mappedBy="thesis")
+     */
+    private $drafts;
 
     /**
      * @var Review[]|ArrayCollection
@@ -63,6 +71,7 @@ class Thesis
      * @var Worker[]|ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Worker")
+     * @ORM\JoinTable(name="thesis_reviewers")
      */
     private $reviewers;
 
@@ -70,6 +79,7 @@ class Thesis
     {
         $this->status = self::STATUS_DRAFT;
         $this->students = new ArrayCollection();
+        $this->drafts = new ArrayCollection();
         $this->reviews = new ArrayCollection();
         $this->reviewers = new ArrayCollection();
     }
@@ -151,6 +161,19 @@ class Thesis
     public function addStudent(Student $student)
     {
         $this->students->add($student);
+    }
+
+    /**
+     * @return Draft[]|ArrayCollection
+     */
+    public function getDrafts()
+    {
+        return $this->drafts;
+    }
+
+    public function addDraft(Draft $draft)
+    {
+        $this->drafts->add($draft);
     }
 
     /**

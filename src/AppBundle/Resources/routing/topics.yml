@@ -1,0 +1,15 @@
+app_topics_get:
+  path: /
+  defaults: { _controller: AppBundle:Topics:getTopics }
+  methods: [GET]
+
+app_topics_ajax:
+  path: /ajax
+  defaults: { _controller: AppBundle:Topics:ajaxGetTopics }
+  methods: [GET]
+
+app_topics_reserve:
+  path: /{id}/reserve
+  defaults: { _controller: AppBundle:Topics:ajaxReserveTopic }
+  methods: [POST]
+#  condition: "request.isXmlHttpRequest()"
