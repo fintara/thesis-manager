@@ -16,9 +16,12 @@
                         <span class="fa fa-arrow-left"></span> Back
                     </a>
                     {% if thesis.students.contains(app.user) %}
-                    <a href="{{ url('app_thesis_draft_add', { thesis: thesis.id }) }}" class="btn btn-primary">
+                    <span {% if not app.user.canUploadDraft(thesis) %}data-toggle="tooltip" title="You can’t upload a new draft yet. Wait until {{ nextUpload | date }}!"{% endif %}>
+                        <a href="{{ url('app_thesis_draft_add', { thesis: thesis.id }) }}"
+                           class="btn btn-primary {% if not app.user.canUploadDraft(thesis) %}disabled{% endif %}">
                         <span class="fa fa-upload"></span> Upload Draft
                     </a>
+                    </span>
                     {% endif %}
                 </div><!-- /theses-list--panel -->
 

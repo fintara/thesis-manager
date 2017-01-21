@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Theses;
 
+use AppBundle\Entity\Draft;
 use AppBundle\Entity\Review;
 use AppBundle\Entity\Thesis;
 use AppBundle\Entity\User;
@@ -23,15 +24,30 @@ class DraftController extends Controller
     public function getDraftsAction(Request $request, Thesis $thesis)
     {
         $drafts = $this->get('draft.repository')->findNewest($thesis);
+        /** @var Draft|null $lastDraft */
+        $lastDraft = $thesis->getDrafts()->last();
+
+        $nextUpload = null;
+
+        if ($lastDraft && !$this->getUser()->canUploadDraft($thesis)) {
+//            $diff = $lastDraft->getCreatedAt()->diff(new \DateTime());
+            $nextUpload = $lastDraft->getCreatedAt();
+            $nextUpload->modify('+ 1 day');
+        }
 
         return $this->render('@App/thesis_drafts/index.html.twig', [
             'thesis' => $thesis,
             'drafts' => $drafts,
+            'nextUpload' => $nextUpload,
         ]);
     }
 
     public function getNewDraftAction(Request $request, Thesis $thesis)
     {
+        if (!$this->getUser()->canUploadDraft($thesis)) {
+            throw $this->createAccessDeniedException();
+        }
+
         $model = new DraftModel();
         $model->thesis = $thesis;
         $model->student = $this->getUser();
