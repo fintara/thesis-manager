@@ -45,7 +45,7 @@ class Draft
     /**
      * @var Student
      * @ORM\ManyToOne(targetEntity="Student")
-     * @ORM\JoinColumn(name="student_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="student_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $student;
 
@@ -53,7 +53,7 @@ class Draft
     /**
      * @var Thesis
      * @ORM\ManyToOne(targetEntity="Thesis")
-     * @ORM\JoinColumn(name="thesis_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="thesis_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $thesis;
     /**

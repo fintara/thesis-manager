@@ -1,0 +1,119 @@
+body {
+    background: url(../img/squared_metal.png) repeat;
+}
+
+.loader {
+    display : block;
+    width: 100%;
+    font-size: 3em;
+    padding: 3em 0;
+    text-align: center;
+    color: #0275d8;
+}
+
+.center { text-align: center; }
+.right { text-align: right; }
+.mg-bottom { margin-bottom: 1em; }
+
+td.nowrap {
+    white-space :nowrap;
+}
+
+.box {
+    background: #b8b8b8;
+    padding-bottom: 0.5em;
+    border-radius: 4px;
+    margin-top: 3em;
+}
+
+.box > .box-header {
+    padding: 1em 2em;
+}
+
+.box > .box-header h2 {
+    margin: 0;
+}
+
+.box > .box-body {
+    background: #fff;
+    padding: 1em
+}
+
+.topics-list .topics-list--panel {
+    margin-bottom: 1em;
+}
+.topics-list .topics-list--panel .topics-list--panel--info {
+    line-height :38px;
+}
+
+.topics-list--table .action span > span {
+    display: block;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.topics-list--table .action span.applied {
+    color: #000;
+}
+
+.topics-list--table .action span.rejected {
+    color: rgba(170, 0, 0, 0.6);
+}
+
+.topics-list--table .action span.approved {
+    color: #009d00;
+}
+
+.theses-list .theses-list--panel {
+    margin-bottom: 1em;
+}
+
+.thead-default th {
+    text-align: center;
+}
+
+.footer {
+    margin-top: 3em;
+    margin-bottom: 1em;
+}
+
+.footer .copyright {
+    text-align: right;
+    font-size: 12px;
+    color: #838383;
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom: 10px;
+}
+.form-signin .checkbox {
+    font-weight: normal;
+}
+.form-signin .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+.form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}

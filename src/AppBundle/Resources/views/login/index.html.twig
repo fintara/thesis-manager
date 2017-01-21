@@ -1,28 +1,42 @@
 {% extends 'AppBundle::base.html.twig' %}
 
 {% block content %}
-<h1>Login!</h1>
 
     <div class="container">
 
-        <form class="form-signin" method="post" action="{{ url('app_login_post') }}">
-            <h2 class="form-signin-heading">Please sign in</h2>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="box topics-list">
+                    <div class="box-header"><h2>Please sign in</h2></div>
+                    <div class="box-body">
 
-            {% if error %}
-                <span>Error: {{ error.messageData | join(', ') }}</span>
-            {% endif %}
+                        <form class="form-signin" method="post" action="{{ url('app_login_post') }}">
 
-            <label for="inputEmail" class="sr-only">Email address</label>
-            <input type="email" name="_email" value="{{ lastEmail }}" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" name="_pass" id="inputPassword" class="form-control" placeholder="Password" required>
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" value="remember-me"> Remember me
-                </label>
+                            <div style="margin-bottom: 2em ">
+                                <em>abc@student.org / 123</em><br />
+                                <em>abc@dean.org / 123</em><br />
+                            </div>
+
+                            {% if error %}
+                                <span>Error: {{ error.messageData | join(', ') }}</span>
+                            {% endif %}
+
+                            <label for="inputEmail" class="sr-only">Email address</label>
+                            <input type="email" name="_email" value="{{ lastEmail }}" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                            <label for="inputPassword" class="sr-only">Password</label>
+                            <input type="password" name="_pass" id="inputPassword" class="form-control" placeholder="Password" required>
+                            {#<div class="checkbox">#}
+                                {#<label>#}
+                                    {#<input type="checkbox" value="remember-me"> Remember me#}
+                                {#</label>#}
+                            {#</div>#}
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                        </form>
+
+                    </div>
+                </div>
             </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        </form>
+        </div>
 
     </div> <!-- /container -->
 

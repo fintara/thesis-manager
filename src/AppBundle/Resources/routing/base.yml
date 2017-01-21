@@ -18,8 +18,58 @@ app_logout:
   defaults: { _controller: AppBundle:Default:index }
   methods: [GET]
 
-app_thesis_submit_review:
-  path: /thesis/{thesis_id}/submit
-  defaults: { _controller: AppBundle:Default:submitReview }
+app_topics_get:
+  path: /topics
+  defaults: { _controller: AppBundle:Topics:getTopics }
+  methods: [GET]
+
+app_topics_ajax:
+  path: /topics/ajax
+  defaults: { _controller: AppBundle:Topics:ajaxGetTopics }
+  methods: [GET]
+
+app_topics_reserve:
+  path: /topics/{id}/reserve
+  defaults: { _controller: AppBundle:Topics:ajaxReserveTopic }
+  methods: [POST]
+#  condition: "request.isXmlHttpRequest()"
+
+app_theses_get:
+  path: /theses/{type}
+  defaults: { _controller: AppBundle:Thesis:getTheses }
+  requirements:
+    type: all|to-review
+  methods: [GET]
+
+app_thesis_get:
+  path: /theses/{thesis}
+  defaults: { _controller: AppBundle:Thesis:getThesis }
+  requirements:
+    thesis: '\d+'
+  methods: [GET]
+
+app_thesis_review_new:
+  path: /theses/{thesis}/reviews/new
+  defaults: { _controller: AppBundle:Thesis:newReview }
   methods: [GET, POST]
+
+app_theses_choose_reviewers_get:
+  path: /theses/reviewers
+  defaults: { _controller: AppBundle:Thesis:getChooseReviewers }
+  methods: [GET]
+
+app_theses_choose_reviewers_ajax:
+  path: /theses/reviewers/ajax
+  defaults: { _controller: AppBundle:Thesis:ajaxGetChooseReviewers }
+  methods: [GET]
+
+app_theses_choose_reviewers_post:
+  path: /theses/reviewers
+  defaults: { _controller: AppBundle:Thesis:postChooseReviewers }
+  methods: [POST]
+
+#app_thesis_submit_review:
+#  path: /thesis/{thesis_id}/submit
+#  defaults: { _controller: AppBundle:Default:submitReview }
+#  methods: [GET, POST]
 

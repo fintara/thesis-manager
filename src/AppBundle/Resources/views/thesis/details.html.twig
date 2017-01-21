@@ -1,0 +1,47 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block content %}
+
+    <div class="container" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+        <div class="box theses-list" id="theses-list">
+            <div class="box-header"><h2>{{ thesis.title }}</h2></div>
+            <div class="box-body">
+
+                <div class="clearfix theses-list--panel">
+                    {% if app.user.canReview(thesis) %}
+                    <a href="{{ url('app_thesis_review_new', { thesis: thesis.id }) }}" class="btn btn-primary">Submit Review</a>
+                    {% endif %}
+                </div><!-- /theses-list--panel -->
+
+                {% set studentsNames = [] %}
+                {% for student in thesis.students %}
+                    {% set studentsNames = studentsNames|merge([student.fullName]) %}
+                {% endfor %}
+
+                {% set reviewerNames = [] %}
+                {% for reviewer in thesis.reviewers %}
+                    {% set reviewerNames = reviewerNames|merge([reviewer.fullName]) %}
+                {% endfor %}
+
+                <div class="row mg-bottom">
+                    <div class="col-md-3 right">Student{% if thesis.students.count != 1 %}s{% endif %}</div>
+                    <div class="col-md-9"><strong>{{ studentsNames | join(', ') }}</strong></div>
+                </div>
+
+                <div class="row mg-bottom">
+                    <div class="col-md-3 right">Supervisor</div>
+                    <div class="col-md-9"><strong>{{ thesis.supervisor.fullName }}</strong></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 right">Reviewer{% if thesis.reviewers.count != 1 %}s{% endif %}</div>
+                    <div class="col-md-9"><strong>{{ reviewerNames | join(', ') | default('(none)') }}</strong></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div> <!-- /container -->
+
+{% endblock %}

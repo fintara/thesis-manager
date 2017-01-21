@@ -2,16 +2,20 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * topic
  *
  * @ORM\Table(name="topic")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\topicRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TopicRepository")
  */
 class Topic
 {
+    const STATUS_PENDING = 'pending';
+    const STATUS_NEW = 'new';
+    const STATUS_APPROVED = 'approved';
     /**
      * @var int
      *
@@ -39,16 +43,32 @@ class Topic
      * @var Worker
      *
      * @ORM\ManyToOne(targetEntity="Worker", inversedBy="topics")
-     * @ORM\JoinColumn(name="supervisor_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="supervisor_id", referencedColumnName="id", onDelete="CASCADE")
      *
      */
     private $supervisor;
 
     /**
-     * @var Reservation[]
+     * @var Reservation[]|ArrayCollection
      * @ORM\OneToMany(targetEntity="Reservation", mappedBy="topic")
      */
     private $reservations;
+
+    public static function getStatuses()
+    {
+        return [
+            self::STATUS_APPROVED,
+            self::STATUS_NEW,
+            self::STATUS_PENDING,
+        ];
+    }
+
+    public function __construct()
+    {
+        $this->status = self::STATUS_NEW;
+        $this->reservations = new ArrayCollection();
+    }
+
     /**
      * Get id
      *
@@ -106,5 +126,52 @@ class Topic
     {
         return $this->status;
     }
+
+    /**
+     * @return Worker
+     */
+    public function getSupervisor(): Worker
+    {
+        return $this->supervisor;
+    }
+
+    /**
+     * @param Worker $supervisor
+     */
+    public function setSupervisor(Worker $supervisor = null)
+    {
+        $this->supervisor = $supervisor;
+    }
+
+    /**
+     * @return Reservation[]|ArrayCollection
+     */
+    public function getReservations()
+    {
+        return $this->reservations;
+    }
+
+    /**
+     * @param Student $student
+     * @return bool|Reservation
+     */
+    public function getReservationFor(Student $student)
+    {
+        return $this->reservations->filter(function ($reservation) use ($student) {
+            /** @var Reservation $reservation */
+            return $reservation->getStudent() === $student;
+        })->first();
+    }
+
+    public function isReservedFor(Student $student): bool
+    {
+        return $this->getReservationFor($student) !== false;
+    }
+
+    public function addReservation(Reservation $reservation)
+    {
+        $this->reservations->add($reservation);
+    }
+
 }
 

@@ -1,0 +1,142 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block content %}
+
+    <div class="container">
+
+        <div class="box topics-list" id="topics-list">
+            <div class="box-header"><h2>Topics Available</h2></div>
+            <div class="box-body">
+
+                <div class="clearfix topics-list--panel">
+                    <div class="pull-left topics-list--panel--info" v-show="loaded">
+                        {#{% set topicsLength = topics | length %}#}
+                        {#{{ topicsLength }} topic{% if topicsLength != 1 %}s{% endif %}#}
+                        {{ '{{ filteredTopics.length }} topics' }}
+                    </div>
+                    <div class="pull-right topics-list--panel--filter" v-show="loaded">
+                        <input class="form-control" v-model.trim="query" type="text" placeholder="Search...">
+                    </div>
+                </div><!-- /topics-list--panel -->
+
+                <span class="fa fa-spin fa-circle-o-notch loader" v-show="!loaded"></span>
+
+                <table class="table table-bordered table-hover table-sm topics-list--table" v-show="loaded" style="display: none;">
+                    <thead class="thead-default">
+                    <tr>
+                        <th>Topic</th>
+                        <th>Supervisor</th>
+                        <th>Taken</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(topic, idx) in paginatedTopics">
+                            <td>{{ '{{ topic.title }}' }}</td>
+                            <td class="nowrap">{{ '{{ topic.supervisor.fullName }}' }}</td>
+                            <td>{{ '{{ topic.reservations.count }}' }}</td>
+                            <td class="action center">
+                                <span v-if="topic.$applying">
+                                    <span class="fa fa-spin fa-circle-o-notch"></span>
+                                </span>
+                                <span v-if="!topic.$applying">
+                                    <button v-if="topic.reservation == false" @click="apply($event, idx, topic.id)" class="btn btn-link" type="button">Apply</button>
+
+                                    <span v-if="topic.reservation != false && topic.reservation.status == 0" class="applied">Applied</span>
+                                    <span v-if="topic.reservation != false && topic.reservation.status == 1" class="approved">Approved</span>
+                                    <span v-if="topic.reservation != false && topic.reservation.status == 2" class="rejected">Rejected</span>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <nav v-if="loaded" class="center">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <button class="btn btn-link page-link" @click="prevPage">Previous</button>
+                        </li>
+                        {#<li v-for="p in mp" class="page-item">#}
+                            {#<button class="btn btn-link page-link" @click="setPage(p)">{{ '{{ p }}' }}</button>#}
+                        {#</li>#}
+                        <li class="page-item">
+                            <button class="btn btn-link page-link" @click="nextPage">Next</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div> <!-- /container -->
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    new Vue({
+        el: '#topics-list',
+        data: {
+            loaded: false,
+            page: 1,
+            perPage: 5,
+            maxPages: 2,
+            query: '',
+            topics: []
+        },
+        computed: {
+            filteredTopics: function() {
+                var q = this.query.toLowerCase();
+                if (q.length == 0) {
+                    return this.topics;
+                } else {
+                    this.page = 1;
+                    return this.topics.filter(function(t) {
+                        return t.title.toLowerCase().indexOf(q) > -1
+                            || t.supervisor.fullName.toLowerCase().indexOf(q) > -1;
+                    });
+                }
+            },
+            paginatedTopics: function() {
+                var page = this.page;
+                var pp = this.perPage;
+                return this.filteredTopics.slice((page - 1) * pp, page * pp);
+            }
+        },
+        created: function() {
+            $.get('/topics/ajax', function(data) {
+                this.topics = data.list;
+                this.maxPages = this.topics.length / this.perPage + 1;
+                this.loaded = true;
+            }.bind(this));
+        },
+        methods: {
+            apply: function(event, index, id) {
+                index = (this.page-1) * this.perPage + index;
+                var topic = this.topics[index];
+                topic.$applying = true;
+                Vue.set(this.topics, index, topic);
+                $.post('/topics/'+id+'/reserve', function(data) {
+                    if (data.message === 'ok') {
+                        Vue.set(this.topics, index, data.topic);
+                    }
+                }.bind(this));
+            },
+            nextPage: function(event) {
+                if (this.page + 1 <= this.maxPages) {
+                    this.page++;
+                }
+            },
+            prevPage: function(event) {
+                if (this.page - 1 > 0) {
+                    this.page--;
+                }
+            },
+            setPage: function(page) {
+                if (page > 0 && page < this.maxPages) {
+                    this.page = page;
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

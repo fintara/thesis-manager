@@ -4,6 +4,8 @@ parameters:
 #    parameter_name: value
 
 services:
+  ##################################
+  ## USER
   user.provider:
     class: AppBundle\Security\User\MultiUserProvider
     arguments: [ "@user.repository" ]
@@ -11,10 +13,17 @@ services:
   user.factory:
     class: AppBundle\Factory\UserFactory
 
+  user.normalizer:
+    class: AppBundle\Serializer\Normalizer\UserNormalizer
+    tags:
+      - { name: serializer.normalizer }
+
   user.repository:
     class: AppBundle\Repository\UserRepository
     factory: ["@doctrine", getRepository]
     arguments: [ "AppBundle:User" ]
+    calls:
+      - [setUserFactory, ["@user.factory"]]
 
   user.service:
     class: AppBundle\Services\UserService
@@ -23,6 +32,59 @@ services:
       - "@user.factory"
       - "@security.password_encoder"
 
+  #################################
+  ## TOPICS
+  topic.normalizer:
+    class: AppBundle\Serializer\Normalizer\TopicNormalizer
+    arguments: ["@security.token_storage"]
+    tags:
+      - { name: serializer.normalizer }
+
+  topic.repository:
+    class: AppBundle\Repository\TopicRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [ "AppBundle:Topic" ]
+
+  topic.service:
+    class: AppBundle\Services\TopicService
+    arguments:
+      - "@topic.repository"
+      - "@reservation.repository"
+
+  thesis.repository:
+    class: AppBundle\Repository\ThesisRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [ "AppBundle:Thesis" ]
+
+  thesis.service:
+    class: AppBundle\Services\ThesisService
+    arguments:
+      - "@thesis.repository"
+
+  review.repository:
+    class: AppBundle\Repository\ReviewRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [ "AppBundle:Review" ]
+    calls:
+        - [setDirectory, ["%reviews_directory%"]]
+
+  review.service:
+    class: AppBundle\Services\ReviewService
+    arguments:
+      - "@review.repository"
+
+  thesis.normalizer:
+    class: AppBundle\Serializer\Normalizer\ThesisNormalizer
+    tags:
+      - { name: serializer.normalizer }
+  ##################################
+  ## RESERVATIONS
+  reservation.repository:
+    class: AppBundle\Repository\ReservationRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [ "AppBundle:Reservation" ]
+  ##################################
+  ## MISC
   form_authenticator:
     class: AppBundle\Security\FormAuthenticator
     arguments:

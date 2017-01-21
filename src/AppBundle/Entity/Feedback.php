@@ -32,14 +32,14 @@ class Feedback
     /**
      * @var Worker
      * @ORM\ManyToOne(targetEntity="Worker")
-     * @ORM\JoinColumn(name="supervisor_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="supervisor_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $supervisor;
 
     /**
      * @var Draft
      * @ORM\OneToOne(targetEntity="Draft")
-     * @ORM\JoinColumn(name="draft_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="draft_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $draft;
     /**

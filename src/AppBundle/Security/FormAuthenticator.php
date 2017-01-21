@@ -84,7 +84,7 @@ class FormAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        if ($request->getMethod() !== Request::METHOD_POST) {
+        if ($request->get('_route') !== 'app_login_post') {
             return;
         }
 
