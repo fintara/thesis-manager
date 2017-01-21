@@ -44,6 +44,7 @@ twig:
     globals:
         reviews_directory: "%reviews_directory_web%"
         drafts_directory: "%drafts_directory_web%"
+        feedbacks_directory: "%feedbacks_directory_web%"
 
 assetic:
     debug:          '%kernel.debug%'

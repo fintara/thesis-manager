@@ -48,7 +48,8 @@ class Thesis
     /**
      * @var Student[]|ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Student", mappedBy="theses", cascade={"all"})
+     * @ORM\ManyToMany(targetEntity="Student", inversedBy="theses", cascade={"all"})
+     * @ORM\JoinTable(name="thesis_students")
      */
     private $students;
 
@@ -70,6 +71,7 @@ class Thesis
      * @var Worker[]|ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Worker")
+     * @ORM\JoinTable(name="thesis_reviewers")
      */
     private $reviewers;
 

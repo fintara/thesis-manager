@@ -7,3 +7,8 @@ app_thesis_draft_add:
   path: /new
   defaults: { _controller: AppBundle:Theses/Draft:getNewDraft }
   methods: [GET, POST]
+
+app_thesis_draft_feedback_add:
+  path: /{draft}/add-feedback
+  defaults: { _controller: AppBundle:Theses/Draft:getNewFeedback }
+  methods: [GET, POST]

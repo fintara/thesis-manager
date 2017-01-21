@@ -69,6 +69,19 @@
                                         <a class="nav-link dropdown-toggle" href="#"
                                            id="responsiveNavbarDropdown" data-toggle="dropdown" aria-haspopup="true"
                                            aria-expanded="false">
+                                            Supervisor
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right"
+                                             aria-labelledby="responsiveNavbarDropdown">
+                                            <a class="dropdown-item" href="{{ url('app_theses_get', {type: 'supervised'}) }}">
+                                                <span class="fa fa-book"></span> Supervised theses
+                                            </a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#"
+                                           id="responsiveNavbarDropdown" data-toggle="dropdown" aria-haspopup="true"
+                                           aria-expanded="false">
                                             Reviewer
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right"

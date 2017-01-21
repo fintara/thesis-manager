@@ -64,6 +64,13 @@ class Draft
      */
     private $thesis;
 
+    /**
+     * @var Feedback|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Feedback", mappedBy="draft")
+     */
+    private $feedback;
+
     /** @var null|UploadedFile */
     private $file;
 
@@ -195,6 +202,14 @@ class Draft
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * @return Feedback|null
+     */
+    public function getFeedback()
+    {
+        return $this->feedback;
     }
 
     /**

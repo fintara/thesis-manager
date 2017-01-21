@@ -5,13 +5,12 @@ namespace AppBundle\Models;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class DraftModel
+class FeedbackModel
 {
 
     /**
      * @var UploadedFile
      *
-     * @Assert\NotNull()
      * @Assert\File(maxSize="51200000")
      */
     public $file;
@@ -23,7 +22,7 @@ class DraftModel
      */
     public $comment;
 
-    public $thesis;
-    public $student;
+    public $draft;
+    public $supervisor;
 
 }
