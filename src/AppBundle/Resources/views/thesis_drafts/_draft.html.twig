@@ -1,0 +1,40 @@
+<div class="boxes">
+    <div class="box">
+        <div class="box-header">
+            <h4>Draft #{{ draft.version }}</h4>
+        </div>
+        <div class="box-body">
+
+            <div>
+                <a target="_blank" href="{{ asset(drafts_directory ~ '/' ~ draft.filename) }}" class="btn btn-primary">
+                    <span class="fa fa-download"></span> Download
+                </a>
+            </div>
+
+            <div>
+                {{ draft.comment }}
+            </div>
+
+        </div>
+    </div>
+
+    <div class="box">
+        <div class="box-header">
+            <h5>Feedback</h5>
+        </div>
+        <div class="box-body">
+
+            <div>
+                <a href="#" class="btn btn-primary">
+                    <span class="fa fa-download"></span> Download
+                </a>
+            </div>
+
+            <div>
+                {#{{ draft.feedback.comment }}#}
+                Feedback content
+            </div>
+
+        </div>
+    </div>
+</div>

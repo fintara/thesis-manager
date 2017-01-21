@@ -61,6 +61,23 @@ services:
     arguments:
       - "@thesis.repository"
 
+  thesis.normalizer:
+    class: AppBundle\Serializer\Normalizer\ThesisNormalizer
+    tags:
+      - { name: serializer.normalizer }
+
+  draft.repository:
+    class: AppBundle\Repository\DraftRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [ "AppBundle:Draft" ]
+    calls:
+        - [setDirectory, ["%drafts_directory%"]]
+
+  draft.service:
+    class: AppBundle\Services\DraftService
+    arguments:
+      - "@draft.repository"
+
   review.repository:
     class: AppBundle\Repository\ReviewRepository
     factory: ["@doctrine", getRepository]
@@ -72,11 +89,6 @@ services:
     class: AppBundle\Services\ReviewService
     arguments:
       - "@review.repository"
-
-  thesis.normalizer:
-    class: AppBundle\Serializer\Normalizer\ThesisNormalizer
-    tags:
-      - { name: serializer.normalizer }
   ##################################
   ## RESERVATIONS
   reservation.repository:

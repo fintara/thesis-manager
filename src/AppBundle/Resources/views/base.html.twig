@@ -37,6 +37,28 @@
                                     <li class="nav-item {% if route == 'app_topics_get' %}active{% endif %}">
                                         <a class="nav-link" href="{{ url('app_topics_get') }}">Topics</a>
                                     </li>
+                                    {% if app.user.theses.count == 1 %}
+                                    <li class="nav-item {% if route == 'app_topics_get' %}active{% endif %}">
+                                        <a class="nav-link" href="{{ url('app_thesis_get', {thesis: app.user.theses.first.id}) }}">Thesis</a>
+                                    </li>
+                                    {% elseif app.user.theses.count > 1 %}
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#"
+                                           id="responsiveNavbarDropdown" data-toggle="dropdown" aria-haspopup="true"
+                                           aria-expanded="false">
+                                            Theses
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right"
+                                             aria-labelledby="responsiveNavbarDropdown">
+                                            {% for thesis in app.user.theses %}
+                                            <a class="dropdown-item" href="{{ url('app_thesis_get', {thesis: thesis.id}) }}">
+                                                {{ thesis.title }}
+                                            </a>
+                                            {% endfor %}
+                                        </div>
+                                    </li>
+                                    {% endif %}
+
                                 {% endif %}
                             </ul>
 
@@ -135,6 +157,7 @@
         <script>
             $(function() {
                 $('.dropdown-toggle').dropdown();
+                $('[data-toggle="tooltip"]').tooltip();
             });
         </script>
         {% block javascripts %}{% endblock %}

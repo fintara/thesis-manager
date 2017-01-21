@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Theses;
 
 use AppBundle\Entity\Review;
 use AppBundle\Entity\Thesis;
@@ -16,28 +16,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class ThesisController extends Controller
+class ReviewController extends Controller
 {
-    public function getThesesAction(Request $request, string $type)
-    {
-        if ($type === null || $type === 'all') {
-            $theses = $this->get('thesis.repository')->findAll();
-        } elseif ($type === 'to-review') {
-            $theses = $this->get('thesis.repository')->findAllToReviewBy($this->getUser());
-        }
-
-        return $this->render('@App/thesis/index.html.twig', [
-            'theses' => $theses,
-        ]);
-    }
-
-    public function getThesisAction(Request $request, Thesis $thesis)
-    {
-        return $this->render('@App/thesis/details.html.twig', [
-            'thesis' => $thesis,
-        ]);
-    }
-
     public function newReviewAction(Request $request, Thesis $thesis)
     {
         $model = new ReviewModel();

@@ -9,9 +9,11 @@
             <div class="box-body">
 
                 <div class="clearfix theses-list--panel">
-                    {% if app.user.canReview(thesis) %}
+                    {% if is_granted('ROLE_TEACHER') and app.user.canReview(thesis) %}
                     <a href="{{ url('app_thesis_review_new', { thesis: thesis.id }) }}" class="btn btn-primary">Submit Review</a>
                     {% endif %}
+
+                    <a href="{{ url('app_thesis_drafts_get', { thesis: thesis.id }) }}" class="btn btn-primary">Drafts</a>
                 </div><!-- /theses-list--panel -->
 
                 {% set studentsNames = [] %}
