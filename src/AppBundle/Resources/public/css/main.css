@@ -19,20 +19,44 @@ td.nowrap {
     white-space :nowrap;
 }
 
+.boxes .box {
+    margin-top: 0;
+    padding-bottom: 0;
+    box-shadow: 0;
+}
+
+.boxes .box:first-child {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-top: 3em;
+}
+
+.boxes .box:last-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding-bottom: 0.5em;
+    box-shadow: 0 12px 12px -10px rgba(0,0,0,.3);
+}
+
 .box {
     background: #b8b8b8;
+    border: 1px solid #b8b8b8;
+    box-shadow: 0 12px 12px -10px rgba(0,0,0,.3);
     padding-bottom: 0.5em;
     border-radius: 4px;
     margin-top: 3em;
 }
 
 .box > .box-header {
-    padding: 1em 2em;
+    padding: 0.5em 1em;
 }
 
-.box > .box-header h2 {
-    margin: 0;
-}
+.box > .box-header h1,
+.box > .box-header h2,
+.box > .box-header h3,
+.box > .box-header h4,
+.box > .box-header h5,
+.box > .box-header h6 { margin: 0; }
 
 .box > .box-body {
     background: #fff;

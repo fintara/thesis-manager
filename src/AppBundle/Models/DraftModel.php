@@ -1,0 +1,30 @@
+<?php
+
+namespace AppBundle\Models;
+
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
+
+class DraftModel
+{
+
+    /**
+     * @var UploadedFile
+     *
+     * @Assert\NotNull()
+     * @Assert\File(maxSize="51200000")
+     */
+    public $file;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     */
+    public $comment;
+
+    public $thesis;
+    public $student;
+
+}
