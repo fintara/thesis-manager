@@ -52,7 +52,7 @@ class Review
 
     /**
      * @var Thesis
-     * @ORM\ManyToOne(targetEntity="Thesis")
+     * @ORM\ManyToOne(targetEntity="Thesis", inversedBy="reviews")
      * @ORM\JoinColumn(name="thesis_id", referencedColumnName="id")
      */
     private $thesis;

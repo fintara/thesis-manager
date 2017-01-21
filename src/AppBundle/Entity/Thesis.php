@@ -55,14 +55,14 @@ class Thesis
     /**
      * @var Review[]|ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Review")
+     * @ORM\OneToMany(targetEntity="Review", mappedBy="thesis")
      */
     private $reviews;
 
     /**
      * @var Worker[]|ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Worker")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Worker")
      */
     private $reviewers;
 
