@@ -18,9 +18,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ThesisController extends Controller
 {
-    public function getThesesAction(Request $request)
+    public function getThesesAction(Request $request, string $type)
     {
-        $theses = $this->get('thesis.repository')->findAll();
+        if ($type === null || $type === 'all') {
+            $theses = $this->get('thesis.repository')->findAll();
+        } elseif ($type === 'to-review') {
+            $theses = $this->get('thesis.repository')->findAllToReviewBy($this->getUser());
+        }
 
         return $this->render('@App/thesis/index.html.twig', [
             'theses' => $theses,

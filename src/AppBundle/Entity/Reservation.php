@@ -41,14 +41,14 @@ class Reservation
     /**
      * @var Topic
      * @ORM\ManyToOne(targetEntity="Topic", inversedBy="reservations")
-     * @ORM\JoinColumn(name="topic_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="topic_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $topic;
 
     /**
      * @var Student
      * @ORM\ManyToOne(targetEntity="Student", inversedBy="reservations")
-     * @ORM\JoinColumn(name="student_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="student_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $student;
 

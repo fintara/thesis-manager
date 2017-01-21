@@ -53,14 +53,14 @@ class Review
     /**
      * @var Thesis
      * @ORM\ManyToOne(targetEntity="Thesis", inversedBy="reviews")
-     * @ORM\JoinColumn(name="thesis_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="thesis_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $thesis;
 
     /**
      * @var Worker
      * @ORM\ManyToOne(targetEntity="Worker")
-     * @ORM\JoinColumn(name="reviewer_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="reviewer_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $reviewer;
 

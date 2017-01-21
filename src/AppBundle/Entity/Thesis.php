@@ -35,7 +35,7 @@ class Thesis
      * @var Topic
      *
      * @ORM\ManyToOne(targetEntity="Topic")
-     * @ORM\JoinColumn(name="topic_id",referencedColumnName="id")
+     * @ORM\JoinColumn(name="topic_id",referencedColumnName="id", onDelete="CASCADE")
      */
     private $topic;
 

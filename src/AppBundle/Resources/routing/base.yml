@@ -35,8 +35,10 @@ app_topics_reserve:
 #  condition: "request.isXmlHttpRequest()"
 
 app_theses_get:
-  path: /theses
+  path: /theses/{type}
   defaults: { _controller: AppBundle:Thesis:getTheses }
+  requirements:
+    type: all|to-review
   methods: [GET]
 
 app_thesis_get:
