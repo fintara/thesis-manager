@@ -11,9 +11,9 @@ body {
     color: #0275d8;
 }
 
-.center {
-    text-align: center;
-}
+.center { text-align: center; }
+.right { text-align: right; }
+.mg-bottom { margin-bottom: 1em; }
 
 td.nowrap {
     white-space :nowrap;
@@ -65,7 +65,9 @@ td.nowrap {
     color: #009d00;
 }
 
-
+.theses-list .theses-list--panel {
+    margin-bottom: 1em;
+}
 
 .thead-default th {
     text-align: center;

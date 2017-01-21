@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 use AppBundle\Entity\Thesis;
+use AppBundle\Entity\Worker;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -21,5 +22,23 @@ class ThesisRepository extends EntityRepository
         }
 
         return $thesis;
+    }
+
+    public function findAllToReviewBy(Worker $worker)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery(
+                'SELECT th, t, s 
+FROM AppBundle:Thesis th
+INNER JOIN th.topic t 
+INNER JOIN t.supervisor sv
+INNER JOIN th.reviewers r
+INNER JOIN th.students s
+WHERE r = :worker'
+            );
+
+        $query->setParameter('worker', $worker);
+
+        return $query->getResult();
     }
 }

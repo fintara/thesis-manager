@@ -2,15 +2,84 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Review;
 use AppBundle\Entity\Thesis;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Worker;
+use AppBundle\Models\ReviewModel;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ThesisController extends Controller
 {
+    public function getThesesAction(Request $request, string $type)
+    {
+        if ($type === null || $type === 'all') {
+            $theses = $this->get('thesis.repository')->findAll();
+        } elseif ($type === 'to-review') {
+            $theses = $this->get('thesis.repository')->findAllToReviewBy($this->getUser());
+        }
+
+        return $this->render('@App/thesis/index.html.twig', [
+            'theses' => $theses,
+        ]);
+    }
+
+    public function getThesisAction(Request $request, Thesis $thesis)
+    {
+        return $this->render('@App/thesis/details.html.twig', [
+            'thesis' => $thesis,
+        ]);
+    }
+
+    public function newReviewAction(Request $request, Thesis $thesis)
+    {
+        $model = new ReviewModel();
+        $model->reviewer = $this->getUser();
+
+        $errors = [];
+
+        /** @var Form $form */
+        $form = $this->createFormBuilder($model)
+            ->add('title', TextType::class)
+            ->add('file', FileType::class)
+            ->add('grade', ChoiceType::class, [
+                'choices' => [
+                    '2.0' => 2.0,
+                    '3.0' => 3.0,
+                    '3.5' => 3.5,
+                    '4.0' => 4.0,
+                    '4.5' => 4.5,
+                    '5.0' => 5.0,
+                    '5.5' => 5.5,
+                ],
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $review = $this->get('review.service')->create($model, false);
+            $review = $this->get('review.service')->assign($review, $thesis);
+            $this->get('review.repository')->save($review);
+
+            $this->addFlash('success', 'Review was submitted successfully');
+
+            return $this->redirectToRoute('app_thesis_get', ['thesis' => $thesis->getId()]);
+        }
+
+        return $this->render('@App/thesis_review/submit.html.twig', [
+            'thesis' => $thesis,
+            'form'   => $form->createView(),
+        ]);
+    }
+
     public function getChooseReviewersAction(Request $request)
     {
         return $this->render('@App/thesis_reviewers/index.html.twig');

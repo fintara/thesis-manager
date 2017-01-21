@@ -136,7 +136,10 @@ implements OrderedFixtureInterface, ContainerAwareInterface
         $worker->firstName = $firstName;
         $worker->lastName = $lastName;
         $worker = $this->userService->create($worker);
-        $worker->addRole('ROLE_DEAN');
+
+        foreach ($roles as $role) {
+            $worker->addRole($role);
+        }
 
         $this->om->persist($worker);
 

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Review
@@ -51,17 +52,22 @@ class Review
 
     /**
      * @var Thesis
-     * @ORM\ManyToOne(targetEntity="Thesis")
-     * @ORM\JoinColumn(name="thesis_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Thesis", inversedBy="reviews")
+     * @ORM\JoinColumn(name="thesis_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $thesis;
 
     /**
      * @var Worker
      * @ORM\ManyToOne(targetEntity="Worker")
-     * @ORM\JoinColumn(name="reviewer_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="reviewer_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $reviewer;
+
+    /**
+     * @var UploadedFile
+     */
+    private $file;
     /**
      * Get id
      *
@@ -176,5 +182,47 @@ class Review
     {
         return $this->reviewer;
     }
+
+    /**
+     * @param Worker $reviewer
+     */
+    public function setReviewer(Worker $reviewer)
+    {
+        $this->reviewer = $reviewer;
+    }
+
+    /**
+     * @return Thesis
+     */
+    public function getThesis(): Thesis
+    {
+        return $this->thesis;
+    }
+
+    /**
+     * @param Thesis $thesis
+     */
+    public function setThesis(Thesis $thesis)
+    {
+        $this->thesis = $thesis;
+    }
+
+    /**
+     * @return UploadedFile
+     */
+    public function getFile(): UploadedFile
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file)
+    {
+        $this->file = $file;
+    }
+
+
 }
 

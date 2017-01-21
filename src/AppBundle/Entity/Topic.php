@@ -43,7 +43,7 @@ class Topic
      * @var Worker
      *
      * @ORM\ManyToOne(targetEntity="Worker", inversedBy="topics")
-     * @ORM\JoinColumn(name="supervisor_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="supervisor_id", referencedColumnName="id", onDelete="CASCADE")
      *
      */
     private $supervisor;
