@@ -33,20 +33,45 @@
                                 <div class="col-md-3 right">File</div>
                                 <div class="col-md-9">
                                     {{ form_widget(form.file) }}
+
+                                    {% if form.file.vars.errors %}
+                                        <div class="form-control-feedback">
+                                            {{ form.file.vars.errors }}
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
 
-                            <div class="row mg-bottom">
-                                <div class="col-md-3 right">Title</div>
-                                <div class="col-md-9">
-                                    {{ form_widget(form.title) }}
+                            <div class="form-group">
+                                <div class="row mg-bottom">
+                                    <div class="col-md-3 right">Title</div>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control"
+                                               value="{{ form.title.vars.value }}"
+                                               id="{{ form.title.vars.id }}"
+                                               name="{{ form.title.vars.full_name }}" />
+
+                                        {% if form.title.vars.errors %}
+                                            <div class="form-control-feedback">
+                                                {{ form.title.vars.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-3 right">Grade</div>
-                                <div class="col-md-9">
-                                    {{ form_widget(form.grade) }}
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-3 right">Grade</div>
+                                    <div class="col-md-9">
+                                        {{ form_widget(form.grade) }}
+
+                                        {% if form.grade.vars.errors %}
+                                            <div class="form-control-feedback">
+                                                {{ form.grade.vars.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
 

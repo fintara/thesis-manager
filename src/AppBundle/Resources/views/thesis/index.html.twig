@@ -5,7 +5,11 @@
     <div class="container" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 
         <div class="box theses-list" id="theses-list">
-            <div class="box-header"><h2>Theses</h2></div>
+            <div class="box-header">
+                <h2>
+                    Theses {{ app.request.get('type') == 'to-review' ? 'to review' : '' }}
+                </h2>
+            </div>
             <div class="box-body">
 
                 <table class="table table-bordered table-hover table-sm theses-list--table">

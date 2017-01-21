@@ -65,6 +65,8 @@ services:
     class: AppBundle\Repository\ReviewRepository
     factory: ["@doctrine", getRepository]
     arguments: [ "AppBundle:Review" ]
+    calls:
+        - [setDirectory, ["%reviews_directory%"]]
 
   review.service:
     class: AppBundle\Services\ReviewService

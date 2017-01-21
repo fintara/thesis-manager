@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 use AppBundle\Entity\Review;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping;
 
 /**
  * ReviewRepository
@@ -12,6 +13,8 @@ use Doctrine\ORM\EntityRepository;
  */
 class ReviewRepository extends EntityRepository
 {
+    private $directory;
+
     public function save(Review $review, bool $flush = true): Review
     {
         if ($review->getFile() !== null) {
@@ -27,8 +30,22 @@ class ReviewRepository extends EntityRepository
         return $review;
     }
 
+    public function setDirectory($directory)
+    {
+        $this->directory = $directory;
+    }
+
     private function upload(Review $review)
     {
         $file = $review->getFile();
+
+        $filename = md5(uniqid()).'.'.$file->guessExtension();
+
+        $file->move(
+            $this->directory,
+            $filename
+        );
+
+        $review->setFilename($filename);
     }
 }
