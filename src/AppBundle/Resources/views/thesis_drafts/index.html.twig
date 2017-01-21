@@ -15,7 +15,7 @@
                     <a href="{{ url('app_thesis_get', { thesis: thesis.id }) }}" class="btn btn-primary">
                         <span class="fa fa-arrow-left"></span> Back
                     </a>
-                    {% if thesis.students.contains(app.user) %}
+                    {% if is_granted('ROLE_STUDENT') and thesis.students.contains(app.user) %}
                     <span {% if not app.user.canUploadDraft(thesis) %}data-toggle="tooltip" title="You can’t upload a new draft yet. Wait until {{ nextUpload | date }}!"{% endif %}>
                         <a href="{{ url('app_thesis_draft_add', { thesis: thesis.id }) }}"
                            class="btn btn-primary {% if not app.user.canUploadDraft(thesis) %}disabled{% endif %}">
@@ -29,6 +29,8 @@
                     <div class="col-md-8 offset-md-2">
                         {% for draft in drafts %}
                             {% include '@App/thesis_drafts/_draft.html.twig' %}
+                        {% else %}
+                            <div class="center mg-top" style="font-style: italic">No drafts...</div>
                         {% endfor %}
                     </div>
                 </div>

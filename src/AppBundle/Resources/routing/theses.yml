@@ -2,7 +2,7 @@ app_theses_get:
   path: /{type}
   defaults: { _controller: AppBundle:Theses/Thesis:getTheses }
   requirements:
-    type: all|to-review
+    type: all|to-review|supervised
   methods: [GET]
 
 app_thesis_get:

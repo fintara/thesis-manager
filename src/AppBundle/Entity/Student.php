@@ -21,8 +21,7 @@ class Student extends User
 
     /**
      * @var Thesis[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Thesis", inversedBy="students")
-     * @ORM\JoinTable(name="students_theses")
+     * @ORM\ManyToMany(targetEntity="Thesis", mappedBy="students")
      */
     private $theses;
 

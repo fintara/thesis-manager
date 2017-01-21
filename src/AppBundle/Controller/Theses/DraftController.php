@@ -8,6 +8,7 @@ use AppBundle\Entity\Thesis;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Worker;
 use AppBundle\Models\DraftModel;
+use AppBundle\Models\FeedbackModel;
 use AppBundle\Models\ReviewModel;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -29,7 +30,7 @@ class DraftController extends Controller
 
         $nextUpload = null;
 
-        if ($lastDraft && !$this->getUser()->canUploadDraft($thesis)) {
+        if ($this->isGranted('ROLE_STUDENT') && $lastDraft && !$this->getUser()->canUploadDraft($thesis)) {
 //            $diff = $lastDraft->getCreatedAt()->diff(new \DateTime());
             $nextUpload = $lastDraft->getCreatedAt();
             $nextUpload->modify('+ 1 day');
@@ -70,6 +71,43 @@ class DraftController extends Controller
 
         return $this->render('@App/thesis_drafts/submit.html.twig', [
             'thesis' => $thesis,
+            'form'   => $form->createView(),
+        ]);
+    }
+
+    public function getNewFeedbackAction(Request $request, Thesis $thesis, Draft $draft)
+    {
+        if ($draft->getThesis() != $thesis) {
+            throw $this->createAccessDeniedException();
+        } elseif ($this->isGranted('ROLE_TEACHER') && $thesis->getSupervisor() != $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $model = new FeedbackModel();
+        $model->draft = $draft;
+        $model->supervisor = $this->getUser();
+
+        /** @var Form $form */
+        $form = $this->createFormBuilder($model)
+            ->add('comment', TextareaType::class)
+            ->add('file', FileType::class, [
+                'required' => false,
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $feedback = $this->get('feedback.service')->create($model);
+
+            $this->addFlash('success', 'Feedback was added successfully');
+
+            return $this->redirectToRoute('app_thesis_drafts_get', ['thesis' => $thesis->getId()]);
+        }
+
+        return $this->render('@App/thesis_drafts/submit_feedback.html.twig', [
+            'thesis' => $thesis,
+            'draft'  => $draft,
             'form'   => $form->createView(),
         ]);
     }

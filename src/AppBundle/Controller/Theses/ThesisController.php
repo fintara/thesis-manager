@@ -24,6 +24,8 @@ class ThesisController extends Controller
             $theses = $this->get('thesis.repository')->findAll();
         } elseif ($type === 'to-review') {
             $theses = $this->get('thesis.repository')->findAllToReviewBy($this->getUser());
+        } elseif ($type === 'supervised') {
+            $theses = $this->get('thesis.repository')->findAllSupervisedBy($this->getUser());
         }
 
         return $this->render('@App/thesis/index.html.twig', [

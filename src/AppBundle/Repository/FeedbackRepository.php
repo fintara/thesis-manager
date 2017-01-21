@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\Feedback;
 
 /**
  * FeedbackRepository
@@ -10,4 +11,39 @@ namespace AppBundle\Repository;
  */
 class FeedbackRepository extends \Doctrine\ORM\EntityRepository
 {
+    private $directory;
+
+    public function save(Feedback $feedback, bool $flush = true): Feedback
+    {
+        if ($feedback->getFile() !== null) {
+            $this->upload($feedback);
+        }
+
+        $this->getEntityManager()->persist($feedback);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+
+        return $feedback;
+    }
+
+    public function setDirectory($directory)
+    {
+        $this->directory = $directory;
+    }
+
+    private function upload(Feedback &$feedback)
+    {
+        $file = $feedback->getFile();
+
+        $filename = md5(uniqid()).'.'.$file->guessExtension();
+
+        $file->move(
+            $this->directory,
+            $filename
+        );
+
+        $feedback->setFilename($filename);
+    }
 }

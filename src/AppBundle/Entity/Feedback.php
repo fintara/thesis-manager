@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Feedback
@@ -37,18 +38,29 @@ class Feedback
     private $supervisor;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
      * @var Draft
-     * @ORM\OneToOne(targetEntity="Draft")
+     * @ORM\OneToOne(targetEntity="Draft", inversedBy="feedback")
      * @ORM\JoinColumn(name="draft_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $draft;
     /**
      * @var string
      *
-     * @ORM\Column(name="filename", type="string", length=100)
+     * @ORM\Column(name="filename", type="string", length=100, nullable=true)
      */
     private $filename;
 
+    /**
+     * @var UploadedFile|null
+     */
+    private $file;
 
     /**
      * Get id
@@ -106,6 +118,70 @@ class Feedback
     public function getFilename()
     {
         return $this->filename;
+    }
+
+    /**
+     * @return null|UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param null|UploadedFile $file
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * @param Worker $supervisor
+     */
+    public function setSupervisor(Worker $supervisor)
+    {
+        $this->supervisor = $supervisor;
+    }
+
+    /**
+     * @return Worker
+     */
+    public function getSupervisor(): Worker
+    {
+        return $this->supervisor;
+    }
+
+    /**
+     * @param Draft $draft
+     */
+    public function setDraft(Draft $draft)
+    {
+        $this->draft = $draft;
+    }
+
+    /**
+     * @return Draft
+     */
+    public function getDraft(): Draft
+    {
+        return $this->draft;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt(\DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
     }
 }
 

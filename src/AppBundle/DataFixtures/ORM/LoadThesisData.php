@@ -9,6 +9,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 
+use AppBundle\Entity\Reservation;
 use AppBundle\Entity\Student;
 use AppBundle\Entity\Thesis;
 use AppBundle\Entity\Topic;
@@ -31,6 +32,7 @@ implements OrderedFixtureInterface, ContainerAwareInterface
     {
         $this->om = $manager;
 
+        // status | topic | student
         $theses = [
             [Thesis::STATUS_DRAFT, 1, 0],
             [Thesis::STATUS_FINAL, 0, 1],
@@ -41,6 +43,7 @@ implements OrderedFixtureInterface, ContainerAwareInterface
         ];
 
         for($i = 0; $i < count($theses); $i++) {
+            $reservation = $this->createReservation($theses[$i]);
             $thesis = $this->createThesis($theses[$i]);
         }
 
@@ -68,6 +71,32 @@ implements OrderedFixtureInterface, ContainerAwareInterface
         $this->om->persist($student);
 
         return $t;
+    }
+
+    protected function createReservation(array $data): Reservation
+    {
+        $r = new Reservation();
+
+        /** @var Topic $topic */
+        $topic = $this->getReference('topic-'.$data[1]);
+
+        /** @var Student $student */
+        $student = $this->getReference('student-'.$data[2]);
+
+        $status = $data[0];
+
+        if ($status === Thesis::STATUS_DRAFT || true) {
+            $status = Reservation::STATUS_APPROVED;
+        }
+
+        $r->setStatus($status);
+        $r->setStudent($student);
+        $r->setTopic($topic);
+        $r->setCreatedAt(new \DateTime());
+
+        $this->om->persist($r);
+
+        return $r;
     }
 
     public function getOrder()

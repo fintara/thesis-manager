@@ -78,6 +78,18 @@ services:
     arguments:
       - "@draft.repository"
 
+  feedback.repository:
+    class: AppBundle\Repository\FeedbackRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [ "AppBundle:Feedback" ]
+    calls:
+        - [setDirectory, ["%feedbacks_directory%"]]
+
+  feedback.service:
+    class: AppBundle\Services\FeedbackService
+    arguments:
+      - "@feedback.repository"
+
   review.repository:
     class: AppBundle\Repository\ReviewRepository
     factory: ["@doctrine", getRepository]

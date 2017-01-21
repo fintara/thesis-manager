@@ -1,0 +1,66 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block content %}
+
+    <div class="container" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="box theses-list" id="theses-list">
+                    <div class="box-header"><h2>Submit feedback for "{{ thesis.title }}" draft #{{ draft.version }}</h2></div>
+                    <div class="box-body">
+                        <div class="clearfix theses-list--panel">
+                            <a href="{{ url('app_thesis_drafts_get', { thesis: thesis.id }) }}" class="btn btn-primary">
+                                <span class="fa fa-arrow-left"></span> Back
+                            </a>
+                        </div><!-- /theses-list--panel -->
+
+                        <form enctype="multipart/form-data" action="{{ url('app_thesis_draft_feedback_add', { thesis: thesis.id, draft: draft.id }) }}" method="post">
+
+                            <div class="row mg-bottom">
+                                <div class="col-md-3 right">File</div>
+                                <div class="col-md-9">
+                                    {{ form_widget(form.file) }}
+
+                                    {% if form.file.vars.errors %}
+                                        <div class="form-control-feedback">
+                                            {{ form.file.vars.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row mg-bottom">
+                                    <div class="col-md-3 right">Comment</div>
+                                    <div class="col-md-9">
+                                        <textarea class="form-control"
+                                               id="{{ form.comment.vars.id }}"
+                                               name="{{ form.comment.vars.full_name }}">{{ form.comment.vars.value }}</textarea>
+
+                                        {% if form.comment.vars.errors %}
+                                            <div class="form-control-feedback">
+                                                {{ form.comment.vars.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <div class="center">
+                                {{ form_widget(form._token) }}
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- /container -->
+
+{% endblock %}

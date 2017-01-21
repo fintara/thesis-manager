@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 use AppBundle\Entity\Draft;
 use AppBundle\Entity\Thesis;
+use Doctrine\ORM\NoResultException;
 
 /**
  * DraftRepository
@@ -28,7 +29,11 @@ ORDER BY d.version DESC'
 
         $query->setMaxResults(1);
 
-        return $query->getSingleScalarResult();
+        try {
+            return $query->getSingleScalarResult();
+        } catch (NoResultException $e) {
+            return 0;
+        }
     }
 
     public function findNewest(Thesis $thesis)
