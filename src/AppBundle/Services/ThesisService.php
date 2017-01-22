@@ -23,10 +23,17 @@ class ThesisService
         $this->repo = $repository;
     }
 
-    public function assignReviewer(Thesis $thesis, Worker $reviewer)
+    public function assignReviewer(Thesis $thesis, Worker $reviewer, bool $flush = true)
     {
+        if ($thesis->getReviewers()->contains($reviewer)) {
+            throw new \Exception('Reviewer already assigned');
+        }
+
         $thesis->addReviewer($reviewer);
-        $this->repo->save($thesis);
+
+        if ($flush) {
+            $this->repo->save($thesis);
+        }
     }
 
 
