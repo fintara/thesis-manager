@@ -15,6 +15,7 @@ body {
 .right { text-align: right; }
 .mg-top { margin-top: 1em; }
 .mg-bottom { margin-bottom: 1em; }
+.red { color: red; }
 
 td.nowrap {
     white-space :nowrap;
@@ -81,15 +82,15 @@ td.nowrap {
     font-weight: bold;
 }
 
-.topics-list--table .action span.applied {
+.action span.applied {
     color: #000;
 }
 
-.topics-list--table .action span.rejected {
+.action span.rejected {
     color: rgba(170, 0, 0, 0.6);
 }
 
-.topics-list--table .action span.approved {
+.action span.approved {
     color: #009d00;
 }
 

@@ -67,8 +67,8 @@ class ReviewController extends Controller
 
     public function ajaxGetChooseReviewersAction(Request $request)
     {
-        $reviewers = $this->get('user.repository')->findByType(Worker::TYPE);
-        $theses = $this->get('thesis.repository')->findByStatus(Thesis::STATUS_FINAL);
+        $reviewers  = $this->get('user.repository')->findByType(Worker::TYPE);
+        $theses     = $this->get('thesis.repository')->findByStatus(Thesis::STATUS_FINAL);
 
         return new JsonResponse([
             'reviewers' => [
@@ -89,6 +89,8 @@ class ReviewController extends Controller
     public function postChooseReviewersAction(Request $request)
     {
         $data = $request->get('data');
+        $savedIds   = [];
+        $badIds     = [];
 
         $error = function($msg) {
             return ['message' => $msg];
@@ -99,11 +101,13 @@ class ReviewController extends Controller
         }
 
         foreach($data as $pair) {
+            $id = (int) $pair['thesis'];
+
             /** @var Thesis $thesis */
-            $thesis = $this->get('thesis.repository')->find($pair['thesis']);
+            $thesis = $this->get('thesis.repository')->find($id);
 
             if (!$thesis) {
-                return new JsonResponse($error('No thesis #'.$pair['thesis']), 403);
+                return new JsonResponse($error('No thesis #'.$id), 403);
             }
 
             /** @var User|Worker $reviewer */
@@ -113,12 +117,22 @@ class ReviewController extends Controller
                 return new JsonResponse($error('No reviewer #'.$pair['reviewer']), 403);
             }
 
-            $this->get('thesis.service')->assignReviewer($thesis, $thesis->getTopic()->getSupervisor());
-            $this->get('thesis.service')->assignReviewer($thesis, $reviewer);
+
+            try {
+                $this->get('thesis.service')->assignReviewer($thesis, $thesis->getSupervisor(), false);
+                $this->get('thesis.service')->assignReviewer($thesis, $reviewer, false);
+                $thesis->setStatus(Thesis::STATUS_REVIEWING);
+                $this->get('thesis.repository')->save($thesis);
+                $savedIds[] = $id;
+            } catch (\Exception $e) {
+                $badIds[] = $id;
+            }
         }
 
         return new JsonResponse([
-            'message' => 'ok'
+            'message' => count($badIds) === 0 ? 'ok' : 'semi',
+            'savedIds'  => $savedIds,
+            'badIds'  => $badIds,
         ]);
     }
 }
