@@ -13,8 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Thesis
 {
-    const STATUS_DRAFT = 'draft';
-    const STATUS_FINAL = 'final';
+    const STATUS_DRAFT      = 'draft';
+    const STATUS_FINAL      = 'final';
+    const STATUS_REVIEWING  = 'reviewing';
     /**
      * @var int
      *
@@ -74,6 +75,16 @@ class Thesis
      * @ORM\JoinTable(name="thesis_reviewers")
      */
     private $reviewers;
+
+
+    public static function getStatuses()
+    {
+        return [
+            self::STATUS_DRAFT,
+            self::STATUS_FINAL,
+            self::STATUS_REVIEWING,
+        ];
+    }
 
     public function __construct()
     {

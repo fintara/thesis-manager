@@ -36,22 +36,26 @@
                         <td>{{ '{{ thesis.title }}' }}</td>
                         <td class="nowrap">{{ '{{ thesis.students[0].fullName }}' }}</td>
                         <td class="nowrap">{{ '{{ thesis.supervisor.fullName }}' }}</td>
-                        <td>
+                        <td class="nowrap">
                             <span v-if="!thesis.$status || thesis.$status == 'editing'">
-                                <select v-model="theses[idx].reviewer">
+                                <select v-model="theses[idx].reviewer" class="form-control" style="width:200px">
                                     <option value="0">(select)</option>
                                     <option v-for="reviewer in getReviewersExcept(thesis.supervisor.id)" v-bind:value="reviewer.id">
                                         {{ '{{ reviewer.fullName }}' }}
                                     </option>
                                 </select>
                             </span>
-                            <span v-if="thesis.$status == 'saved'">
+                            <span v-if="thesis.$status == 'applied' || thesis.$status == 'saved'">
                                 {{ '{{ reviewersById[thesis.reviewer].fullName }}' }}
                             </span>
+                            <span v-if="thesis.$error == true">
+                                <span class="fa fa-exclamation-triangle red"></span>
+                            </span>
                         </td>
-                        <td>
-                            <button v-if="!thesis.$status || thesis.$status == 'editing'" @click="saveThesis(idx)" class="btn btn-link" type="button">Save</button>
-                            <button v-if="thesis.$status == 'saved'" @click="editThesis(idx)" class="btn btn-link" type="button">Edit</button>
+                        <td class="action center">
+                            <button v-if="!thesis.$status || thesis.$status == 'editing'" @click="applyThesis(idx)" class="btn btn-link" type="button">Apply</button>
+                            <button v-if="thesis.$status == 'applied'" @click="editThesis(idx)" class="btn btn-link" type="button">Edit</button>
+                            <span v-if="thesis.$status == 'saved'" class="approved">Saved</span>
                         </td>
                     </tr>
                     </tbody>
@@ -101,10 +105,11 @@
             methods: {
                 getReviewersExcept: function(id) {
                     return this.reviewers.filter(function(r) {
-                        return r.id != id;
+//                        return r.id != id;
+                        return true;
                     });
                 },
-                saveThesis: function(idx) {
+                applyThesis: function(idx) {
                     var thesis = this.theses[idx];
 
                     if (thesis.reviewer == 0) {
@@ -112,24 +117,22 @@
                         return;
                     }
 
-                    thesis.$status = 'saved';
+                    thesis.$status = 'applied';
                     Vue.set(this.theses, idx, thesis);
                 },
                 editThesis: function(idx) {
                     var thesis = this.theses[idx];
+                    thesis.$error = false;
                     thesis.$status = 'editing';
                     Vue.set(this.theses, idx, thesis);
                 },
                 saveAll: function(event) {
-                    this.saving = true;
-
                     var data = [];
                     for (var i = 0; i < this.theses.length; i++) {
                         var t = this.theses[i];
 
-                        if (t.$status == undefined || t.$status != 'saved') {
-                            alert('Apply all reviewers!');
-                            return;
+                        if (t.$status == undefined || t.$status != 'applied') {
+                            continue;
                         }
 
                         data.push({
@@ -138,8 +141,27 @@
                         });
                     }
 
-                    $.post('/theses/reviewers', { 'data': data }, function(res) {
+                    if (data.length === 0) {
+                        alert('Select at least one reviewer');
+                        return;
+                    }
+
+                    this.saving = true;
+
+                    $.post('/theses/reviewers/', { 'data': data }, function(res) {
                         this.saving = false;
+
+                        for (var i = 0; i < this.theses.length; i++) {
+                            var t = this.theses[i];
+
+                            if (res.savedIds.indexOf(t.id) > -1) {
+                                t.$status = 'saved';
+                                Vue.set(this.theses, i, t);
+                            } else if (res.badIds.indexOf(t.id) > -1) {
+                                t.$error = true;
+                                Vue.set(this.theses, i, t);
+                            }
+                        }
 
                         if (res.message != 'ok') {
                             alert(res.message);
