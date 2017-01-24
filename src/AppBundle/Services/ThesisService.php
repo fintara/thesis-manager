@@ -11,14 +11,14 @@ namespace AppBundle\Services;
 
 use AppBundle\Entity\Thesis;
 use AppBundle\Entity\Worker;
-use AppBundle\Repository\ThesisRepository;
+use AppBundle\Repository\ThesisRepositoryInterface;
 
 class ThesisService
 {
-    /** @var ThesisRepository  */
+    /** @var ThesisRepositoryInterface  */
     private $repo;
 
-    public function __construct(ThesisRepository $repository)
+    public function __construct(ThesisRepositoryInterface $repository)
     {
         $this->repo = $repository;
     }
