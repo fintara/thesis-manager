@@ -13,15 +13,16 @@ use AppBundle\Entity\Reservation;
 use AppBundle\Entity\Student;
 use AppBundle\Entity\Topic;
 use AppBundle\Exceptions\TopicReservedException;
-use AppBundle\Repository\ReservationRepository;
-use AppBundle\Repository\TopicRepository;
+use AppBundle\Repository\ReservationRepositoryInterface;
+use AppBundle\Repository\TopicRepositoryInterface;
 
 class TopicService
 {
     private $topicRepo;
     private $reservationRepo;
 
-    public function __construct(TopicRepository $topicRepository, ReservationRepository $reservationRepository)
+    public function __construct(TopicRepositoryInterface $topicRepository,
+                                ReservationRepositoryInterface $reservationRepository)
     {
         $this->topicRepo = $topicRepository;
         $this->reservationRepo = $reservationRepository;
