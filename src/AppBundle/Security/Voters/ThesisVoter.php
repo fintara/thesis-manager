@@ -93,7 +93,6 @@ class ThesisVoter extends Voter
         }
 
         $diff = $lastDraft->getCreatedAt()->diff(new \DateTime());
-        var_dump($diff->d + $diff->m + $diff->y > 0);
 
         return $diff->d + $diff->m + $diff->y > 0;
     }

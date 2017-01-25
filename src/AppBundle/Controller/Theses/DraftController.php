@@ -19,7 +19,6 @@ class DraftController extends Controller
     {
         $this->denyAccessUnlessGranted(ThesisVoter::VIEW_DRAFTS, $thesis);
 
-        dump($thesis->getDrafts()->count());
 
         $drafts = $this->get('draft.repository')->findNewest($thesis);
         /** @var Draft|null $lastDraft */
@@ -59,9 +58,10 @@ class DraftController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $draft = $this->get('draft.service')->create($model);
 
-            $this->addFlash('success', 'Draft was uploaded successfully');
-
-            return $this->redirectToRoute('app_thesis_drafts_get', ['thesis' => $thesis->getId()]);
+            return $this->redirect(
+                $this->generateUrl('app_thesis_drafts_get', ['thesis' => $thesis->getId()])
+                .'?upload_success=1'
+            );
         }
 
         return $this->render('@App/thesis_drafts/submit.html.twig', [
@@ -95,9 +95,10 @@ class DraftController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $feedback = $this->get('feedback.service')->create($model);
 
-            $this->addFlash('success', 'Feedback was added successfully');
-
-            return $this->redirectToRoute('app_thesis_drafts_get', ['thesis' => $thesis->getId()]);
+            return $this->redirect(
+                $this->generateUrl('app_thesis_drafts_get', ['thesis' => $thesis->getId()])
+                .'?feedback_added=1'
+            );
         }
 
         return $this->render('@App/thesis_drafts/submit_feedback.html.twig', [

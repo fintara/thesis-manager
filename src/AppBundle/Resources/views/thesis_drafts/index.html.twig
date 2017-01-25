@@ -19,7 +19,7 @@
                     <span style="display: inline-block;" {% if not is_granted('UPLOAD_DRAFT', thesis) %}data-toggle="tooltip" title="You can’t upload a new draft yet. Wait until {{ nextUpload | date }}!"{% endif %}>
                         <a href="{{ url('app_thesis_draft_add', { thesis: thesis.id }) }}"
                            class="btn btn-primary {% if not is_granted('UPLOAD_DRAFT', thesis) %}disabled{% endif %}">
-                        <span class="fa fa-upload"></span> Upload Draft {{ is_granted('UPLOAD_DRAFT', thesis) ? 1 : 0 }}
+                        <span class="fa fa-upload"></span> Upload Draft
                     </a>
                     </span>
                     {% endif %}
@@ -27,6 +27,18 @@
 
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
+
+                        {% if app.request.get('upload_success', 0) == 1 %}
+                        <div class="alert alert-success mg-top" role="alert">
+                            <strong>Well done!</strong> You successfully uploaded a new draft.
+                        </div>
+                        {% endif %}
+                        {% if app.request.get('feedback_added', 0) == 1 %}
+                        <div class="alert alert-success mg-top" role="alert">
+                            <strong>Well done!</strong> You successfully added a feedback.
+                        </div>
+                        {% endif %}
+
                         {% for draft in drafts %}
                             {% include '@App/thesis_drafts/_draft.html.twig' %}
                         {% else %}

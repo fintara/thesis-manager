@@ -16,6 +16,12 @@
                     <a href="{{ url('app_thesis_drafts_get', { thesis: thesis.id }) }}" class="btn btn-primary">Drafts</a>
                 </div><!-- /theses-list--panel -->
 
+                {% if app.request.get('review_added', 0) == 1 %}
+                    <div class="alert alert-success mg-top" role="alert">
+                        <strong>Well done!</strong> You successfully submitted a review.
+                    </div>
+                {% endif %}
+
                 {% set studentsNames = [] %}
                 {% for student in thesis.students %}
                     {% set studentsNames = studentsNames|merge([student.fullName]) %}

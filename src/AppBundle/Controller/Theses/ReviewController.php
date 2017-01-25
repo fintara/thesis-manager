@@ -49,9 +49,12 @@ class ReviewController extends Controller
             $review = $this->get('review.service')->assign($review, $thesis);
             $this->get('review.repository')->save($review);
 
-            $this->addFlash('success', 'Review was submitted successfully');
+//            $this->addFlash('success', 'Review was submitted successfully');
 
-            return $this->redirectToRoute('app_thesis_get', ['thesis' => $thesis->getId()]);
+            return $this->redirect(
+                $this->generateUrl('app_thesis_get', ['thesis' => $thesis->getId()])
+                .'?review_added=1'
+            );
         }
 
         return $this->render('@App/thesis_review/submit.html.twig', [
