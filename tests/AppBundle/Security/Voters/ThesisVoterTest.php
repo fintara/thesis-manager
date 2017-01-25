@@ -9,6 +9,7 @@
 namespace AppBundle\Security\Voters;
 
 
+use AppBundle\Entity\Draft;
 use AppBundle\Entity\Student;
 use AppBundle\Entity\Thesis;
 use AppBundle\Entity\Topic;
@@ -16,7 +17,6 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\Worker;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Core\Role\RoleInterface;
 
 class ThesisVoterTest extends \PHPUnit_Framework_TestCase
 {
@@ -104,5 +104,71 @@ class ThesisVoterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(VoterInterface::ACCESS_DENIED, $voterOutcome);
     }
 
+    public function testStudentCanUploadDraftOnce()
+    {
+        $student = new Student();
 
+        $token = $this->getTokenMock($student);
+
+        $thesis = new Thesis();
+        $thesis->addStudent($student);
+
+        $draft = new Draft();
+        $draft->setStudent($student);
+        $draft->setCreatedAt(new \DateTime());
+
+        $attributes = [ThesisVoter::UPLOAD_DRAFT];
+
+        $voterOutcome = $this->voter->vote($token, $thesis, $attributes);
+        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $voterOutcome);
+    }
+
+    public function testStudentCanUploadDraftAfter24h()
+    {
+        $student = new Student();
+
+        $token = $this->getTokenMock($student);
+
+        $thesis = new Thesis();
+        $thesis->addStudent($student);
+
+        $draft = new Draft();
+        $draft->setStudent($student);
+        $draft->setCreatedAt(new \DateTime('-2 days'));
+
+        $attributes = [ThesisVoter::UPLOAD_DRAFT];
+
+        $thesis->addDraft($draft);
+
+        $voterOutcome = $this->voter->vote($token, $thesis, $attributes);
+        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $voterOutcome);
+    }
+
+    public function testStudentCannotUploadDraftTwiceIn24h()
+    {
+        $student = new Student();
+
+        $token = $this->getTokenMock($student);
+
+        $thesis = new Thesis();
+        $thesis->addStudent($student);
+
+        $draft = new Draft();
+        $draft->setStudent($student);
+        $draft->setCreatedAt(new \DateTime());
+
+        $attributes = [ThesisVoter::UPLOAD_DRAFT];
+
+        $thesis->addDraft($draft);
+
+        $voterOutcome = $this->voter->vote($token, $thesis, $attributes);
+        $this->assertEquals(VoterInterface::ACCESS_DENIED, $voterOutcome);
+    }
+
+    private function getTokenMock(User $user): TokenInterface
+    {
+        $token = $this->createMock(TokenInterface::class);
+        $token->method('getUser')->willReturn($user);
+        return $token;
+    }
 }
