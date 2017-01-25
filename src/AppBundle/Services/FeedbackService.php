@@ -8,26 +8,18 @@
 
 namespace AppBundle\Services;
 
-
-use AppBundle\Entity\Draft;
 use AppBundle\Entity\Feedback;
-use AppBundle\Entity\Review;
-use AppBundle\Entity\Thesis;
-use AppBundle\Entity\Worker;
-use AppBundle\Models\DraftModel;
 use AppBundle\Models\FeedbackModel;
-use AppBundle\Models\ReviewModel;
-use AppBundle\Repository\DraftRepository;
 use AppBundle\Repository\FeedbackRepository;
-use AppBundle\Repository\ReviewRepository;
-use AppBundle\Repository\ThesisRepository;
+use AppBundle\Repository\FeedbackRepositoryInterface;
+
 
 class FeedbackService
 {
     /** @var FeedbackRepository  */
     private $repo;
 
-    public function __construct(FeedbackRepository $repository)
+    public function __construct(FeedbackRepositoryInterface $repository)
     {
         $this->repo = $repository;
     }

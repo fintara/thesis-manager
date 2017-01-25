@@ -15,13 +15,13 @@ use AppBundle\Exceptions\UnknownUserTypeException;
 
 class UserFactory
 {
-    public function getUser(string $type)
+    public function createUser(string $type)
     {
-        $clazz = $this->getClass($type);
+        $clazz = $this->resolveClass($type);
         return new $clazz();
     }
 
-    public function getClass(string $type)
+    public function resolveClass(string $type)
     {
         if ($type === Student::TYPE) {
             return Student::class;

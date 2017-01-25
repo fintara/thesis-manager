@@ -66,6 +66,12 @@ services:
     tags:
       - { name: serializer.normalizer }
 
+  thesis.voter:
+    class: AppBundle\Security\Voters\ThesisVoter
+    tags:
+      - { name: security.voter }
+    public: false
+
   draft.repository:
     class: AppBundle\Repository\DraftRepository
     factory: ["@doctrine", getRepository]

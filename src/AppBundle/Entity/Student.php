@@ -49,18 +49,4 @@ class Student extends User
     {
         $this->theses->add($thesis);
     }
-
-    public function canUploadDraft(Thesis $thesis): bool
-    {
-        /** @var Draft|null $lastDraft */
-        $lastDraft = $thesis->getDrafts()->last();
-
-        if (!$lastDraft) {
-            return true;
-        }
-
-        $diff = $lastDraft->getCreatedAt()->diff(new \DateTime());
-
-        return $diff->d + $diff->m + $diff->y > 0;
-    }
 }

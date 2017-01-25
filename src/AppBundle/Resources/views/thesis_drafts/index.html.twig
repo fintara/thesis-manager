@@ -15,11 +15,11 @@
                     <a href="{{ url('app_thesis_get', { thesis: thesis.id }) }}" class="btn btn-primary">
                         <span class="fa fa-arrow-left"></span> Back
                     </a>
-                    {% if is_granted('ROLE_STUDENT') and thesis.students.contains(app.user) %}
-                    <span style="display: inline-block;" {% if not app.user.canUploadDraft(thesis) %}data-toggle="tooltip" title="You can’t upload a new draft yet. Wait until {{ nextUpload | date }}!"{% endif %}>
+                    {% if is_granted('ROLE_STUDENT') and is_granted('VIEW_DRAFTS', thesis) %}
+                    <span style="display: inline-block;" {% if not is_granted('UPLOAD_DRAFT', thesis) %}data-toggle="tooltip" title="You can’t upload a new draft yet. Wait until {{ nextUpload | date }}!"{% endif %}>
                         <a href="{{ url('app_thesis_draft_add', { thesis: thesis.id }) }}"
-                           class="btn btn-primary {% if not app.user.canUploadDraft(thesis) %}disabled{% endif %}">
-                        <span class="fa fa-upload"></span> Upload Draft
+                           class="btn btn-primary {% if not is_granted('UPLOAD_DRAFT', thesis) %}disabled{% endif %}">
+                        <span class="fa fa-upload"></span> Upload Draft {{ is_granted('UPLOAD_DRAFT', thesis) ? 1 : 0 }}
                     </a>
                     </span>
                     {% endif %}

@@ -15,30 +15,32 @@ use AppBundle\Exceptions\UnknownUserTypeException;
 
 class UserFactoryTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var UserFactory */
+    private $factory;
+
+    protected function setUp()
+    {
+        $this->factory = new UserFactory();
+    }
+
     public function testStudent()
     {
-        $factory = new UserFactory();
-
-        $obj = $factory->getUser(Student::TYPE);
+        $obj = $this->factory->createUser(Student::TYPE);
 
         $this->assertEquals(Student::TYPE, $obj->getType());
     }
 
     public function testWorker()
     {
-        $factory = new UserFactory();
-
-        $obj = $factory->getUser(Worker::TYPE);
+        $obj = $this->factory->createUser(Worker::TYPE);
 
         $this->assertEquals(Worker::TYPE, $obj->getType());
     }
 
     public function testUnknown()
     {
-        $factory = new UserFactory();
-
         $this->expectException(UnknownUserTypeException::class);
         $this->expectExceptionMessage('Unknown user type "unknown"');
-        $obj = $factory->getUser('unknown');
+        $this->factory->createUser('unknown');
     }
 }
