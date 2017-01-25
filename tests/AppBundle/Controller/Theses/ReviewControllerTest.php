@@ -59,6 +59,10 @@ class ReviewControllerTest extends WebTestCase
             ->findByTitle('Test Review');
 
         $this->assertGreaterThan(0, count($reviews));
+
+        $review = $reviews[0];
+
+        $this->assertEquals(5.0, $review->getGrade());
     }
 //    public function testShowPost()
 //    {
