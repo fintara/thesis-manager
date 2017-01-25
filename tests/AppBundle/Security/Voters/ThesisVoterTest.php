@@ -32,8 +32,7 @@ class ThesisVoterTest extends \PHPUnit_Framework_TestCase
     {
         $student = new Student();
 
-        $token = $this->createMock(TokenInterface::class);
-        $token->method('getUser')->willReturn($student);
+        $token = $this->getTokenMock($student);
 
         $thesis = new Thesis();
         $thesis->addStudent($student);
@@ -52,8 +51,7 @@ class ThesisVoterTest extends \PHPUnit_Framework_TestCase
         $studentOther = new Student();
         $studentOther->setEmail('other@abv.bg');
 
-        $token = $this->createMock(TokenInterface::class);
-        $token->method('getUser')->willReturn($studentOther);
+        $token = $this->getTokenMock($studentOther);
 
         $thesis = new Thesis();
         $thesis->addStudent($studentOwner);
@@ -70,8 +68,7 @@ class ThesisVoterTest extends \PHPUnit_Framework_TestCase
         $topic = new Topic();
         $topic->setSupervisor($supervisor);
 
-        $token = $this->createMock(TokenInterface::class);
-        $token->method('getUser')->willReturn($supervisor);
+        $token = $this->getTokenMock($supervisor);
 
         $thesis = new Thesis();
         $thesis->setTopic($topic);
@@ -92,8 +89,7 @@ class ThesisVoterTest extends \PHPUnit_Framework_TestCase
         $topic = new Topic();
         $topic->setSupervisor($supervisor);
 
-        $token = $this->createMock(TokenInterface::class);
-        $token->method('getUser')->willReturn($worker);
+        $token = $this->getTokenMock($worker);
 
         $thesis = new Thesis();
         $thesis->setTopic($topic);
@@ -134,7 +130,7 @@ class ThesisVoterTest extends \PHPUnit_Framework_TestCase
 
         $draft = new Draft();
         $draft->setStudent($student);
-        $draft->setCreatedAt(new \DateTime('-2 days'));
+        $draft->setCreatedAt(new \DateTime('-1 days'));
 
         $attributes = [ThesisVoter::UPLOAD_DRAFT];
 

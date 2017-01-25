@@ -37,6 +37,11 @@
         "doctrine/doctrine-fixtures-bundle": "^2.3"
     },
     "scripts": {
+        "test": [
+            "bin/console cache:clear --env=test --ansi",
+            "bin/console doctrine:fixtures:load -q --env=test --ansi",
+            "phpunit --colors=always"
+        ],
         "symfony-scripts": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
