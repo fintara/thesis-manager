@@ -33,6 +33,8 @@ class Student extends User
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->theses = new ArrayCollection();
         $this->reservations = new ArrayCollection();
     }

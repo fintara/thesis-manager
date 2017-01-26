@@ -44,7 +44,8 @@ class ReviewControllerTest extends WebTestCase
         $form = $crawler->selectButton('Submit')->form();
 
         $form['form[file]']->upload(__DIR__.'/../../../dummy_file.zip');
-        $form['form[title]']->setValue('Test Review');
+        $title = 'Test Review'.rand(1000,9999);
+        $form['form[title]']->setValue($title);
         $form['form[grade]']->select(5.0);
 
         $crawler = $client->submit($form);
@@ -56,9 +57,9 @@ class ReviewControllerTest extends WebTestCase
 
         $reviews = $client->getKernel()->getContainer()->get('doctrine.orm.default_entity_manager')
             ->getRepository('AppBundle:Review')
-            ->findByTitle('Test Review');
+            ->findByTitle($title);
 
-        $this->assertGreaterThan(0, count($reviews));
+        $this->assertEquals(1, count($reviews));
 
         $review = $reviews[0];
 
