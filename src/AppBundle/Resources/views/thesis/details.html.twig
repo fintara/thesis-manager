@@ -9,7 +9,7 @@
             <div class="box-body">
 
                 <div class="clearfix theses-list--panel">
-                    {% if is_granted('ROLE_TEACHER') and app.user.canReview(thesis) %}
+                    {% if is_granted('ADD_REVIEW', thesis) %}
                     <a href="{{ url('app_thesis_review_new', { thesis: thesis.id }) }}" class="btn btn-primary">Submit Review</a>
                     {% endif %}
 

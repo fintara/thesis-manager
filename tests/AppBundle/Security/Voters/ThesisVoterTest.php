@@ -161,6 +161,43 @@ class ThesisVoterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(VoterInterface::ACCESS_DENIED, $voterOutcome);
     }
 
+    public function testOnlyReviewerCanReviewThesis()
+    {
+        $worker = new Worker();
+        $worker->setEmail('abc@worker.bg');
+        $worker->addRole('ROLE_TEACHER');
+
+        $token = $this->getTokenMock($worker);
+
+        $thesis = new Thesis();
+        $thesis->addReviewer($worker);
+
+        $attributes = [ThesisVoter::ADD_REVIEW];
+
+        $voterOutcome = $this->voter->vote($token, $thesis, $attributes);
+        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $voterOutcome);
+    }
+
+    public function testOrdinaryTeacherCannotReviewThesis()
+    {
+        $workerA = new Worker();
+        $workerA->setEmail('abc@worker.bg');
+        $workerA->addRole('ROLE_TEACHER');
+        $workerB = new Worker();
+        $workerB->setEmail('def@worker.bg');
+        $workerB->addRole('ROLE_TEACHER');
+
+        $token = $this->getTokenMock($workerA);
+
+        $thesis = new Thesis();
+        $thesis->addReviewer($workerB);
+
+        $attributes = [ThesisVoter::ADD_REVIEW];
+
+        $voterOutcome = $this->voter->vote($token, $thesis, $attributes);
+        $this->assertEquals(VoterInterface::ACCESS_DENIED, $voterOutcome);
+    }
+
     private function getTokenMock(User $user): TokenInterface
     {
         $token = $this->createMock(TokenInterface::class);

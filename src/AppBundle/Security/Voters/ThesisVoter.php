@@ -10,6 +10,7 @@ namespace AppBundle\Security\Voters;
 
 
 use AppBundle\Entity\Draft;
+use AppBundle\Entity\Review;
 use AppBundle\Entity\Student;
 use AppBundle\Entity\Thesis;
 use AppBundle\Entity\User;
@@ -21,12 +22,14 @@ class ThesisVoter extends Voter
 {
     const UPLOAD_DRAFT = 'UPLOAD_DRAFT';
     const VIEW_DRAFTS = 'VIEW_DRAFTS';
+    const ADD_REVIEW = 'ADD_REVIEW';
 
     protected static function getAttributes()
     {
         return [
             self::UPLOAD_DRAFT,
             self::VIEW_DRAFTS,
+            self::ADD_REVIEW,
         ];
     }
 
@@ -70,6 +73,8 @@ class ThesisVoter extends Voter
                 return $this->canUploadDraft($thesis, $user);
             case self::VIEW_DRAFTS:
                 return $this->canViewDrafts($thesis, $user);
+            case self::ADD_REVIEW:
+                return $this->canReview($thesis, $user);
         }
 
         throw new \LogicException('Shouldn\'t be reached');
@@ -104,5 +109,27 @@ class ThesisVoter extends Voter
         }
 
         return $user == $thesis->getSupervisor();
+    }
+
+    private function canReview(Thesis $thesis, User $user)
+    {
+        if (!$user instanceof Worker) {
+            return false;
+        }
+
+        if (!in_array('ROLE_TEACHER', $user->getRoles())) {
+            return false;
+        }
+
+        $isReviewer = $thesis->getReviewers()->contains($user);
+
+        if (!$isReviewer) {
+            return false;
+        }
+
+        return !$thesis->getReviews()->map(function($review) {
+            /** @var Review $review */
+            return $review->getReviewer();
+        })->contains($user);
     }
 }

@@ -45,19 +45,7 @@ class Worker extends User
     {
         $this->topics = $topics;
     }
-    public function canReview(Thesis $thesis)
-    {
-        $isReviewer = $thesis->getReviewers()->contains($this);
 
-        if (!$isReviewer) {
-            return false;
-        }
-
-        return !$thesis->getReviews()->map(function($review) {
-            /** @var Review $review */
-            return $review->getReviewer();
-        })->contains($this);
-    }
     public function addDegree(string $degree): void
     {
         if (in_array($degree, $this->degrees)) {
