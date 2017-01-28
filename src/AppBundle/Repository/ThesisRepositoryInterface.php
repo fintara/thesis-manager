@@ -13,6 +13,7 @@ use AppBundle\Entity\Worker;
 
 interface ThesisRepositoryInterface
 {
+    public function findToBeReviewed(): array;
     public function findAllToReviewBy(Worker $worker): array;
     public function findAllSupervisedBy(Worker $worker): array;
     public function save(Thesis $thesis, bool $flush = true): Thesis;

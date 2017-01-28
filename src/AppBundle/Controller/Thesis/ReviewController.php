@@ -84,7 +84,7 @@ class ReviewController extends Controller
             }
             $reviewers = array_values($reviewers);
         } else {
-            $theses     = $this->get('thesis.repository')->findByStatus(Thesis::STATUS_FINAL);
+            $theses     = $this->get('thesis.repository')->findToBeReviewed();
         }
 
         return new JsonResponse([

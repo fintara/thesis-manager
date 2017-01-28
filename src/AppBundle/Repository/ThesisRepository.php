@@ -24,6 +24,20 @@ class ThesisRepository extends EntityRepository implements ThesisRepositoryInter
         return $thesis;
     }
 
+    public function findToBeReviewed(): array
+    {
+        /** @var Thesis[] $theses */
+        $theses = $this->findByStatus(Thesis::STATUS_FINAL);
+
+        foreach ($theses as $key => $thesis) {
+            if ($thesis->getReviewers()->count() >= 2) {
+                unset ($theses[$key]);
+            }
+        }
+
+        return array_values($theses);
+    }
+
     public function findAllToReviewBy(Worker $worker): array
     {
         $query = $this->getEntityManager()
