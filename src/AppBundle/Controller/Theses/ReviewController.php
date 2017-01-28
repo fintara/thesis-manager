@@ -110,19 +110,23 @@ class ReviewController extends Controller
             $thesis = $this->get('thesis.repository')->find($id);
 
             if (!$thesis) {
-                return new JsonResponse($error('No thesis #'.$id), 403);
+                $badIds[] = $id;
+                continue;
             }
 
             /** @var User|Worker $reviewer */
             $reviewer = $this->get('user.repository')->find($pair['reviewer']);
 
             if (!$reviewer || $reviewer->getType() !== Worker::TYPE) {
-                return new JsonResponse($error('No reviewer #'.$pair['reviewer']), 403);
+                $badIds[] = $id;
+                continue;
             }
 
 
             try {
-                $this->get('thesis.service')->assignReviewer($thesis, $thesis->getSupervisor(), false);
+                if (!$thesis->getReviewers()->contains($thesis->getSupervisor())) {
+                    $this->get('thesis.service')->assignReviewer($thesis, $thesis->getSupervisor(), false);
+                }
                 $this->get('thesis.service')->assignReviewer($thesis, $reviewer, false);
                 $thesis->setStatus(Thesis::STATUS_REVIEWING);
                 $this->get('thesis.repository')->save($thesis);
@@ -133,9 +137,9 @@ class ReviewController extends Controller
         }
 
         return new JsonResponse([
-            'message' => count($badIds) === 0 ? 'ok' : 'semi',
+            'message'   => count($badIds) === 0 ? 'ok' : 'semi',
             'savedIds'  => $savedIds,
-            'badIds'  => $badIds,
+            'badIds'    => $badIds,
         ]);
     }
 }
