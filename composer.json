@@ -52,6 +52,17 @@
             "bin/console doctrine:fixtures:load -q --env=test --ansi",
             "phpunit --colors=always"
         ],
+        "generate-docs": [
+            "@generate-api-docs",
+            "@generate-metrics"
+        ],
+        "generate-api-docs": [
+            "phpdoc --config phpdoc.xml"
+        ],
+        "generate-metrics": [
+            "mkdir -p docs/metrics",
+            "pdepend --summary-xml=docs/metrics/summary.xml --jdepend-chart=docs/metrics/jdepend.svg --overview-pyramid=docs/metrics/pyramid.svg src"
+        ],
         "symfony-scripts": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
