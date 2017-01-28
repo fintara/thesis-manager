@@ -217,5 +217,18 @@ class Thesis
     {
         return $this->topic->getSupervisor();
     }
+
+    public function hasNegativeReview()
+    {
+        return $this->reviews->filter(function($r) {
+            /** @var Review $r */
+            return $r->getGrade() < 3.0;
+        })->count() > 0;
+    }
+
+    public function needsThirdReviewer()
+    {
+        return $this->reviewers->count() < 3 && $this->hasNegativeReview();
+    }
 }
 

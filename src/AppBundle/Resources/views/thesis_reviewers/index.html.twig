@@ -128,7 +128,22 @@
                 }
             },
             created: function() {
-                $.get('/theses/reviewers/ajax', function(data) {
+                var url = '/theses/reviewers/ajax';
+
+                if (location.search.length > 0) {
+                    var queryDict = {};
+                    location.search.substr(1).split('&')
+                        .forEach(function(item) {
+                            queryDict[item.split('=')[0]] = item.split('=')[1];
+                        });
+
+                    var thesisId = +queryDict['thesis_id'];
+                    if (thesisId > 0) {
+                        url += '?thesis_id=' + thesisId;
+                    }
+                }
+
+                $.get(url, function(data) {
                     this.$data.reviewers = data.reviewers.list;
                     this.$data.theses = data.theses.list;
 

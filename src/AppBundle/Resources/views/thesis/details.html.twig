@@ -44,7 +44,14 @@
 
                 <div class="row">
                     <div class="col-md-3 right">Reviewer{% if thesis.reviewers.count != 1 %}s{% endif %}</div>
-                    <div class="col-md-9"><strong>{{ reviewerNames | join(', ') | default('(none)') }}</strong></div>
+                    <div class="col-md-9">
+                        <strong>{{ reviewerNames | join(', ') | default('(none)') }}</strong>
+                        {% if (is_granted('ROLE_DEAN') or is_granted('ROLE_DR')) and thesis.needsThirdReviewer %}
+                        <a href="{{ url('app_theses_choose_reviewers_get') }}?thesis_id={{ thesis.id }}" class="btn btn-primary btn-sm">
+                            Choose a reviewer
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
 
             </div>

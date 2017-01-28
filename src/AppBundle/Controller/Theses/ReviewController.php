@@ -70,8 +70,22 @@ class ReviewController extends Controller
 
     public function ajaxGetChooseReviewersAction(Request $request)
     {
+        $thesisId = $request->query->getInt('thesis_id', 0);
+
         $reviewers  = $this->get('user.repository')->findByType(Worker::TYPE);
-        $theses     = $this->get('thesis.repository')->findByStatus(Thesis::STATUS_FINAL);
+
+        if ($thesisId > 0) {
+            /** @var Thesis[] $theses */
+            $theses = [$this->get('thesis.repository')->findOneById($thesisId)];
+            foreach ($reviewers as $key => $reviewer) {
+                if ($theses[0]->getReviewers()->contains($reviewer)) {
+                    unset ($reviewers[$key]);
+                }
+            }
+            $reviewers = array_values($reviewers);
+        } else {
+            $theses     = $this->get('thesis.repository')->findByStatus(Thesis::STATUS_FINAL);
+        }
 
         return new JsonResponse([
             'reviewers' => [

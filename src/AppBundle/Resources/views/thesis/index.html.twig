@@ -29,7 +29,12 @@
                     <tbody>
                     {% for thesis in theses %}
                     <tr>
-                        <td>{{ thesis.title }}</td>
+                        <td>
+                            {% if (is_granted('ROLE_DEAN') or is_granted('ROLE_DR')) and thesis.needsThirdReviewer %}
+                            <span class="fa fa-warning red" data-toggle="tooltip" title="This thesis has a review with negative grade."></span>
+                            {% endif %}
+                            {{ thesis.title }}
+                        </td>
                         <td class="nowrap">{{ thesis.students[0].fullName }}</td>
                         <td class="nowrap">{{ thesis.supervisor.fullName }}</td>
                         <td>
