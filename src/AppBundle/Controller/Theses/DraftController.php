@@ -3,34 +3,30 @@
 namespace AppBundle\Controller\Theses;
 
 use AppBundle\Entity\Draft;
-use AppBundle\Entity\Review;
 use AppBundle\Entity\Thesis;
-use AppBundle\Entity\User;
-use AppBundle\Entity\Worker;
 use AppBundle\Models\DraftModel;
 use AppBundle\Models\FeedbackModel;
-use AppBundle\Models\ReviewModel;
+use AppBundle\Security\Voters\ThesisVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class DraftController extends Controller
 {
     public function getDraftsAction(Request $request, Thesis $thesis)
     {
+        $this->denyAccessUnlessGranted(ThesisVoter::VIEW_DRAFTS, $thesis);
+
+
         $drafts = $this->get('draft.repository')->findNewest($thesis);
         /** @var Draft|null $lastDraft */
         $lastDraft = $thesis->getDrafts()->last();
 
         $nextUpload = null;
 
-        if ($this->isGranted('ROLE_STUDENT') && $lastDraft && !$this->getUser()->canUploadDraft($thesis)) {
+        if ($this->isGranted('ROLE_STUDENT') && $lastDraft && !$this->isGranted(ThesisVoter::UPLOAD_DRAFT, $thesis)) {
 //            $diff = $lastDraft->getCreatedAt()->diff(new \DateTime());
             $nextUpload = $lastDraft->getCreatedAt();
             $nextUpload->modify('+ 1 day');
@@ -45,9 +41,7 @@ class DraftController extends Controller
 
     public function getNewDraftAction(Request $request, Thesis $thesis)
     {
-        if (!$this->getUser()->canUploadDraft($thesis)) {
-            throw $this->createAccessDeniedException();
-        }
+        $this->denyAccessUnlessGranted(ThesisVoter::UPLOAD_DRAFT, $thesis);
 
         $model = new DraftModel();
         $model->thesis = $thesis;
@@ -64,9 +58,10 @@ class DraftController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $draft = $this->get('draft.service')->create($model);
 
-            $this->addFlash('success', 'Draft was uploaded successfully');
-
-            return $this->redirectToRoute('app_thesis_drafts_get', ['thesis' => $thesis->getId()]);
+            return $this->redirect(
+                $this->generateUrl('app_thesis_drafts_get', ['thesis' => $thesis->getId()])
+                .'?upload_success=1'
+            );
         }
 
         return $this->render('@App/thesis_drafts/submit.html.twig', [
@@ -100,9 +95,10 @@ class DraftController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $feedback = $this->get('feedback.service')->create($model);
 
-            $this->addFlash('success', 'Feedback was added successfully');
-
-            return $this->redirectToRoute('app_thesis_drafts_get', ['thesis' => $thesis->getId()]);
+            return $this->redirect(
+                $this->generateUrl('app_thesis_drafts_get', ['thesis' => $thesis->getId()])
+                .'?feedback_added=1'
+            );
         }
 
         return $this->render('@App/thesis_drafts/submit_feedback.html.twig', [

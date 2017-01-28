@@ -45,6 +45,8 @@ implements OrderedFixtureInterface, ContainerAwareInterface
         for($i = 0; $i < count($theses); $i++) {
             $reservation = $this->createReservation($theses[$i]);
             $thesis = $this->createThesis($theses[$i]);
+
+            $this->addReference('thesis-'.$i, $thesis);
         }
 
         $this->om->flush();

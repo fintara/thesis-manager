@@ -69,6 +69,10 @@ abstract class User implements UserInterface
     private $roles = ['ROLE_USER'];
 
 
+    public function __construct()
+    {
+    }
+
     public function getId(): int
     {
         return $this->id;

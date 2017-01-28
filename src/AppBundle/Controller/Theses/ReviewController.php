@@ -49,9 +49,12 @@ class ReviewController extends Controller
             $review = $this->get('review.service')->assign($review, $thesis);
             $this->get('review.repository')->save($review);
 
-            $this->addFlash('success', 'Review was submitted successfully');
+//            $this->addFlash('success', 'Review was submitted successfully');
 
-            return $this->redirectToRoute('app_thesis_get', ['thesis' => $thesis->getId()]);
+            return $this->redirect(
+                $this->generateUrl('app_thesis_get', ['thesis' => $thesis->getId()])
+                .'?review_added=1'
+            );
         }
 
         return $this->render('@App/thesis_review/submit.html.twig', [
@@ -67,8 +70,22 @@ class ReviewController extends Controller
 
     public function ajaxGetChooseReviewersAction(Request $request)
     {
+        $thesisId = $request->query->getInt('thesis_id', 0);
+
         $reviewers  = $this->get('user.repository')->findByType(Worker::TYPE);
-        $theses     = $this->get('thesis.repository')->findByStatus(Thesis::STATUS_FINAL);
+
+        if ($thesisId > 0) {
+            /** @var Thesis[] $theses */
+            $theses = [$this->get('thesis.repository')->findOneById($thesisId)];
+            foreach ($reviewers as $key => $reviewer) {
+                if ($theses[0]->getReviewers()->contains($reviewer)) {
+                    unset ($reviewers[$key]);
+                }
+            }
+            $reviewers = array_values($reviewers);
+        } else {
+            $theses     = $this->get('thesis.repository')->findByStatus(Thesis::STATUS_FINAL);
+        }
 
         return new JsonResponse([
             'reviewers' => [
@@ -107,19 +124,23 @@ class ReviewController extends Controller
             $thesis = $this->get('thesis.repository')->find($id);
 
             if (!$thesis) {
-                return new JsonResponse($error('No thesis #'.$id), 403);
+                $badIds[] = $id;
+                continue;
             }
 
             /** @var User|Worker $reviewer */
             $reviewer = $this->get('user.repository')->find($pair['reviewer']);
 
             if (!$reviewer || $reviewer->getType() !== Worker::TYPE) {
-                return new JsonResponse($error('No reviewer #'.$pair['reviewer']), 403);
+                $badIds[] = $id;
+                continue;
             }
 
 
             try {
-                $this->get('thesis.service')->assignReviewer($thesis, $thesis->getSupervisor(), false);
+                if (!$thesis->getReviewers()->contains($thesis->getSupervisor())) {
+                    $this->get('thesis.service')->assignReviewer($thesis, $thesis->getSupervisor(), false);
+                }
                 $this->get('thesis.service')->assignReviewer($thesis, $reviewer, false);
                 $thesis->setStatus(Thesis::STATUS_REVIEWING);
                 $this->get('thesis.repository')->save($thesis);
@@ -130,9 +151,9 @@ class ReviewController extends Controller
         }
 
         return new JsonResponse([
-            'message' => count($badIds) === 0 ? 'ok' : 'semi',
+            'message'   => count($badIds) === 0 ? 'ok' : 'semi',
             'savedIds'  => $savedIds,
-            'badIds'  => $badIds,
+            'badIds'    => $badIds,
         ]);
     }
 }

@@ -1,11 +1,12 @@
 <?php
 
 namespace AppBundle\Repository;
+
 use AppBundle\Entity\Topic;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 
-class TopicRepository extends EntityRepository
+class TopicRepository extends EntityRepository implements TopicRepositoryInterface
 {
     public function findByIdAndStatus(int $id, string $status)
     {

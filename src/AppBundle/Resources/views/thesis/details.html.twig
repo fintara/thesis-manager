@@ -9,12 +9,18 @@
             <div class="box-body">
 
                 <div class="clearfix theses-list--panel">
-                    {% if is_granted('ROLE_TEACHER') and app.user.canReview(thesis) %}
+                    {% if is_granted('ADD_REVIEW', thesis) %}
                     <a href="{{ url('app_thesis_review_new', { thesis: thesis.id }) }}" class="btn btn-primary">Submit Review</a>
                     {% endif %}
 
                     <a href="{{ url('app_thesis_drafts_get', { thesis: thesis.id }) }}" class="btn btn-primary">Drafts</a>
                 </div><!-- /theses-list--panel -->
+
+                {% if app.request.get('review_added', 0) == 1 %}
+                    <div class="alert alert-success mg-top" role="alert">
+                        <strong>Well done!</strong> You successfully submitted a review.
+                    </div>
+                {% endif %}
 
                 {% set studentsNames = [] %}
                 {% for student in thesis.students %}
@@ -38,7 +44,14 @@
 
                 <div class="row">
                     <div class="col-md-3 right">Reviewer{% if thesis.reviewers.count != 1 %}s{% endif %}</div>
-                    <div class="col-md-9"><strong>{{ reviewerNames | join(', ') | default('(none)') }}</strong></div>
+                    <div class="col-md-9">
+                        <strong>{{ reviewerNames | join(', ') | default('(none)') }}</strong>
+                        {% if (is_granted('ROLE_DEAN') or is_granted('ROLE_DR')) and thesis.needsThirdReviewer %}
+                        <a href="{{ url('app_theses_choose_reviewers_get') }}?thesis_id={{ thesis.id }}" class="btn btn-primary btn-sm">
+                            Choose a reviewer
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
 
             </div>

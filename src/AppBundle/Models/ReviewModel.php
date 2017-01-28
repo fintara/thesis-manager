@@ -26,7 +26,7 @@ class ReviewModel
     /**
      * @var float
      *
-     * @Assert\Choice(choices={2.0, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5})
+     * @Assert\Choice(choices={2.0, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5}, strict=true)
      */
     public $grade;
 

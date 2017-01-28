@@ -11,17 +11,15 @@ namespace AppBundle\Services;
 
 use AppBundle\Entity\Review;
 use AppBundle\Entity\Thesis;
-use AppBundle\Entity\Worker;
 use AppBundle\Models\ReviewModel;
-use AppBundle\Repository\ReviewRepository;
-use AppBundle\Repository\ThesisRepository;
+use AppBundle\Repository\ReviewRepositoryInterface;
 
 class ReviewService
 {
-    /** @var ReviewRepository  */
+    /** @var ReviewRepositoryInterface  */
     private $repo;
 
-    public function __construct(ReviewRepository $repository)
+    public function __construct(ReviewRepositoryInterface $repository)
     {
         $this->repo = $repository;
     }

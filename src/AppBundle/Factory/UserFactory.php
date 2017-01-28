@@ -11,21 +11,17 @@ namespace AppBundle\Factory;
 
 use AppBundle\Entity\Student;
 use AppBundle\Entity\Worker;
+use AppBundle\Exceptions\UnknownUserTypeException;
 
 class UserFactory
 {
-    public function getUser(string $type)
+    public function createUser(string $type)
     {
-        if ($type === Student::TYPE) {
-            return new Student();
-        } elseif ($type === Worker::TYPE) {
-            return new Worker();
-        }
-
-        throw new \Exception('Unknown user type "'.$type.'"');
+        $clazz = $this->resolveClass($type);
+        return new $clazz();
     }
 
-    public function getClass(string $type)
+    public function resolveClass(string $type)
     {
         if ($type === Student::TYPE) {
             return Student::class;
@@ -33,6 +29,6 @@ class UserFactory
             return Worker::class;
         }
 
-        throw new \Exception('Unknown user type "'.$type.'"');
+        throw new UnknownUserTypeException('Unknown user type "'.$type.'"');
     }
 }

@@ -37,13 +37,10 @@
                         <td class="nowrap">{{ '{{ thesis.students[0].fullName }}' }}</td>
                         <td class="nowrap">{{ '{{ thesis.supervisor.fullName }}' }}</td>
                         <td class="nowrap">
-                            <span v-if="!thesis.$status || thesis.$status == 'editing'">
-                                <select v-model="theses[idx].reviewer" class="form-control" style="width:200px">
-                                    <option value="0">(select)</option>
-                                    <option v-for="reviewer in getReviewersExcept(thesis.supervisor.id)" v-bind:value="reviewer.id">
-                                        {{ '{{ reviewer.fullName }}' }}
-                                    </option>
-                                </select>
+                            <span v-show="!thesis.$status || thesis.$status == 'editing'">
+                                <select2 :options="getReviewersExcept(thesis.supervisor.id)" v-model="theses[idx].reviewer">
+                                    <option disabled value="0">(select)</option>
+                                </select2>
                             </span>
                             <span v-if="thesis.$status == 'applied' || thesis.$status == 'saved'">
                                 {{ '{{ reviewersById[thesis.reviewer].fullName }}' }}
@@ -61,7 +58,7 @@
                     </tbody>
                 </table>
 
-                <div class="center">
+                <div class="center" v-if="canSave">
                     <button v-if="!saving" @click="saveAll" class="btn btn-primary" type="button">Save</button>
                     <button v-if="saving" disabled class="btn btn-primary" type="button">
                         <span class="fa fa-spin fa-circle-o-notch"></span>
@@ -76,12 +73,48 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script type="text/x-template" id="select2-template">
+        <select>
+            <slot></slot>
+        </select>
+    </script>
+
     <script>
+        Vue.component('select2', {
+            props: ['options', 'value'],
+            template: '#select2-template',
+            mounted: function () {
+                var vm = this
+                $(this.$el)
+                    .val(this.value)
+                    // init select2
+                    .select2({ data: this.options })
+                    // emit event on change.
+                    .on('change', function () {
+                        vm.$emit('input', this.value)
+                    })
+            },
+            watch: {
+                value: function (value) {
+                    // update value
+                    $(this.$el).val(value)
+                },
+                options: function (options) {
+                    // update options
+                    $(this.$el).select2({ data: options })
+                }
+            },
+            destroyed: function () {
+                $(this.$el).off().select2('destroy')
+            }
+        });
+
         new Vue({
             el: '#theses-list--choose-reviewer',
             data: {
                 loaded: false,
                 saving: false,
+                canSave: true,
                 reviewers: [],
                 theses: []
             },
@@ -95,7 +128,22 @@
                 }
             },
             created: function() {
-                $.get('/theses/reviewers/ajax', function(data) {
+                var url = '/theses/reviewers/ajax';
+
+                if (location.search.length > 0) {
+                    var queryDict = {};
+                    location.search.substr(1).split('&')
+                        .forEach(function(item) {
+                            queryDict[item.split('=')[0]] = item.split('=')[1];
+                        });
+
+                    var thesisId = +queryDict['thesis_id'];
+                    if (thesisId > 0) {
+                        url += '?thesis_id=' + thesisId;
+                    }
+                }
+
+                $.get(url, function(data) {
                     this.$data.reviewers = data.reviewers.list;
                     this.$data.theses = data.theses.list;
 
@@ -105,8 +153,10 @@
             methods: {
                 getReviewersExcept: function(id) {
                     return this.reviewers.filter(function(r) {
-//                        return r.id != id;
-                        return true;
+                        return r.id != id;
+//                        return true;
+                    }).map(function(r) {
+                        return { id: r.id, text: r.fullName };
                     });
                 },
                 applyThesis: function(idx) {
@@ -151,10 +201,15 @@
                     $.post('/theses/reviewers/', { 'data': data }, function(res) {
                         this.saving = false;
 
+                        var savedCounter = 0;
+
                         for (var i = 0; i < this.theses.length; i++) {
                             var t = this.theses[i];
 
-                            if (res.savedIds.indexOf(t.id) > -1) {
+                            if (t.$status == 'saved') {
+                                savedCounter++;
+                            } else if (res.savedIds.indexOf(t.id) > -1) {
+                                savedCounter++;
                                 t.$status = 'saved';
                                 Vue.set(this.theses, i, t);
                             } else if (res.badIds.indexOf(t.id) > -1) {
@@ -163,10 +218,14 @@
                             }
                         }
 
-                        if (res.message != 'ok') {
-                            alert(res.message);
-                        } else {
+                        this.canSave = savedCounter < this.theses.length;
+
+                        if (res.message == 'ok') {
                             alert('Saved successfully!');
+                        } else if (res.message == 'semi') {
+                            alert('Partially saved');
+                        } else {
+                            alert('Nothing saved');
                         }
                     }.bind(this));
                 }

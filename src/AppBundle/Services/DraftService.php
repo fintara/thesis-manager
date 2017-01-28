@@ -16,6 +16,7 @@ use AppBundle\Entity\Worker;
 use AppBundle\Models\DraftModel;
 use AppBundle\Models\ReviewModel;
 use AppBundle\Repository\DraftRepository;
+use AppBundle\Repository\DraftRepositoryInterface;
 use AppBundle\Repository\ReviewRepository;
 use AppBundle\Repository\ThesisRepository;
 
@@ -24,7 +25,7 @@ class DraftService
     /** @var DraftRepository  */
     private $repo;
 
-    public function __construct(DraftRepository $repository)
+    public function __construct(DraftRepositoryInterface $repository)
     {
         $this->repo = $repository;
     }
