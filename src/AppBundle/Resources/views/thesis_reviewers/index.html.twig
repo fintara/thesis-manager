@@ -58,7 +58,7 @@
                     </tbody>
                 </table>
 
-                <div class="center">
+                <div class="center" v-if="canSave">
                     <button v-if="!saving" @click="saveAll" class="btn btn-primary" type="button">Save</button>
                     <button v-if="saving" disabled class="btn btn-primary" type="button">
                         <span class="fa fa-spin fa-circle-o-notch"></span>
@@ -114,6 +114,7 @@
             data: {
                 loaded: false,
                 saving: false,
+                canSave: true,
                 reviewers: [],
                 theses: []
             },
@@ -185,10 +186,15 @@
                     $.post('/theses/reviewers/', { 'data': data }, function(res) {
                         this.saving = false;
 
+                        var savedCounter = 0;
+
                         for (var i = 0; i < this.theses.length; i++) {
                             var t = this.theses[i];
 
-                            if (res.savedIds.indexOf(t.id) > -1) {
+                            if (t.$status == 'saved') {
+                                savedCounter++;
+                            } else if (res.savedIds.indexOf(t.id) > -1) {
+                                savedCounter++;
                                 t.$status = 'saved';
                                 Vue.set(this.theses, i, t);
                             } else if (res.badIds.indexOf(t.id) > -1) {
@@ -196,6 +202,8 @@
                                 Vue.set(this.theses, i, t);
                             }
                         }
+
+                        this.canSave = savedCounter < this.theses.length;
 
                         if (res.message == 'ok') {
                             alert('Saved successfully!');
