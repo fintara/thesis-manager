@@ -10,12 +10,13 @@ use AppBundle\Entity\Review;
 
 /**
  * Interface ReviewRepositoryInterface
+ *
  * @package AppBundle\Repository
  */
 interface ReviewRepositoryInterface
 {
     /**
-     * Saves a review
+     * Saves a review.
      *
      * @param  Review   $review Review to be saved
      * @param  bool     $flush  Whether to save immediately to database

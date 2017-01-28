@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * User service
+ *
  * @package AppBundle\Services
  */
 class UserService
@@ -26,6 +27,7 @@ class UserService
 
     /**
      * UserService constructor.
+     *
      * @param UserRepositoryInterface $repository
      * @param UserFactory $factory
      * @param UserPasswordEncoderInterface $passwordEncoder

@@ -8,6 +8,7 @@ use Doctrine\ORM\NoResultException;
 
 /**
  * Class DraftRepository
+ *
  * @package AppBundle\Repository
  */
 class DraftRepository extends EntityRepository implements DraftRepositoryInterface
@@ -15,6 +16,9 @@ class DraftRepository extends EntityRepository implements DraftRepositoryInterfa
     /** @var string Directory where draft files are saved */
     private $directory;
 
+    /**
+     * {@inheritdoc}
+     */
     public function findLastVersion(Thesis $thesis): int
     {
         $query = $this->getEntityManager()
@@ -36,6 +40,9 @@ ORDER BY d.version DESC'
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findNewest(Thesis $thesis): array
     {
         $query = $this->getEntityManager()
@@ -51,6 +58,9 @@ ORDER BY d.version DESC'
         return $query->getResult();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function save(Draft $draft, bool $flush = true): Draft
     {
         if ($draft->getFile() !== null) {
@@ -76,6 +86,7 @@ ORDER BY d.version DESC'
 
     /**
      * Moves the uploaded file to directory.
+     *
      * @param Draft $draft
      */
     private function upload(Draft &$draft)

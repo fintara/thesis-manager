@@ -18,6 +18,7 @@ use AppBundle\Repository\TopicRepositoryInterface;
 
 /**
  * Topic service
+ *
  * @package AppBundle\Services
  */
 class TopicService
@@ -43,6 +44,7 @@ class TopicService
 
     /**
      * Reserves a topic for a student.
+     *
      * @param Topic $topic          Topic a student wants to reserve
      * @param Student $student      Student that wants to reserve a topic
      * @return Reservation          Created reservation

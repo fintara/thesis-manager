@@ -6,10 +6,14 @@ use Doctrine\ORM\EntityRepository;
 
 /**
  * Class ReservationRepository
+ *
  * @package AppBundle\Repository
  */
 class ReservationRepository extends EntityRepository implements ReservationRepositoryInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function save(Reservation $reservation, bool $flush = true): Reservation
     {
         $this->getEntityManager()->persist($reservation);

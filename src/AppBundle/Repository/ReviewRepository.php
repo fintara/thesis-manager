@@ -7,11 +7,12 @@ use Doctrine\ORM\Mapping;
 
 /**
  * Class ReviewRepository
+ *
  * @package AppBundle\Repository
  */
 class ReviewRepository extends EntityRepository implements ReviewRepositoryInterface
 {
-    /** @var string */
+    /** @var string Directory where review files are uploaded */
     private $directory;
 
     /**
@@ -33,7 +34,8 @@ class ReviewRepository extends EntityRepository implements ReviewRepositoryInter
     }
 
     /**
-     * Sets directory where review files are uploaded
+     * Sets directory where review files are uploaded.
+     *
      * @param string $directory
      */
     public function setDirectory(string $directory): void
@@ -42,7 +44,8 @@ class ReviewRepository extends EntityRepository implements ReviewRepositoryInter
     }
 
     /**
-     * Moves uploaded file to directory
+     * Moves uploaded file to directory.
+     *
      * @param Review $review
      */
     private function upload(Review $review)

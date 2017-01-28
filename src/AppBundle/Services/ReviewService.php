@@ -16,6 +16,7 @@ use AppBundle\Repository\ReviewRepositoryInterface;
 
 /**
  * Review service
+ *
  * @package AppBundle\Services
  */
 class ReviewService
@@ -25,6 +26,7 @@ class ReviewService
 
     /**
      * ReviewService constructor.
+     *
      * @param ReviewRepositoryInterface $repository Repository for Review
      */
     public function __construct(ReviewRepositoryInterface $repository)
@@ -33,7 +35,7 @@ class ReviewService
     }
 
     /**
-     * Creates and saves Review from ReviewModel
+     * Creates and saves Review from ReviewModel.
      *
      * @param ReviewModel $model    Initial data
      * @param bool $flush           Whether to immediately save to database
@@ -57,7 +59,7 @@ class ReviewService
     }
 
     /**
-     * Assigns review to a thesis
+     * Assigns review to a thesis.
      *
      * @param Review $review    Review to be assigned
      * @param Thesis $thesis    Thesis to which review is assigned

@@ -14,6 +14,7 @@ use AppBundle\Entity\Worker;
 
 /**
  * Interface UserRepositoryInterface
+ *
  * @package AppBundle\Repository
  */
 interface UserRepositoryInterface

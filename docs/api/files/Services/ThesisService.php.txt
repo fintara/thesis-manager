@@ -16,6 +16,7 @@ use AppBundle\Repository\ThesisRepositoryInterface;
 
 /**
  * Thesis service
+ *
  * @package AppBundle\Services
  */
 class ThesisService
@@ -25,6 +26,7 @@ class ThesisService
 
     /**
      * ThesisService constructor.
+     *
      * @param ThesisRepositoryInterface $repository Repository for thesis
      */
     public function __construct(ThesisRepositoryInterface $repository)
@@ -33,12 +35,12 @@ class ThesisService
     }
 
     /**
-     * Assigns worker as a reviewer to thesis
+     * Assigns worker as a reviewer to thesis.
      *
      * @param Thesis $thesis        Thesis to assign worker to
      * @param Worker $reviewer      Reviewer
      * @param bool $flush           Whether to immediately save to database
-     * @throws \Exception           Thrown if reviewer is already assigned
+     * @throws ReviewerDuplicatedException Thrown if reviewer is already assigned
      */
     public function assignReviewer(Thesis $thesis, Worker $reviewer, bool $flush = true)
     {

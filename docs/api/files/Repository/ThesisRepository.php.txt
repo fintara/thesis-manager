@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 
 /**
  * Class ThesisRepository
+ *
  * @package AppBundle\Repository
  */
 class ThesisRepository extends EntityRepository implements ThesisRepositoryInterface
@@ -25,6 +26,9 @@ class ThesisRepository extends EntityRepository implements ThesisRepositoryInter
         return $thesis;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findToBeReviewed(): array
     {
         /** @var Thesis[] $theses */
@@ -39,6 +43,9 @@ class ThesisRepository extends EntityRepository implements ThesisRepositoryInter
         return array_values($theses);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findAllToReviewBy(Worker $worker): array
     {
         $query = $this->getEntityManager()
@@ -57,6 +64,9 @@ WHERE r = :worker'
         return $query->getResult();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findAllSupervisedBy(Worker $worker): array
     {
         $query = $this->getEntityManager()

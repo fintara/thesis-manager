@@ -9,10 +9,14 @@ use Doctrine\ORM\EntityRepository;
 
 /**
  * Class TopicRepository
+ *
  * @package AppBundle\Repository
  */
 class TopicRepository extends EntityRepository implements TopicRepositoryInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function findByIdAndStatus(int $id, string $status): ?Thesis
     {
         if (!in_array($status, Topic::getStatuses(), true)) {
@@ -34,6 +38,9 @@ WHERE t.id = :id AND t.status = :status'
         return $query->getSingleResult(AbstractQuery::HYDRATE_OBJECT);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findByStatus(string $status): array
     {
         if (!in_array($status, Topic::getStatuses(), true)) {

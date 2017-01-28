@@ -6,11 +6,14 @@ use AppBundle\Entity\Reservation;
 
 /**
  * Interface ReservationRepositoryInterface
+ *
  * @package AppBundle\Repository
  */
 interface ReservationRepositoryInterface
 {
     /**
+     * Saves a reservation.
+     *
      * @param  Reservation $reservation Reservation to be saved
      * @param  bool $flush              Whether to immediately save to database
      * @return Reservation

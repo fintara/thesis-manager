@@ -12,6 +12,7 @@ use AppBundle\Entity\Feedback;
 
 /**
  * Interface FeedbackRepositoryInterface
+ *
  * @package AppBundle\Repository
  */
 interface FeedbackRepositoryInterface
