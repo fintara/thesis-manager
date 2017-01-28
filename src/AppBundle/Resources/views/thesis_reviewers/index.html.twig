@@ -38,12 +38,9 @@
                         <td class="nowrap">{{ '{{ thesis.supervisor.fullName }}' }}</td>
                         <td class="nowrap">
                             <span v-if="!thesis.$status || thesis.$status == 'editing'">
-                                <select v-model="theses[idx].reviewer" class="form-control" style="width:200px">
-                                    <option value="0">(select)</option>
-                                    <option v-for="reviewer in getReviewersExcept(thesis.supervisor.id)" v-bind:value="reviewer.id">
-                                        {{ '{{ reviewer.fullName }}' }}
-                                    </option>
-                                </select>
+                                <select2 :options="getReviewersExcept(thesis.supervisor.id)" v-model="theses[idx].reviewer">
+                                    <option disabled value="0">(select)</option>
+                                </select2>
                             </span>
                             <span v-if="thesis.$status == 'applied' || thesis.$status == 'saved'">
                                 {{ '{{ reviewersById[thesis.reviewer].fullName }}' }}
@@ -76,7 +73,42 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script type="text/x-template" id="select2-template">
+        <select>
+            <slot></slot>
+        </select>
+    </script>
+
     <script>
+        Vue.component('select2', {
+            props: ['options', 'value'],
+            template: '#select2-template',
+            mounted: function () {
+                var vm = this
+                $(this.$el)
+                    .val(this.value)
+                    // init select2
+                    .select2({ data: this.options })
+                    // emit event on change.
+                    .on('change', function () {
+                        vm.$emit('input', this.value)
+                    })
+            },
+            watch: {
+                value: function (value) {
+                    // update value
+                    $(this.$el).val(value)
+                },
+                options: function (options) {
+                    // update options
+                    $(this.$el).select2({ data: options })
+                }
+            },
+            destroyed: function () {
+                $(this.$el).off().select2('destroy')
+            }
+        });
+
         new Vue({
             el: '#theses-list--choose-reviewer',
             data: {
@@ -105,8 +137,10 @@
             methods: {
                 getReviewersExcept: function(id) {
                     return this.reviewers.filter(function(r) {
-//                        return r.id != id;
-                        return true;
+                        return r.id != id;
+//                        return true;
+                    }).map(function(r) {
+                        return { id: r.id, text: r.fullName };
                     });
                 },
                 applyThesis: function(idx) {
@@ -163,10 +197,12 @@
                             }
                         }
 
-                        if (res.message != 'ok') {
-                            alert(res.message);
-                        } else {
+                        if (res.message == 'ok') {
                             alert('Saved successfully!');
+                        } else if (res.message == 'semi') {
+                            alert('Partially saved');
+                        } else {
+                            alert('Nothing saved');
                         }
                     }.bind(this));
                 }
