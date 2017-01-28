@@ -26,18 +26,8 @@ class ReviewServiceTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->repo = new class implements ReviewRepositoryInterface {
-
-            public function save(Review $review, bool $flush = true): Review
-            {
-                return $review;
-            }
-
-            public function setDirectory(string $directory): void
-            {
-                // TODO: Implement setDirectory() method.
-            }
-        };
+        $this->repo = $this->createMock(ReviewRepositoryInterface::class);
+        $this->repo->method('save')->willReturnArgument(0);
 
         $this->service = new ReviewService($this->repo);
     }

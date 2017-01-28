@@ -41,9 +41,4 @@ interface DraftRepositoryInterface
      * @return Draft
      */
     public function save(Draft $draft, bool $flush = true): Draft;
-
-    /**
-     * @param string $directory Directory where draft files are saved.
-     */
-    public function setDirectory(string $directory): void;
 }

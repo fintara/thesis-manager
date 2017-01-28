@@ -28,6 +28,9 @@ class FeedbackRepository extends EntityRepository implements FeedbackRepositoryI
         return $feedback;
     }
 
+    /**
+     * @param string $directory Directory where feedbacks are saved
+     */
     public function setDirectory(string $directory): void
     {
         $this->directory = $directory;

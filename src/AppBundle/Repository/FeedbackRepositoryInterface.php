@@ -24,9 +24,4 @@ interface FeedbackRepositoryInterface
      * @return Feedback           Saved feedback
      */
     public function save(Feedback $feedback, bool $flush = true): Feedback;
-
-    /**
-     * @param string $directory Directory where feedbacks are saved
-     */
-    public function setDirectory(string $directory): void;
 }

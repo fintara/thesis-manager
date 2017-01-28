@@ -22,10 +22,4 @@ interface ReviewRepositoryInterface
      * @return Review           Saved review
      */
     public function save(Review $review, bool $flush = true): Review;
-
-    /**
-     * Sets directory where review files are uploaded
-     * @param string $directory
-     */
-    public function setDirectory(string $directory): void;
 }

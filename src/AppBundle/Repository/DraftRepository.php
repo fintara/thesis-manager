@@ -66,6 +66,9 @@ ORDER BY d.version DESC'
         return $draft;
     }
 
+    /**
+     * @param string $directory Directory where draft files are saved.
+     */
     public function setDirectory(string $directory): void
     {
         $this->directory = $directory;

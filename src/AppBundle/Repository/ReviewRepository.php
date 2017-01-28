@@ -32,6 +32,10 @@ class ReviewRepository extends EntityRepository implements ReviewRepositoryInter
         return $review;
     }
 
+    /**
+     * Sets directory where review files are uploaded
+     * @param string $directory
+     */
     public function setDirectory(string $directory): void
     {
         $this->directory = $directory;
