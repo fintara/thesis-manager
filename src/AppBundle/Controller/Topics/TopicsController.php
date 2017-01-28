@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Topics;
 
 use AppBundle\Entity\Topic;
 use AppBundle\Exceptions\TopicReservedException;

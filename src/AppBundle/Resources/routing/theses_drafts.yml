@@ -1,14 +1,14 @@
 app_thesis_drafts_get:
   path: /
-  defaults: { _controller: AppBundle:Theses/Draft:getDrafts }
+  defaults: { _controller: AppBundle:Thesis/Draft:getDrafts }
   methods: [GET]
 
 app_thesis_draft_add:
   path: /new
-  defaults: { _controller: AppBundle:Theses/Draft:getNewDraft }
+  defaults: { _controller: AppBundle:Thesis/Draft:getNewDraft }
   methods: [GET, POST]
 
 app_thesis_draft_feedback_add:
   path: /{draft}/add-feedback
-  defaults: { _controller: AppBundle:Theses/Draft:getNewFeedback }
+  defaults: { _controller: AppBundle:Thesis/Draft:getNewFeedback }
   methods: [GET, POST]

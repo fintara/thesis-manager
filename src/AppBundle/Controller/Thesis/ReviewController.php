@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Theses;
+namespace AppBundle\Controller\Thesis;
 
 use AppBundle\Entity\Review;
 use AppBundle\Entity\Thesis;
@@ -57,7 +57,7 @@ class ReviewController extends Controller
             );
         }
 
-        return $this->render('@App/thesis_review/submit.html.twig', [
+        return $this->render('@App/thesis/review/submit.html.twig', [
             'thesis' => $thesis,
             'form'   => $form->createView(),
         ]);
@@ -65,7 +65,7 @@ class ReviewController extends Controller
 
     public function getChooseReviewersAction(Request $request)
     {
-        return $this->render('@App/thesis_reviewers/index.html.twig');
+        return $this->render('@App/thesis/reviewers/index.html.twig');
     }
 
     public function ajaxGetChooseReviewersAction(Request $request)

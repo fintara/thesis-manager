@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Theses;
+namespace AppBundle\Controller\Thesis;
 
 use AppBundle\Entity\Draft;
 use AppBundle\Entity\Thesis;
@@ -32,7 +32,7 @@ class DraftController extends Controller
             $nextUpload->modify('+ 1 day');
         }
 
-        return $this->render('@App/thesis_drafts/index.html.twig', [
+        return $this->render('@App/thesis/drafts/index.html.twig', [
             'thesis' => $thesis,
             'drafts' => $drafts,
             'nextUpload' => $nextUpload,
@@ -64,7 +64,7 @@ class DraftController extends Controller
             );
         }
 
-        return $this->render('@App/thesis_drafts/submit.html.twig', [
+        return $this->render('@App/thesis/drafts/submit.html.twig', [
             'thesis' => $thesis,
             'form'   => $form->createView(),
         ]);
@@ -101,7 +101,7 @@ class DraftController extends Controller
             );
         }
 
-        return $this->render('@App/thesis_drafts/submit_feedback.html.twig', [
+        return $this->render('@App/thesis/drafts/submit_feedback.html.twig', [
             'thesis' => $thesis,
             'draft'  => $draft,
             'form'   => $form->createView(),

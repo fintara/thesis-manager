@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Theses;
+namespace AppBundle\Controller\Thesis;
 
 use AppBundle\Entity\Review;
 use AppBundle\Entity\Thesis;
@@ -26,6 +26,8 @@ class ThesisController extends Controller
             $theses = $this->get('thesis.repository')->findAllToReviewBy($this->getUser());
         } elseif ($type === 'supervised') {
             $theses = $this->get('thesis.repository')->findAllSupervisedBy($this->getUser());
+        } else {
+            $theses = [];
         }
 
         return $this->render('@App/thesis/index.html.twig', [
