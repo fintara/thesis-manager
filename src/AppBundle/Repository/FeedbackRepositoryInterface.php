@@ -8,11 +8,25 @@
 
 namespace AppBundle\Repository;
 
-
 use AppBundle\Entity\Feedback;
 
+/**
+ * Interface FeedbackRepositoryInterface
+ * @package AppBundle\Repository
+ */
 interface FeedbackRepositoryInterface
 {
+    /**
+     * Saves and uploads a feedback.
+     *
+     * @param  Feedback $feedback Feedback to be saved
+     * @param  bool $flush        Whether to save it to database immediately
+     * @return Feedback           Saved feedback
+     */
     public function save(Feedback $feedback, bool $flush = true): Feedback;
-    public function setDirectory($directory);
+
+    /**
+     * @param string $directory Directory where feedbacks are saved
+     */
+    public function setDirectory(string $directory): void;
 }

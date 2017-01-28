@@ -33,7 +33,7 @@ class ReviewServiceTest extends \PHPUnit_Framework_TestCase
                 return $review;
             }
 
-            public function setDirectory($directory)
+            public function setDirectory(string $directory): void
             {
                 // TODO: Implement setDirectory() method.
             }

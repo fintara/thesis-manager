@@ -13,17 +13,31 @@ use AppBundle\Models\FeedbackModel;
 use AppBundle\Repository\FeedbackRepository;
 use AppBundle\Repository\FeedbackRepositoryInterface;
 
-
+/**
+ * Feedback service
+ * @package AppBundle\Services
+ */
 class FeedbackService
 {
     /** @var FeedbackRepository  */
     private $repo;
 
+    /**
+     * FeedbackService constructor.
+     * @param FeedbackRepositoryInterface $repository Repository for Feedback
+     */
     public function __construct(FeedbackRepositoryInterface $repository)
     {
         $this->repo = $repository;
     }
 
+    /**
+     * Creates and saves Feedback from FeedbackModel
+     *
+     * @param FeedbackModel $model  Initial data
+     * @param bool $flush           Whether to immediately save to database
+     * @return Feedback             Transformed Feedback
+     */
     public function create(FeedbackModel $model, bool $flush = true): Feedback
     {
         $feedback = new Feedback();

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Tests\Controller\Theses;
 
+use AppBundle\Entity\Review;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ReviewControllerTest extends WebTestCase
@@ -26,23 +27,10 @@ class ReviewControllerTest extends WebTestCase
         ]);
 
         $crawler = $client->request('GET', '/theses/to-review');
-
-//        $this->assertGreaterThan(
-//            0,
-//            $crawler->filter('html:contains("An application supporting the organization of social sport events")')->count()
-//        );
-
         $crawler = $client->click($crawler->selectLink('Details')->link());
-
-//        $this->assertGreaterThan(
-//            0,
-//            $crawler->filter('html:contains("Submit Review")')->count()
-//        );
-
         $crawler = $client->click($crawler->selectLink('Submit Review')->link());
 
         $form = $crawler->selectButton('Submit')->form();
-
         $form['form[file]']->upload(__DIR__.'/../../../dummy_file.zip');
         $title = 'Test Review'.rand(1000,9999);
         $form['form[title]']->setValue($title);
@@ -61,19 +49,8 @@ class ReviewControllerTest extends WebTestCase
 
         $this->assertEquals(1, count($reviews));
 
+        /** @var Review $review */
         $review = $reviews[0];
-
         $this->assertEquals(5.0, $review->getGrade());
     }
-//    public function testShowPost()
-//    {
-//        $client = static::createClient();
-//
-//        $crawler = $client->request('GET', '/post/hello-world');
-//
-//        $this->assertGreaterThan(
-//            0,
-//            $crawler->filter('html:contains("Hello World")')->count()
-//        );
-//    }
 }

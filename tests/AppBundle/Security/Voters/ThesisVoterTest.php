@@ -200,6 +200,7 @@ class ThesisVoterTest extends \PHPUnit_Framework_TestCase
 
     private function getTokenMock(User $user): TokenInterface
     {
+        /** @var TokenInterface|\PHPUnit_Framework_MockObject_MockObject $token */
         $token = $this->createMock(TokenInterface::class);
         $token->method('getUser')->willReturn($user);
         return $token;

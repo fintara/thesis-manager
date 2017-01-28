@@ -23,26 +23,8 @@ class TopicServiceTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->topicRepo = new class implements TopicRepositoryInterface {
-
-            public function findByIdAndStatus(int $id, string $status)
-            {
-                // TODO: Implement findByIdAndStatus() method.
-            }
-
-            public function findByStatus(string $status)
-            {
-                // TODO: Implement findByStatus() method.
-            }
-        };
-
-        $this->reservationRepo = new class implements ReservationRepositoryInterface {
-
-            public function save(Reservation $reservation, bool $flush = true)
-            {
-                // TODO: Implement save() method.
-            }
-        };
+        $this->topicRepo = $this->createMock(TopicRepositoryInterface::class);
+        $this->reservationRepo = $this->createMock(ReservationRepositoryInterface::class);
 
         $this->service = new TopicService($this->topicRepo, $this->reservationRepo);
     }

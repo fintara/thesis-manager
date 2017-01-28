@@ -2,13 +2,18 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Thesis;
 use AppBundle\Entity\Topic;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 
+/**
+ * Class TopicRepository
+ * @package AppBundle\Repository
+ */
 class TopicRepository extends EntityRepository implements TopicRepositoryInterface
 {
-    public function findByIdAndStatus(int $id, string $status)
+    public function findByIdAndStatus(int $id, string $status): ?Thesis
     {
         if (!in_array($status, Topic::getStatuses(), true)) {
             throw new \Exception('Invalid status "'.$status.'"');
@@ -29,7 +34,7 @@ WHERE t.id = :id AND t.status = :status'
         return $query->getSingleResult(AbstractQuery::HYDRATE_OBJECT);
     }
 
-    public function findByStatus(string $status)
+    public function findByStatus(string $status): array
     {
         if (!in_array($status, Topic::getStatuses(), true)) {
             throw new \Exception('Invalid status "'.$status.'"');

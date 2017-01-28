@@ -7,6 +7,10 @@ use AppBundle\Factory\UserFactory;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping;
 
+/**
+ * Class UserRepository
+ * @package AppBundle\Repository
+ */
 class UserRepository extends EntityRepository implements UserRepositoryInterface
 {
     /** @var UserFactory */

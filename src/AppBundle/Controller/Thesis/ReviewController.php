@@ -6,6 +6,7 @@ use AppBundle\Entity\Review;
 use AppBundle\Entity\Thesis;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Worker;
+use AppBundle\Exceptions\ReviewerDuplicatedException;
 use AppBundle\Models\ReviewModel;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -145,7 +146,7 @@ class ReviewController extends Controller
                 $thesis->setStatus(Thesis::STATUS_REVIEWING);
                 $this->get('thesis.repository')->save($thesis);
                 $savedIds[] = $id;
-            } catch (\Exception $e) {
+            } catch (ReviewerDuplicatedException $e) {
                 $badIds[] = $id;
             }
         }
