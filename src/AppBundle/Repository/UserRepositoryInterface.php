@@ -10,6 +10,7 @@ namespace AppBundle\Repository;
 
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\Worker;
 
 /**
  * Interface UserRepositoryInterface
@@ -18,14 +19,24 @@ use AppBundle\Entity\User;
 interface UserRepositoryInterface
 {
     /**
-     * Returns a list of users with provided type
+     * Returns a list of users with provided type.
+     *
      * @param  string $type Worker or Student
      * @return User[]
      */
     public function findByType(string $type): array;
 
     /**
-     * Saves a user
+     * Returns worker with provided ID.
+     *
+     * @param  int $id      ID of Worker
+     * @return Worker|null
+     */
+    public function findWorker(int $id): ?Worker;
+
+    /**
+     * Saves a user.
+     *
      * @param User $user    User to be saved
      * @return User         Saved user
      */

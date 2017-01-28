@@ -2,7 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Student;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Worker;
 use AppBundle\Factory\UserFactory;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping;
@@ -16,6 +18,9 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     /** @var UserFactory */
     private $userFactory;
 
+    /**
+     * {@inheritdoc}
+     */
     public function findByType(string $type): array
     {
         return $this->getEntityManager()->getRepository(
@@ -23,6 +28,24 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         )->findAll();
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function findWorker(int $id): ?Worker
+    {
+        /** @var Worker|Student|null $user */
+        $user = $this->find($id);
+
+        if (!$user || $user->getType() !== Worker::TYPE) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function save(User $user): User
     {
         $this->getEntityManager()->persist($user);
@@ -31,7 +54,10 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         return $user;
     }
 
-    public function setUserFactory(UserFactory $userFactory)
+    /**
+     * @param UserFactory $userFactory
+     */
+    public function setUserFactory(UserFactory $userFactory): void
     {
         $this->userFactory = $userFactory;
     }

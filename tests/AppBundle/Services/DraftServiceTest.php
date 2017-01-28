@@ -28,7 +28,7 @@ class DraftServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->repo = $this->createMock(DraftRepositoryInterface::class);
         $this->repo->method('findLastVersion')->willReturn(5);
-        
+
         $this->service = new DraftService($this->repo);
     }
 

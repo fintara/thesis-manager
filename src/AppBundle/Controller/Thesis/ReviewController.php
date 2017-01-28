@@ -129,10 +129,10 @@ class ReviewController extends Controller
                 continue;
             }
 
-            /** @var User|Worker $reviewer */
-            $reviewer = $this->get('user.repository')->find($pair['reviewer']);
+            /** @var Worker $reviewer */
+            $reviewer = $this->get('user.repository')->findWorker($pair['reviewer']);
 
-            if (!$reviewer || $reviewer->getType() !== Worker::TYPE) {
+            if (!$reviewer) {
                 $badIds[] = $id;
                 continue;
             }
