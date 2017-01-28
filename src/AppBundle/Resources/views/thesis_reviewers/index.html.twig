@@ -37,7 +37,7 @@
                         <td class="nowrap">{{ '{{ thesis.students[0].fullName }}' }}</td>
                         <td class="nowrap">{{ '{{ thesis.supervisor.fullName }}' }}</td>
                         <td class="nowrap">
-                            <span v-if="!thesis.$status || thesis.$status == 'editing'">
+                            <span v-show="!thesis.$status || thesis.$status == 'editing'">
                                 <select2 :options="getReviewersExcept(thesis.supervisor.id)" v-model="theses[idx].reviewer">
                                     <option disabled value="0">(select)</option>
                                 </select2>
