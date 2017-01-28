@@ -11,22 +11,39 @@ namespace AppBundle\Services;
 
 use AppBundle\Entity\Thesis;
 use AppBundle\Entity\Worker;
-use AppBundle\Repository\ThesisRepository;
+use AppBundle\Exceptions\ReviewerDuplicatedException;
+use AppBundle\Repository\ThesisRepositoryInterface;
 
+/**
+ * Thesis service
+ * @package AppBundle\Services
+ */
 class ThesisService
 {
-    /** @var ThesisRepository  */
+    /** @var ThesisRepositoryInterface  */
     private $repo;
 
-    public function __construct(ThesisRepository $repository)
+    /**
+     * ThesisService constructor.
+     * @param ThesisRepositoryInterface $repository Repository for thesis
+     */
+    public function __construct(ThesisRepositoryInterface $repository)
     {
         $this->repo = $repository;
     }
 
+    /**
+     * Assigns worker as a reviewer to thesis
+     *
+     * @param Thesis $thesis        Thesis to assign worker to
+     * @param Worker $reviewer      Reviewer
+     * @param bool $flush           Whether to immediately save to database
+     * @throws \Exception           Thrown if reviewer is already assigned
+     */
     public function assignReviewer(Thesis $thesis, Worker $reviewer, bool $flush = true)
     {
         if ($thesis->getReviewers()->contains($reviewer)) {
-            throw new \Exception('Reviewer already assigned');
+            throw new ReviewerDuplicatedException('Reviewer already assigned');
         }
 
         $thesis->addReviewer($reviewer);

@@ -37,6 +37,32 @@
         "doctrine/doctrine-fixtures-bundle": "^2.3"
     },
     "scripts": {
+        "test-init": [
+            "bin/console doctrine:database:drop -q --force --if-exists --env=test --ansi",
+            "bin/console doctrine:database:create -q --env=test --ansi",
+            "bin/console doctrine:migrations:migrate -q --env=test --ansi"
+        ],
+        "test-all": [
+            "@test-init",
+            "@test",
+            "bin/console doctrine:database:drop -q --force --env=test --ansi"
+        ],
+        "test": [
+            "bin/console cache:clear -q --env=test --ansi",
+            "bin/console doctrine:fixtures:load -q --env=test --ansi",
+            "phpunit --colors=always"
+        ],
+        "generate-docs": [
+            "@generate-api-docs",
+            "@generate-metrics"
+        ],
+        "generate-api-docs": [
+            "phpdoc --config phpdoc.xml"
+        ],
+        "generate-metrics": [
+            "mkdir -p docs/metrics",
+            "pdepend --summary-xml=docs/metrics/summary.xml --jdepend-chart=docs/metrics/jdepend.svg --overview-pyramid=docs/metrics/pyramid.svg src"
+        ],
         "symfony-scripts": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",

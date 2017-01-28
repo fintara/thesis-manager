@@ -11,21 +11,34 @@ namespace AppBundle\Services;
 
 use AppBundle\Entity\Review;
 use AppBundle\Entity\Thesis;
-use AppBundle\Entity\Worker;
 use AppBundle\Models\ReviewModel;
-use AppBundle\Repository\ReviewRepository;
-use AppBundle\Repository\ThesisRepository;
+use AppBundle\Repository\ReviewRepositoryInterface;
 
+/**
+ * Review service
+ * @package AppBundle\Services
+ */
 class ReviewService
 {
-    /** @var ReviewRepository  */
+    /** @var ReviewRepositoryInterface  */
     private $repo;
 
-    public function __construct(ReviewRepository $repository)
+    /**
+     * ReviewService constructor.
+     * @param ReviewRepositoryInterface $repository Repository for Review
+     */
+    public function __construct(ReviewRepositoryInterface $repository)
     {
         $this->repo = $repository;
     }
 
+    /**
+     * Creates and saves Review from ReviewModel
+     *
+     * @param ReviewModel $model    Initial data
+     * @param bool $flush           Whether to immediately save to database
+     * @return Review               Transformed Review
+     */
     public function create(ReviewModel $model, bool $flush = true): Review
     {
         $review = new Review();
@@ -43,6 +56,13 @@ class ReviewService
         return $review;
     }
 
+    /**
+     * Assigns review to a thesis
+     *
+     * @param Review $review    Review to be assigned
+     * @param Thesis $thesis    Thesis to which review is assigned
+     * @return Review           Assigned review
+     */
     public function assign(Review $review, Thesis $thesis): Review
     {
         $review->setThesis($thesis);

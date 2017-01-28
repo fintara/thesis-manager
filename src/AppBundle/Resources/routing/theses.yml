@@ -1,13 +1,13 @@
 app_theses_get:
   path: /{type}
-  defaults: { _controller: AppBundle:Theses/Thesis:getTheses }
+  defaults: { _controller: AppBundle:Thesis/Thesis:getTheses }
   requirements:
     type: all|to-review|supervised
   methods: [GET]
 
 app_thesis_get:
   path: /{thesis}
-  defaults: { _controller: AppBundle:Theses/Thesis:getThesis }
+  defaults: { _controller: AppBundle:Thesis/Thesis:getThesis }
   requirements:
     thesis: '\d+'
   methods: [GET]
@@ -20,7 +20,7 @@ app_thesis_drafts:
 
 app_thesis_review_new:
   path: /{thesis}/reviews/new
-  defaults: { _controller: AppBundle:Theses/Review:newReview }
+  defaults: { _controller: AppBundle:Thesis/Review:newReview }
   methods: [GET, POST]
 
 app_theses_choose_reviewers:

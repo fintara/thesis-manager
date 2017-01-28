@@ -1,14 +1,14 @@
 app_theses_choose_reviewers_get:
   path: /
-  defaults: { _controller: AppBundle:Theses/Review:getChooseReviewers }
+  defaults: { _controller: AppBundle:Thesis/Review:getChooseReviewers }
   methods: [GET]
 
 app_theses_choose_reviewers_ajax:
   path: /ajax
-  defaults: { _controller: AppBundle:Theses/Review:ajaxGetChooseReviewers }
+  defaults: { _controller: AppBundle:Thesis/Review:ajaxGetChooseReviewers }
   methods: [GET]
 
 app_theses_choose_reviewers_post:
   path: /
-  defaults: { _controller: AppBundle:Theses/Review:postChooseReviewers }
+  defaults: { _controller: AppBundle:Thesis/Review:postChooseReviewers }
   methods: [POST]

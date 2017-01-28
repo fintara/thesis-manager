@@ -1,0 +1,52 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: fintara
+ * Date: 07/01/2017
+ * Time: 23:11
+ */
+
+namespace AppBundle\Security\User;
+
+
+use AppBundle\Entity\User;
+use AppBundle\Repository\UserRepository;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+
+class MultiUserProvider implements UserProviderInterface
+{
+    private $repository;
+
+    public function __construct(UserRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function loadUserByUsername($email)
+    {
+        $user = $this->repository->findOneByEmail($email);
+
+        if ($user === null) {
+            throw new UsernameNotFoundException('User with email "'.$email.'" does not exist.');
+        }
+
+        return $user;
+    }
+
+    public function refreshUser(UserInterface $user)
+    {
+        if (!$user instanceof User) {
+            throw new UnsupportedUserException();
+        }
+
+        return $this->loadUserByUsername($user->getEmail());
+    }
+
+    public function supportsClass($class)
+    {
+        return User::class === $class;
+    }
+}

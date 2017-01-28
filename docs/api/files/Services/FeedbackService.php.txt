@@ -1,0 +1,58 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: fintara
+ * Date: 18/01/2017
+ * Time: 22:02
+ */
+
+namespace AppBundle\Services;
+
+use AppBundle\Entity\Feedback;
+use AppBundle\Models\FeedbackModel;
+use AppBundle\Repository\FeedbackRepository;
+use AppBundle\Repository\FeedbackRepositoryInterface;
+
+/**
+ * Feedback service
+ * @package AppBundle\Services
+ */
+class FeedbackService
+{
+    /** @var FeedbackRepository  */
+    private $repo;
+
+    /**
+     * FeedbackService constructor.
+     * @param FeedbackRepositoryInterface $repository Repository for Feedback
+     */
+    public function __construct(FeedbackRepositoryInterface $repository)
+    {
+        $this->repo = $repository;
+    }
+
+    /**
+     * Creates and saves Feedback from FeedbackModel
+     *
+     * @param FeedbackModel $model  Initial data
+     * @param bool $flush           Whether to immediately save to database
+     * @return Feedback             Transformed Feedback
+     */
+    public function create(FeedbackModel $model, bool $flush = true): Feedback
+    {
+        $feedback = new Feedback();
+
+        $feedback->setFile($model->file);
+        $feedback->setContent($model->comment);
+        $feedback->setSupervisor($model->supervisor);
+        $feedback->setDraft($model->draft);
+        $feedback->setCreatedAt(new \DateTime());
+
+        if ($flush) {
+            $this->repo->save($feedback);
+        }
+
+        return $feedback;
+    }
+
+}

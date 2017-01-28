@@ -113,6 +113,11 @@
             apply: function(event, index, id) {
                 index = (this.page-1) * this.perPage + index;
                 var topic = this.topics[index];
+
+                if (!confirm('Are you sure you want to apply to "'+topic.title+'"')) {
+                    return;
+                }
+
                 topic.$applying = true;
                 Vue.set(this.topics, index, topic);
                 $.post('/topics/'+id+'/reserve', function(data) {

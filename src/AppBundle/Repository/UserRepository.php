@@ -7,15 +7,19 @@ use AppBundle\Factory\UserFactory;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping;
 
-class UserRepository extends EntityRepository
+/**
+ * Class UserRepository
+ * @package AppBundle\Repository
+ */
+class UserRepository extends EntityRepository implements UserRepositoryInterface
 {
     /** @var UserFactory */
     private $userFactory;
 
-    public function findByType(string $type)
+    public function findByType(string $type): array
     {
         return $this->getEntityManager()->getRepository(
-            $this->userFactory->getClass($type)
+            $this->userFactory->resolveClass($type)
         )->findAll();
     }
 

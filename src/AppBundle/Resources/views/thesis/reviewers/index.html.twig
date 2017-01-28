@@ -1,0 +1,235 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block content %}
+
+    <div class="container" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+        <div class="box theses-list--choose-reviewer" id="theses-list--choose-reviewer">
+            <div class="box-header"><h2>Choose a reviewer</h2></div>
+            <div class="box-body">
+
+                {#<div class="clearfix reviewers-list--panel">#}
+                    {#<div class="pull-left reviewer-list--panel--info" v-show="loaded">#}
+                        {#{% set topicsLength = topics | length %}#}
+                        {#{{ topicsLength }} reviewers{% if topicsLength != 1 %}s{% endif %}#}
+                        {#{{ '{{ filteredTopics.length }} reviewer' }}#}
+                    {#</div>#}
+                    {#<div class="pull-right reviewer-list--panel--filter" v-show="loaded">#}
+                        {#<input class="form-control" v-model.trim="query" type="text" placeholder="Search...">#}
+                    {#</div>#}
+                {#</div><!-- /reviewer-list--panel -->#}
+
+                <span class="fa fa-spin fa-circle-o-notch loader" v-show="!loaded"></span>
+
+                <table class="table table-bordered table-hover table-sm theses-list--choose-reviewer--table" v-show="loaded" style="display: none;">
+                    <thead class="thread-default">
+                    <tr>
+                        <th>Thesis</th>
+                        <th>Student</th>
+                        <th>Supervisor</th>
+                        <th>Reviewer</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(thesis, idx) in theses">
+                        <td>{{ '{{ thesis.title }}' }}</td>
+                        <td class="nowrap">{{ '{{ thesis.students[0].fullName }}' }}</td>
+                        <td class="nowrap">{{ '{{ thesis.supervisor.fullName }}' }}</td>
+                        <td class="nowrap">
+                            <span v-show="!thesis.$status || thesis.$status == 'editing'">
+                                <select2 :options="getReviewersExcept(thesis.supervisor.id)" v-model="theses[idx].reviewer">
+                                    <option disabled value="0">(select)</option>
+                                </select2>
+                            </span>
+                            <span v-if="thesis.$status == 'applied' || thesis.$status == 'saved'">
+                                {{ '{{ reviewersById[thesis.reviewer].fullName }}' }}
+                            </span>
+                            <span v-if="thesis.$error == true">
+                                <span class="fa fa-exclamation-triangle red"></span>
+                            </span>
+                        </td>
+                        <td class="action center">
+                            <button v-if="!thesis.$status || thesis.$status == 'editing'" @click="applyThesis(idx)" class="btn btn-link" type="button">Apply</button>
+                            <button v-if="thesis.$status == 'applied'" @click="editThesis(idx)" class="btn btn-link" type="button">Edit</button>
+                            <span v-if="thesis.$status == 'saved'" class="approved">Saved</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="center" v-if="canSave">
+                    <button v-if="!saving" @click="saveAll" class="btn btn-primary" type="button">Save</button>
+                    <button v-if="saving" disabled class="btn btn-primary" type="button">
+                        <span class="fa fa-spin fa-circle-o-notch"></span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div> <!-- /container -->
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/x-template" id="select2-template">
+        <select>
+            <slot></slot>
+        </select>
+    </script>
+
+    <script>
+        Vue.component('select2', {
+            props: ['options', 'value'],
+            template: '#select2-template',
+            mounted: function () {
+                var vm = this
+                $(this.$el)
+                    .val(this.value)
+                    // init select2
+                    .select2({ data: this.options })
+                    // emit event on change.
+                    .on('change', function () {
+                        vm.$emit('input', this.value)
+                    })
+            },
+            watch: {
+                value: function (value) {
+                    // update value
+                    $(this.$el).val(value)
+                },
+                options: function (options) {
+                    // update options
+                    $(this.$el).select2({ data: options })
+                }
+            },
+            destroyed: function () {
+                $(this.$el).off().select2('destroy')
+            }
+        });
+
+        new Vue({
+            el: '#theses-list--choose-reviewer',
+            data: {
+                loaded: false,
+                saving: false,
+                canSave: true,
+                reviewers: [],
+                theses: []
+            },
+            computed: {
+                reviewersById: function() {
+                    var obj = {};
+                    for (var i = 0; i < this.reviewers.length; i++) {
+                        obj[this.reviewers[i].id] = this.reviewers[i];
+                    }
+                    return obj;
+                }
+            },
+            created: function() {
+                var url = '/theses/reviewers/ajax';
+
+                if (location.search.length > 0) {
+                    var queryDict = {};
+                    location.search.substr(1).split('&')
+                        .forEach(function(item) {
+                            queryDict[item.split('=')[0]] = item.split('=')[1];
+                        });
+
+                    var thesisId = +queryDict['thesis_id'];
+                    if (thesisId > 0) {
+                        url += '?thesis_id=' + thesisId;
+                    }
+                }
+
+                $.get(url, function(data) {
+                    this.$data.reviewers = data.reviewers.list;
+                    this.$data.theses = data.theses.list;
+
+                    this.$data.loaded = true;
+                }.bind(this));
+            },
+            methods: {
+                getReviewersExcept: function(id) {
+                    return this.reviewers.filter(function(r) {
+                        return r.id != id;
+//                        return true;
+                    }).map(function(r) {
+                        return { id: r.id, text: r.fullName };
+                    });
+                },
+                applyThesis: function(idx) {
+                    var thesis = this.theses[idx];
+
+                    if (thesis.reviewer == 0) {
+                        alert('Select reviewer');
+                        return;
+                    }
+
+                    thesis.$status = 'applied';
+                    Vue.set(this.theses, idx, thesis);
+                },
+                editThesis: function(idx) {
+                    var thesis = this.theses[idx];
+                    thesis.$error = false;
+                    thesis.$status = 'editing';
+                    Vue.set(this.theses, idx, thesis);
+                },
+                saveAll: function(event) {
+                    var data = [];
+                    for (var i = 0; i < this.theses.length; i++) {
+                        var t = this.theses[i];
+
+                        if (t.$status == undefined || t.$status != 'applied') {
+                            continue;
+                        }
+
+                        data.push({
+                            thesis: t.id,
+                            reviewer: t.reviewer
+                        });
+                    }
+
+                    if (data.length === 0) {
+                        alert('Select at least one reviewer');
+                        return;
+                    }
+
+                    this.saving = true;
+
+                    $.post('/theses/reviewers/', { 'data': data }, function(res) {
+                        this.saving = false;
+
+                        var savedCounter = 0;
+
+                        for (var i = 0; i < this.theses.length; i++) {
+                            var t = this.theses[i];
+
+                            if (t.$status == 'saved') {
+                                savedCounter++;
+                            } else if (res.savedIds.indexOf(t.id) > -1) {
+                                savedCounter++;
+                                t.$status = 'saved';
+                                Vue.set(this.theses, i, t);
+                            } else if (res.badIds.indexOf(t.id) > -1) {
+                                t.$error = true;
+                                Vue.set(this.theses, i, t);
+                            }
+                        }
+
+                        this.canSave = savedCounter < this.theses.length;
+
+                        if (res.message == 'ok') {
+                            alert('Saved successfully!');
+                        } else if (res.message == 'semi') {
+                            alert('Partially saved');
+                        } else {
+                            alert('Nothing saved');
+                        }
+                    }.bind(this));
+                }
+            }
+        });
+    </script>
+{% endblock %}

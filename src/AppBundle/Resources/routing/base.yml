@@ -1,21 +1,21 @@
 app_home_get:
   path: /
-  defaults: { _controller: AppBundle:Default:index }
+  defaults: { _controller: AppBundle:Common/Default:index }
   methods: [GET]
 
 app_login_get:
   path: /login
-  defaults: { _controller: AppBundle:Auth:getLogin }
+  defaults: { _controller: AppBundle:Security/Auth:getLogin }
   methods: [GET]
 
 app_login_post:
   path: /login
-  defaults: { _controller: AppBundle:Auth:postLogin }
+  defaults: { _controller: AppBundle:Security/Auth:postLogin }
   methods: [POST]
 
 app_logout:
   path: /logout
-  defaults: { _controller: AppBundle:Default:index }
+  defaults: { _controller: AppBundle:Common/Default:index }
   methods: [GET]
 
 app_topics:

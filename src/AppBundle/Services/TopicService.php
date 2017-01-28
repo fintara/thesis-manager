@@ -13,20 +13,41 @@ use AppBundle\Entity\Reservation;
 use AppBundle\Entity\Student;
 use AppBundle\Entity\Topic;
 use AppBundle\Exceptions\TopicReservedException;
-use AppBundle\Repository\ReservationRepository;
-use AppBundle\Repository\TopicRepository;
+use AppBundle\Repository\ReservationRepositoryInterface;
+use AppBundle\Repository\TopicRepositoryInterface;
 
+/**
+ * Topic service
+ * @package AppBundle\Services
+ */
 class TopicService
 {
+    /** @var TopicRepositoryInterface  */
     private $topicRepo;
+
+    /** @var ReservationRepositoryInterface  */
     private $reservationRepo;
 
-    public function __construct(TopicRepository $topicRepository, ReservationRepository $reservationRepository)
+    /**
+     * TopicService constructor.
+     *
+     * @param TopicRepositoryInterface $topicRepository
+     * @param ReservationRepositoryInterface $reservationRepository
+     */
+    public function __construct(TopicRepositoryInterface $topicRepository,
+                                ReservationRepositoryInterface $reservationRepository)
     {
         $this->topicRepo = $topicRepository;
         $this->reservationRepo = $reservationRepository;
     }
 
+    /**
+     * Reserves a topic for a student.
+     * @param Topic $topic          Topic a student wants to reserve
+     * @param Student $student      Student that wants to reserve a topic
+     * @return Reservation          Created reservation
+     * @throws TopicReservedException   Thrown if this student has already reserved this topic
+     */
     public function reserve(Topic $topic, Student $student): Reservation
     {
         if ($topic->isReservedFor($student)) {

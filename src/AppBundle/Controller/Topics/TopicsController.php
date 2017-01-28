@@ -1,0 +1,75 @@
+<?php
+
+namespace AppBundle\Controller\Topics;
+
+use AppBundle\Entity\Topic;
+use AppBundle\Exceptions\TopicReservedException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+
+class TopicsController extends Controller
+{
+    /**
+     * @Security("has_role('ROLE_STUDENT')")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getTopicsAction(Request $request)
+    {
+        return $this->render('@App/topics/index.html.twig');
+    }
+
+    /**
+     * @Security("has_role('ROLE_STUDENT')")
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function ajaxGetTopicsAction(Request $request)
+    {
+        $topics = $this->get('topic.repository')->findByStatus(Topic::STATUS_APPROVED);
+
+        return new JsonResponse([
+            'count' => count($topics),
+            'list'  => array_map(function($topic) {
+                return $this->get('serializer')->normalize($topic);
+            }, $topics),
+        ]);
+    }
+
+    /**
+     * @Security("has_role('ROLE_STUDENT')")
+     *
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function ajaxReserveTopicAction(Request $request, int $id)
+    {
+        $topic = $this->get('topic.repository')->findByIdAndStatus($id, Topic::STATUS_APPROVED);
+
+        if (!$topic) {
+            return new JsonResponse([
+                'message' => 'not found'
+            ]);
+        }
+
+        try {
+            $reservation = $this->get('topic.service')->reserve($topic, $this->getUser());
+
+            return new JsonResponse([
+                'message' => 'ok',
+                'topic' => $this->get('serializer')->normalize($topic),
+            ]);
+        } catch (TopicReservedException $e1) {
+            return new JsonResponse([
+                'message' => 'already reserved',
+            ]);
+        }
+    }
+}
+
+

@@ -8,6 +8,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,7 +19,7 @@ class Worker extends User
     const TYPE = 'worker';
   
     /**
-     * @var Topic[]
+     * @var Topic[]|ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Topic",mappedBy="supervisor")
      */
@@ -30,6 +31,15 @@ class Worker extends User
      * @ORM\Column(name="degrees", type="array")
      */
     private $degrees = [];
+
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->topics = new ArrayCollection();
+    }
+
     /**
      * @return Topic[]
      */
@@ -45,19 +55,7 @@ class Worker extends User
     {
         $this->topics = $topics;
     }
-    public function canReview(Thesis $thesis)
-    {
-        $isReviewer = $thesis->getReviewers()->contains($this);
 
-        if (!$isReviewer) {
-            return false;
-        }
-
-        return !$thesis->getReviews()->map(function($review) {
-            /** @var Review $review */
-            return $review->getReviewer();
-        })->contains($this);
-    }
     public function addDegree(string $degree): void
     {
         if (in_array($degree, $this->degrees)) {
