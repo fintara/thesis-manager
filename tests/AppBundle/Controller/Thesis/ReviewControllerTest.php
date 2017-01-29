@@ -22,7 +22,7 @@ class ReviewControllerTest extends WebTestCase
         $client->followRedirects();
 
         $crawler = $client->request('POST', '/login', [
-            '_email' => 'abc@teacher.org',
+            '_email' => 't4@example.org',
             '_pass' => '123'
         ]);
 

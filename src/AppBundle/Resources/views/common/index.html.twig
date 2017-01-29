@@ -3,4 +3,9 @@
 {% block content %}
 <h1>Ahoy!</h1>
     {{ base_dir }}
+
+    <div class="box">
+        <div class="box-header">Sample data</div>
+        <div class="box-body"><pre>{% include '@App/common/sample_data.txt' %}</pre></div>
+    </div>
 {% endblock %}

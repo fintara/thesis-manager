@@ -23,7 +23,7 @@ class DraftControllerTest extends WebTestCase
         $client->followRedirects();
 
         $crawler = $client->request('POST', '/login', [
-            '_email' => 'abc@student.org',
+            '_email' => 's2@example.org',
             '_pass' => '123'
         ]);
 
@@ -49,5 +49,29 @@ class DraftControllerTest extends WebTestCase
 
         $this->assertInstanceOf(Draft::class, $draft);
         $this->assertEquals($comment, $draft->getComment());
+    }
+
+    public function testUnableToUploadDraftOfAThesis()
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+
+        $crawler = $client->request('POST', '/login', [
+            '_email' => 's3@example.org',
+            '_pass' => '123'
+        ]);
+
+        $thesisLink = $crawler->filter('ul.navbar-nav')->filter('li.dropdown')->selectLink('An application for a private dental office');
+        $crawler = $client->click($thesisLink->link());
+        $crawler = $client->click($crawler->filter('div.theses-list--panel')->selectLink('Drafts')->link());
+
+        $link = $crawler->filter('div.theses-list--panel')->selectLink('Upload Draft');
+
+        $this->assertNotFalse(strstr($link->attr('class'), 'disabled'));
+    }
+
+    public function testAddFeedbackToADraft()
+    {
+
     }
 }

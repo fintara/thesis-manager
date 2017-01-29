@@ -1,0 +1,48 @@
+DEANS:
+    1: d1@example.org;123;
+
+TEACHERS:
+    1: t1@example.org;123; (topics:1,2,3)
+    2: t2@example.org;123; (topics:4,5,6,7)
+    3: t3@example.org;123; (topics:8,9,10,11)
+    4: t4@example.org;123; (topics:12,13,14,15,16)
+
+STUDENTS:
+    1: s1@example.org;123; (has nothing)
+    2: s2@example.org;123; (reservation:1(rej),2(apr); thesis:2)
+    3: s3@example.org;123; (reservation:3(apr),4(apr); thesis:3,4)
+    4: s4@example.org;123; (reservation:6(apr); thesis:6 (final))
+    5: s5@example.org;123; (reservation:7(apr); thesis:7 (final))
+    6: s6@example.org;123; (reservation:8(apr); thesis:8 (final))
+    7: s7@example.org;123; (reservation:10(apr); thesis:10 (final))
+
+THESES:
+    1: stud:2,topic:2,draft
+    2: stud:3,topic:3,draft
+    3: stud:3,topic:4,final
+    4: stud:4,topic:6,final
+    5: stud:5,topic:7,final
+    6: stud:6,topic:8,final (reviewers:3,2; reviews: 3.5, 2.0)
+    7: stud:7,topic:10,final (reviewers:3,4)
+
+DRAFTS:
+    1: thesis:1,(topic:2),stud:2,last week
+    2: thesis:2,(topic:3),stud:3,now
+
+TOPICS:
+    1: An application supporting the organization of social sport events
+    2: An application supporting the work of organizer of group events
+    3: An application for a private dental office
+    4: An application for a private veterinary office
+    5: Development of laboratory tool for the purpose of designing control systems for a PTZ camera
+    6: The online music store in ASP.NET MVC 6 technology
+    7: Development of PLC simulator for Siemens S7-200
+    8: Development of people tracking system based on video in poor lighting conditions
+    9: Implementation of the software for image segmentation based on variational autoencoders
+    10: Web application with answering questions through SMS
+    11: The system for managing affiliate advertising network
+    12: Design and implementation of application to optimize the cutting of wood panels
+    13: Design and implementation of a smart mirror on the Raspberry Pi
+    14: Implementation of a 3D game with the use of Unity
+    15: Design of a cross-compiler for a chosen PLC controller
+    16: Design and implementation of a tool for graphical synthesis of control algorithms in a selected package for robot simulation
