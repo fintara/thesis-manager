@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Tests\Controller\Theses;
+namespace AppBundle\Tests\Controller\Thesis;
 
 use AppBundle\Entity\Review;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -22,7 +22,7 @@ class ReviewControllerTest extends WebTestCase
         $client->followRedirects();
 
         $crawler = $client->request('POST', '/login', [
-            '_email' => 'abc@teacher.org',
+            '_email' => 't4@example.org',
             '_pass' => '123'
         ]);
 
@@ -31,8 +31,11 @@ class ReviewControllerTest extends WebTestCase
         $crawler = $client->click($crawler->selectLink('Submit Review')->link());
 
         $form = $crawler->selectButton('Submit')->form();
-        $form['form[file]']->upload(__DIR__.'/../../../dummy_file.zip');
-        $title = 'Test Review'.rand(1000,9999);
+
+        $dummyFile = __DIR__.'/../../../dummy_file.zip';
+        $form['form[file]']->upload($dummyFile);
+
+        $title = 'Test review';
         $form['form[title]']->setValue($title);
         $form['form[grade]']->select(5.0);
 
@@ -52,5 +55,11 @@ class ReviewControllerTest extends WebTestCase
         /** @var Review $review */
         $review = $reviews[0];
         $this->assertEquals(5.0, $review->getGrade());
+
+        // file was uploaded
+        $this->assertEquals(
+            filesize($dummyFile),
+            filesize($client->getKernel()->getContainer()->getParameter('reviews_directory').'/'.$review->getFilename())
+        );
     }
 }

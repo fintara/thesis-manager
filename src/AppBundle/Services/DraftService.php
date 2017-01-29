@@ -26,6 +26,7 @@ class DraftService
 
     /**
      * DraftService constructor.
+     *
      * @param DraftRepositoryInterface $repository Repository for Draft
      */
     public function __construct(DraftRepositoryInterface $repository)
@@ -34,7 +35,7 @@ class DraftService
     }
 
     /**
-     * Creates and saves Draft from DraftModel
+     * Creates and saves Draft from DraftModel.
      *
      * @param  DraftModel $model    Initial data
      * @param  bool $flush          Whether to immediately save to database

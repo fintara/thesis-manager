@@ -129,21 +129,24 @@ class ReviewController extends Controller
                 continue;
             }
 
-            /** @var User|Worker $reviewer */
-            $reviewer = $this->get('user.repository')->find($pair['reviewer']);
+            /** @var Worker $reviewer */
+            $reviewer = $this->get('user.repository')->findWorker($pair['reviewer']);
 
-            if (!$reviewer || $reviewer->getType() !== Worker::TYPE) {
+            if (!$reviewer) {
                 $badIds[] = $id;
                 continue;
             }
 
 
             try {
+                $this->get('thesis.service')->assignReviewer($thesis, $reviewer, false);
+
                 if (!$thesis->getReviewers()->contains($thesis->getSupervisor())) {
                     $this->get('thesis.service')->assignReviewer($thesis, $thesis->getSupervisor(), false);
                 }
-                $this->get('thesis.service')->assignReviewer($thesis, $reviewer, false);
+
                 $thesis->setStatus(Thesis::STATUS_REVIEWING);
+                
                 $this->get('thesis.repository')->save($thesis);
                 $savedIds[] = $id;
             } catch (ReviewerDuplicatedException $e) {

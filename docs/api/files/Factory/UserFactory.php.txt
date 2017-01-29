@@ -14,12 +14,19 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\Worker;
 use AppBundle\Exceptions\UnknownUserTypeException;
 
+/**
+ * User factory
+ *
+ * @package AppBundle\Factory
+ */
 class UserFactory
 {
     /**
-     * @param string $type Worker or Student
-     * @return User
-     * @throws UnknownUserTypeException Thrown if user type is unknown
+     * Creates an instance of provided user type.
+     *
+     * @param   string $type Type of user to be created
+     * @return  User
+     * @throws  UnknownUserTypeException Thrown if user type is unknown
      */
     public function createUser(string $type): User
     {
@@ -28,9 +35,11 @@ class UserFactory
     }
 
     /**
-     * @param string $type  Worker or Student
-     * @return string       Class for user of this type
-     * @throws UnknownUserTypeException Thrown if user type is unknown
+     * Provides class name of provided user type.
+     *
+     * @param   string $type    Type of user
+     * @return  string
+     * @throws  UnknownUserTypeException Thrown if user type is unknown
      */
     public function resolveClass(string $type): string
     {

@@ -12,6 +12,7 @@ use AppBundle\Entity\Feedback;
 
 /**
  * Interface FeedbackRepositoryInterface
+ *
  * @package AppBundle\Repository
  */
 interface FeedbackRepositoryInterface
@@ -24,9 +25,4 @@ interface FeedbackRepositoryInterface
      * @return Feedback           Saved feedback
      */
     public function save(Feedback $feedback, bool $flush = true): Feedback;
-
-    /**
-     * @param string $directory Directory where feedbacks are saved
-     */
-    public function setDirectory(string $directory): void;
 }

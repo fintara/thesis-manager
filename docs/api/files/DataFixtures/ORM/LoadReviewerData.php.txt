@@ -33,15 +33,16 @@ class LoadReviewerData extends AbstractFixture
 
         // teacher | thesis | review_grade
         $reviewers = [
-            [0, 1],
-            [0, 2, 4.5],
-            [1, 2, 2.0],
+            ['thesis' => 6, 'teacher' => 2, 'grade' => 2.0],
+            ['thesis' => 6, 'teacher' => 3, 'grade' => 3.0],
+            ['thesis' => 7, 'teacher' => 3, 'grade' => null],
+            ['thesis' => 7, 'teacher' => 4, 'grade' => null],
         ];
 
         for($i = 0; $i < count($reviewers); $i++) {
             $this->assignReviewer($reviewers[$i]);
 
-            if (count($reviewers[$i]) > 2) {
+            if ($reviewers[$i]['grade'] !== null) {
                 $this->addReview($reviewers[$i]);
             }
         }
@@ -52,9 +53,9 @@ class LoadReviewerData extends AbstractFixture
     private function assignReviewer(array $data)
     {
         /** @var Thesis $thesis */
-        $thesis = $this->getReference('thesis-'.$data[1]);
+        $thesis = $this->getReference('thesis-'.$data['thesis']);
         /** @var Worker $worker */
-        $worker = $this->getReference('teacher-'.$data[0]);
+        $worker = $this->getReference('teacher-'.$data['teacher']);
 
         $thesis->addReviewer($worker);
 
@@ -64,9 +65,9 @@ class LoadReviewerData extends AbstractFixture
     private function addReview(array $data)
     {
         /** @var Thesis $thesis */
-        $thesis = $this->getReference('thesis-'.$data[1]);
+        $thesis = $this->getReference('thesis-'.$data['thesis']);
         /** @var Worker $worker */
-        $worker = $this->getReference('teacher-'.$data[0]);
+        $worker = $this->getReference('teacher-'.$data['teacher']);
 
         $review = new Review();
         $review->setFilename('dummy');
@@ -74,7 +75,7 @@ class LoadReviewerData extends AbstractFixture
         $review->setThesis($thesis);
         $review->setTitle('Review');
         $review->setCreatedAt(new \DateTime());
-        $review->setGrade($data[2]);
+        $review->setGrade($data['grade']);
 
         $this->om->persist($review);
     }

@@ -31,22 +31,24 @@ implements OrderedFixtureInterface, ContainerAwareInterface
     public function load(ObjectManager $manager)
     {
         $this->om = $manager;
-
-        // status | topic | student
         $theses = [
-            [Thesis::STATUS_DRAFT, 1, 0],
-            [Thesis::STATUS_FINAL, 0, 1],
-            [Thesis::STATUS_FINAL, 13, 2],
-            [Thesis::STATUS_FINAL, 5, 3],
-            [Thesis::STATUS_FINAL, 22, 4],
-            [Thesis::STATUS_FINAL, 30, 5],
+            -1 => ['student' => 2, 'topic' => 1, 'res' => Reservation::STATUS_REJECTED, 'final' => false],
+            1 => ['student' => 2, 'topic' => 2, 'res' => Reservation::STATUS_APPROVED, 'final' => false],
+            2 => ['student' => 3, 'topic' => 3, 'res' => Reservation::STATUS_APPROVED, 'final' => false],
+            3 => ['student' => 3, 'topic' => 4, 'res' => Reservation::STATUS_APPROVED, 'final' => true],
+            4 => ['student' => 4, 'topic' => 6, 'res' => Reservation::STATUS_APPROVED, 'final' => true],
+            5 => ['student' => 5, 'topic' => 7, 'res' => Reservation::STATUS_APPROVED, 'final' => true],
+            6 => ['student' => 6, 'topic' => 8, 'res' => Reservation::STATUS_APPROVED, 'final' => true],
+            7 => ['student' => 7, 'topic' => 10, 'res' => Reservation::STATUS_APPROVED, 'final' => true],
         ];
 
-        for($i = 0; $i < count($theses); $i++) {
-            $reservation = $this->createReservation($theses[$i]);
-            $thesis = $this->createThesis($theses[$i]);
+        foreach ($theses as $key => $thesisData) {
+            $reservation = $this->createReservation($thesisData);
 
-            $this->addReference('thesis-'.$i, $thesis);
+            if ($thesisData['res'] === Reservation::STATUS_APPROVED) {
+                $thesis = $this->createThesis($thesisData);
+                $this->addReference('thesis-'.$key, $thesis);
+            }
         }
 
         $this->om->flush();
@@ -54,17 +56,18 @@ implements OrderedFixtureInterface, ContainerAwareInterface
 
     protected function createThesis(array $data): Thesis
     {
+        /** @var Student $student */
+        $student = $this->getReference('student-'.$data['student']);
+
         $t = new Thesis();
 
         /** @var Topic $topic */
-        $topic = $this->getReference('topic-'.$data[1]);
+        $topic = $this->getReference('topic-'.$data['topic']);
 
-        /** @var Student $student */
-        $student = $this->getReference('student-'.$data[2]);
 
         $t->setTopic($topic);
         $t->setTitle($topic->getTitle());
-        $t->setStatus($data[0]);
+        $t->setStatus($data['final'] ? Thesis::STATUS_FINAL : Thesis::STATUS_DRAFT);
         $t->addStudent($student);
 
         $student->addThesis($t);
@@ -80,16 +83,12 @@ implements OrderedFixtureInterface, ContainerAwareInterface
         $r = new Reservation();
 
         /** @var Topic $topic */
-        $topic = $this->getReference('topic-'.$data[1]);
+        $topic = $this->getReference('topic-'.$data['topic']);
 
         /** @var Student $student */
-        $student = $this->getReference('student-'.$data[2]);
+        $student = $this->getReference('student-'.$data['student']);
 
-        $status = $data[0];
-
-        if ($status === Thesis::STATUS_DRAFT || true) {
-            $status = Reservation::STATUS_APPROVED;
-        }
+        $status = $data['res'];
 
         $r->setStatus($status);
         $r->setStudent($student);

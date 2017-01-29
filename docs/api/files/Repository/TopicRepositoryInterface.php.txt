@@ -1,29 +1,32 @@
 <?php
 
-
 namespace AppBundle\Repository;
 
-
-use AppBundle\Entity\Thesis;
+use AppBundle\Entity\Topic;
 
 /**
  * Interface TopicRepositoryInterface
+ *
  * @package AppBundle\Repository
  */
 interface TopicRepositoryInterface
 {
     /**
-     * Finds a thesis by id and status
+     * Finds a topic by id and status.
+     *
      * @param   int $id         ID of thesis
      * @param   string $status  Status of thesis
-     * @return  Thesis|null
+     * @return  Topic|null
+     * @throws \Exception Thrown if status is invalid
      */
-    public function findByIdAndStatus(int $id, string $status): ?Thesis;
+    public function findByIdAndStatus(int $id, string $status): ?Topic;
 
     /**
-     * Returns a list of theses with provided status
+     * Returns a list of topics with provided status.
+     *
      * @param string $status
-     * @return Thesis[]
+     * @return Topic[]
+     * @throws \Exception Thrown if status is invalid
      */
     public function findByStatus(string $status): array;
 }

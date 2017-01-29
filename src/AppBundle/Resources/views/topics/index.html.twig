@@ -40,7 +40,7 @@
                                     <span class="fa fa-spin fa-circle-o-notch"></span>
                                 </span>
                                 <span v-if="!topic.$applying">
-                                    <button v-if="topic.reservation == false" @click="apply($event, idx, topic.id)" class="btn btn-link" type="button">Apply</button>
+                                    <button v-if="topic.reservation == false" @click="apply($event, idx)" class="btn btn-link" type="button">Apply</button>
 
                                     <span v-if="topic.reservation != false && topic.reservation.status == 0" class="applied">Applied</span>
                                     <span v-if="topic.reservation != false && topic.reservation.status == 1" class="approved">Approved</span>
@@ -73,6 +73,23 @@
 
 {% block javascripts %}
 <script>
+    var reserve = function(self, index, topic) {
+        $.post('/topics/'+(topic.id)+'/reserve', { rescnt: topic.reservations.count }, function(data) {
+            if (data.message === 'ok') {
+                Vue.set(self.topics, index, data.topic);
+            } else if (data.message === 'new_reservation') {
+                if (confirm('Somebody reserved this topic already. Are you sure?')) {
+                    topic.reservations.count = data.topic.reservations.count;
+                    Vue.set(self.topics, index, topic);
+
+                    reserve(self, index, topic);
+                } else {
+                    Vue.set(self.topics, index, data.topic);
+                }
+            }
+        })
+    };
+
     new Vue({
         el: '#topics-list',
         data: {
@@ -110,7 +127,7 @@
             }.bind(this));
         },
         methods: {
-            apply: function(event, index, id) {
+            apply: function(event, index) {
                 index = (this.page-1) * this.perPage + index;
                 var topic = this.topics[index];
 
@@ -120,11 +137,8 @@
 
                 topic.$applying = true;
                 Vue.set(this.topics, index, topic);
-                $.post('/topics/'+id+'/reserve', function(data) {
-                    if (data.message === 'ok') {
-                        Vue.set(this.topics, index, data.topic);
-                    }
-                }.bind(this));
+
+                reserve(this, index, topic);
             },
             nextPage: function(event) {
                 if (this.page + 1 <= this.maxPages) {

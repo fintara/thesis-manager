@@ -35,155 +35,58 @@ implements OrderedFixtureInterface, ContainerAwareInterface
         $this->om = $manager;
 
         $topics = [
-            [
-                'title' => 'An application supporting the organization of social sport events',
-                'sv'    => 1
-            ],
-            [
-                'title' => 'An application supporting the work of organizer of group events',
-                'sv'    => 1
-            ],
-            [
-                'title' => 'An application supporting the management of rental units in resorts',
-                'sv'    => 1
-            ],
-            [
-                'title' => 'An application for a private dental office',
-                'sv'    => 1
-            ],
-            [
-                'title' => 'An application for a private veterinary office',
-                'sv'    => 1
-            ],
-            [
-                'title' => 'An application supporting questionnaires',
-                'sv'    => 1
-            ],
-            [
-                'title' => 'An application for product wholesale',
-                'sv'    => 1
-            ],
-            [
-                'title' => 'An application supporting the work of a courier',
-                'sv'    => 1
-            ],
-            [
-                'title' => 'An application to support the functioning of a pizzeria',
-                'sv'    => 1
-            ],
-            [
-                'title' => 'An application supporting the accounting of employees\' working time',
-                'sv'    => 1
-            ],
-            [
-                'title' => 'An application supporting the home budget management',
-                'sv'    => 1
-            ],
-            [
-                'title' => 'An application supporting the reservation and sales of cinema tickets',
-                'sv'    => 1
-            ],
-            [
-                'title' => 'Development of laboratory tool for the purpose of designing control systems for a PTZ camera',
-                'sv'    => 2
-            ],
-            [
-                'title' => 'Development of application for video data acquisition (video stream or single images) that are sent through the mobile phone',
-                'sv'    => 2
-            ],
-            [
-                'title' => 'Development of computer simulations of selected dynamic processes in the MASON (MultiAgent SimulatiON) software',
-                'sv'    => 2
-            ],
-            [
-                'title' => 'Development of computer simulations of selected dynamic processes using ANYLOGIC',
-                'sv'    => 2
-            ],
-            [
-                'title' => 'Development of graphical design environment for performing computer simulations of biologically plausible neural networks',
-                'sv'    => 2
-            ],
-            [
-                'title' => 'Android mobile application for monitoring and recording data from selected device sensors',
-                'sv'    => 3
-            ],
-            [
-                'title' => 'Web application for registration of users and submission and browsing articles for the conference built in selected PHP framework',
-                'sv'    => 3
-            ],
-            [
-                'title' => 'RESTful style Web service for entering and browsing information of the selected format',
-                'sv'    => 3
-            ],
-            [
-                'title' => 'Mobile application for Android recording selected parameters of wireless transmission',
-                'sv'    => 3
-            ],
-            [
-                'title' => 'Web application supporting fitness club activities',
-                'sv'    => 4
-            ],
-            [
-                'title' => 'Application supporting the integration of storage system with online store',
-                'sv'    => 4
-            ],
-            [
-                'title' => 'System for archiving images - a web application with mobile access',
-                'sv'    => 4
-            ],
-            [
-                'title' => 'Online music store in ASP.NET MVC 6 technology',
-                'sv'    => 4
-            ],
-            [
-                'title' => 'System supporting sports activities- a web application with mobile access',
-                'sv'    => 4
-            ],
-            [
-                'title' => 'Online video converter',
-                'sv'    => 4
-            ],
-            [
-                'title' => 'Application development in the Salesforce technology for supporting recruitment process',
-                'sv'    => 5
-            ],
-            [
-                'title' => 'Developing a management system for virtual networks',
-                'sv'    => 5
-            ],
-            [
-                'title' => 'Development of PLC simulator for Siemens S7-200',
-                'sv'    => 5
-            ],
-            [
-                'title' => 'Visualisation of the lighting control with Arduino platform',
-                'sv'    => 5
-            ],
-            [
-                'title' => 'Developing a system to track people inside the building using wireless technologies',
-                'sv'    => 5
-            ],
-            [
-                'title' => 'Development of people tracking system based on video in poor lighting conditions',
-                'sv'    => 5
-            ],
+            1 => 'An application supporting the organization of social sport events',
+            2 => 'An application supporting the work of organizer of group events',
+            3 => 'An application for a private dental office',
+            4 => 'An application for a private veterinary office',
+            5 => 'Development of laboratory tool for the purpose of designing control systems for a PTZ camera',
+            6 => 'The online music store in ASP.NET MVC 6 technology',
+            7 => 'Development of PLC simulator for Siemens S7-200',
+            8 => 'Development of people tracking system based on video in poor lighting conditions',
+            9 => 'Implementation of the software for image segmentation based on variational autoencoders',
+            10 => 'Web application with answering questions through SMS',
+            11 => 'The system for managing affiliate advertising network',
+            12 => 'Design and implementation of application to optimize the cutting of wood panels',
+            13 => 'Design and implementation of a smart mirror on the Raspberry Pi',
+            14 => 'Implementation of a 3D game with the use of Unity',
+            15 => 'Design of a cross-compiler for a chosen PLC controller',
+            16 => 'Design and implementation of a tool for graphical synthesis of control algorithms in a selected package for robot simulation',
         ];
 
-        for($i = 0; $i < count($topics); $i++) {
-            $topic = $this->createTopic($topics[$i]);
+        $topicsTeachers = [
+            1 => 1,
+            2 => 1,
+            3 => 1,
+            4 => 2,
+            5 => 2,
+            6 => 2,
+            7 => 2,
+            8 => 3,
+            9 => 3,
+            10 => 3,
+            11 => 3,
+            12 => 4,
+            13 => 4,
+            14 => 4,
+            15 => 4,
+            16 => 4,
+        ];
 
-            $this->addReference('topic-'.$i, $topic);
+        foreach ($topics as $key => $topicData) {
+            $topic = $this->createTopic($topicData, $topicsTeachers[$key]);
+
+            $this->addReference('topic-'.$key, $topic);
         }
 
         $this->om->flush();
     }
 
-    private function createTopic(array $data)
+    private function createTopic(string $title, int $teacherId)
     {
         $topic = new Topic();
 
-        $topic->setTitle($data['title']);
-        $topic->setSupervisor($this->getReference('teacher-'.$data['sv']));
+        $topic->setTitle($title);
+        $topic->setSupervisor($this->getReference('teacher-'.$teacherId));
         $topic->setStatus(Topic::STATUS_APPROVED);
 
         $this->om->persist($topic);

@@ -6,13 +6,17 @@ use Doctrine\ORM\EntityRepository;
 
 /**
  * Class FeedbackRepository
+ *
  * @package AppBundle\Repository
  */
 class FeedbackRepository extends EntityRepository implements FeedbackRepositoryInterface
 {
-    /** @var string */
+    /** @var string Directory where feedback files are uploaded */
     private $directory;
 
+    /**
+     * {@inheritdoc}
+     */
     public function save(Feedback $feedback, bool $flush = true): Feedback
     {
         if ($feedback->getFile() !== null) {
@@ -28,6 +32,9 @@ class FeedbackRepository extends EntityRepository implements FeedbackRepositoryI
         return $feedback;
     }
 
+    /**
+     * @param string $directory Directory where feedbacks are saved
+     */
     public function setDirectory(string $directory): void
     {
         $this->directory = $directory;
@@ -35,6 +42,7 @@ class FeedbackRepository extends EntityRepository implements FeedbackRepositoryI
 
     /**
      * Moves the uploaded file to directory.
+     *
      * @param Feedback $feedback
      */
     private function upload(Feedback &$feedback)

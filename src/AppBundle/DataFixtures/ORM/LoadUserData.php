@@ -57,57 +57,60 @@ implements OrderedFixtureInterface, ContainerAwareInterface
         $this->userService = $this->container->get('user.service');
 
         $students = [
-            ['abc@student.org', '123', 'John', 'Doe'],
-            ['abc@galdamez.org', '123', 'Nancy', 'Galdamez'],
-            ['abc@todd.org', '123', 'James', 'Todd'],
-            ['abc@std.org', '123', 'Cynthia', 'Standard'],
-            ['abc@glover.org', '123', 'Walter', 'Glover'],
-            ['abc@thomas.org', '123', 'Scott', 'Thomas'],
+            1 => ['s1@example.org',  '123', 'John',     'Doe'],
+            2 => ['s2@example.org',  '123', 'Nancy',    'Galdamez'],
+            3 => ['s3@example.org',  '123', 'James',    'Todd'],
+            4 => ['s4@example.org',  '123', 'Cynthia',  'Standard'],
+            5 => ['s5@example.org',  '123', 'Walter',   'Glover'],
+            6 => ['s6@example.org',  '123', 'Scott',    'Thomas'],
+            7 => ['s7@example.org',  '123', 'Wilson',   'Fisk'],
         ];
-        for ($i = 0; $i < count($students); $i++) {
+
+        foreach ($students as $key => $studentData) {
             $student = $this->createStudent(
-                $students[$i][0],
-                $students[$i][1],
-                $students[$i][2],
-                $students[$i][3]
+                $studentData[0],
+                $studentData[1],
+                $studentData[2],
+                $studentData[3]
             );
 
-            $this->addReference('student-'.$i, $student);
+            $this->addReference('student-'.$key, $student);
         }
 
         $deans = [
-            ['abc@dean.org', '123', 'Bob', 'Marley', ['ROLE_DEAN']]
+            1 => ['d1@example.org', '123', 'Bob', 'Marley', ['ROLE_DEAN']]
         ];
-        for ($i = 0; $i < count($deans); $i++) {
+
+        foreach ($deans as $key => $deanData) {
             $dean = $this->createWorker(
-                $deans[$i][0],
-                $deans[$i][1],
-                $deans[$i][2],
-                $deans[$i][3],
-                $deans[$i][4]
+                $deanData[0],
+                $deanData[1],
+                $deanData[2],
+                $deanData[3],
+                $deanData[4]
             );
 
-            $this->addReference('dean-'.$i, $dean);
+            $this->addReference('dean-'.$key, $dean);
         }
 
+
         $teachers = [
-            ['abc@teacher.org',         'Jane',      'Doe'],        // 0
-            ['chudzik@krzystof.com',    'Krzystof',  'Chudzik'],    // 1
-            ['drapala@jaroslaw.com',    'Jarosław',  'Drapała'],    // 2
-            ['fras@mariusz.com',        'Mariusz',   'Fraś'],       // 3
-            ['fryzlewicz@zbigniew.com', 'Zbigniew',  'Fryżlewicz'], // 4
-            ['gasior@dariusz',          'Dariusz',   'Gąsior']      // 5
+            1 => ['t1@example.org',    'Jane',      'Doe'],
+            2 => ['t2@example.org',    'Krzystof',  'Chudzik'],
+            3 => ['t3@example.org',    'Jarosław',  'Drapała'],
+            4 => ['t4@example.org',    'Mariusz',   'Fraś'],
         ];
-        for ($i = 0; $i < count($teachers); $i++) {
+
+        foreach ($teachers as $key => $teacherData) {
             $teacher = $this->createWorker(
-                $teachers[$i][0],
+                $teacherData[0],
                 '123',
-                $teachers[$i][1],
-                $teachers[$i][2],
+                $teacherData[1],
+                $teacherData[2],
                 ['ROLE_TEACHER']
             );
 
-            $this->addReference('teacher-'.$i, $teacher);
+            $this->addReference('teacher-'.$key, $teacher);
         }
     }
 

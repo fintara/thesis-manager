@@ -15,6 +15,7 @@ use AppBundle\Repository\FeedbackRepositoryInterface;
 
 /**
  * Feedback service
+ *
  * @package AppBundle\Services
  */
 class FeedbackService
@@ -24,6 +25,7 @@ class FeedbackService
 
     /**
      * FeedbackService constructor.
+     *
      * @param FeedbackRepositoryInterface $repository Repository for Feedback
      */
     public function __construct(FeedbackRepositoryInterface $repository)
@@ -32,7 +34,7 @@ class FeedbackService
     }
 
     /**
-     * Creates and saves Feedback from FeedbackModel
+     * Creates and saves Feedback from FeedbackModel.
      *
      * @param FeedbackModel $model  Initial data
      * @param bool $flush           Whether to immediately save to database

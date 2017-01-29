@@ -10,22 +10,17 @@ use AppBundle\Entity\Review;
 
 /**
  * Interface ReviewRepositoryInterface
+ *
  * @package AppBundle\Repository
  */
 interface ReviewRepositoryInterface
 {
     /**
-     * Saves a review
+     * Saves a review.
      *
      * @param  Review   $review Review to be saved
      * @param  bool     $flush  Whether to save immediately to database
      * @return Review           Saved review
      */
     public function save(Review $review, bool $flush = true): Review;
-
-    /**
-     * Sets directory where review files are uploaded
-     * @param string $directory
-     */
-    public function setDirectory(string $directory): void;
 }
