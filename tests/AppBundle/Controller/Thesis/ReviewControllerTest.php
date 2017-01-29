@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Tests\Controller\Theses;
+namespace AppBundle\Tests\Controller\Thesis;
 
 use AppBundle\Entity\Review;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

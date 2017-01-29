@@ -40,12 +40,16 @@
         "test-init": [
             "bin/console doctrine:database:drop -q --force --if-exists --env=test --ansi",
             "bin/console doctrine:database:create -q --env=test --ansi",
-            "bin/console doctrine:migrations:migrate -q --env=test --ansi"
+            "bin/console doctrine:migrations:migrate -q --env=test --ansi",
+            "bin/console doctrine:fixtures:load -q --env=test --ansi"
+        ],
+        "test-clean": [
+            "bin/console doctrine:database:drop -q --force --env=test --ansi"
         ],
         "test-all": [
             "@test-init",
             "@test",
-            "bin/console doctrine:database:drop -q --force --env=test --ansi"
+            "@test-clean"
         ],
         "test": [
             "bin/console cache:clear -q --env=test --ansi",
