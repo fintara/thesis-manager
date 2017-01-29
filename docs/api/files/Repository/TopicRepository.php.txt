@@ -2,7 +2,6 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\Thesis;
 use AppBundle\Entity\Topic;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
@@ -17,7 +16,7 @@ class TopicRepository extends EntityRepository implements TopicRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function findByIdAndStatus(int $id, string $status): ?Thesis
+    public function findByIdAndStatus(int $id, string $status): ?Topic
     {
         if (!in_array($status, Topic::getStatuses(), true)) {
             throw new \Exception('Invalid status "'.$status.'"');

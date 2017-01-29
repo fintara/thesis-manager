@@ -144,11 +144,19 @@ class Topic
     }
 
     /**
+     * @param  int $status
      * @return Reservation[]|ArrayCollection
      */
-    public function getReservations()
+    public function getReservations(?int $status = null)
     {
-        return $this->reservations;
+        if ($status === null) {
+            return $this->reservations;
+        }
+
+        return $this->reservations->filter(function($r) use ($status) {
+            /** @var Reservation $r */
+            return $r->getStatus() === $status;
+        });
     }
 
     /**

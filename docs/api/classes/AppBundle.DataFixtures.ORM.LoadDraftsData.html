@@ -21,54 +21,54 @@
     <script src="../js/jquery.smooth-scroll.js"></script>
     <script src="../js/prism.min.js"></script>
     <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
-        <script type="text/javascript">
-        function loadExternalCodeSnippets() {
-            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
-                var src = pre.getAttribute('data-src');
-                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
-                var language = 'php';
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
 
-                var code = document.createElement('code');
-                code.className = 'language-' + language;
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
 
-                pre.textContent = '';
+            pre.textContent = '';
 
-                code.textContent = 'Loading…';
+            code.textContent = 'Loading…';
 
-                pre.appendChild(code);
+            pre.appendChild(code);
 
-                var xhr = new XMLHttpRequest();
+            var xhr = new XMLHttpRequest();
 
-                xhr.open('GET', src, true);
+            xhr.open('GET', src, true);
 
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4) {
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
 
-                        if (xhr.status < 400 && xhr.responseText) {
-                            code.textContent = xhr.responseText;
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
 
-                            Prism.highlightElement(code);
-                        }
-                        else if (xhr.status >= 400) {
-                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
-                        }
-                        else {
-                            code.textContent = '✖ Error: File does not exist or is empty';
-                        }
+                        Prism.highlightElement(code);
                     }
-                };
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
 
-                xhr.send(null);
-            });
-        }
-
-        $(document).ready(function(){
-            loadExternalCodeSnippets();
+            xhr.send(null);
         });
-        $('#source-view').on('shown', function () {
-            loadExternalCodeSnippets();
-        })
-    </script>
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
 
     <link rel="shortcut icon" href="../images/favicon.ico"/>
     <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
@@ -144,37 +144,37 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-303297172"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1644653693"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-303297172" class="accordion-body collapse in">
+            <div id="namespace-1644653693" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-856841290"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-118915237"></a>
                                 <a href="../namespaces/AppBundle.html" style="margin-left: 30px; padding-left: 0">AppBundle</a>
             </div>
-            <div id="namespace-856841290" class="accordion-body collapse ">
+            <div id="namespace-118915237" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1667329444"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1367886489"></a>
                                 <a href="../namespaces/AppBundle.Controller.html" style="margin-left: 30px; padding-left: 0">Controller</a>
             </div>
-            <div id="namespace-1667329444" class="accordion-body collapse ">
+            <div id="namespace-1367886489" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-111294257"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1631852253"></a>
                                 <a href="../namespaces/AppBundle.Controller.Common.html" style="margin-left: 30px; padding-left: 0">Common</a>
             </div>
-            <div id="namespace-111294257" class="accordion-body collapse ">
+            <div id="namespace-1631852253" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -189,10 +189,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1735076341"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1336966995"></a>
                                 <a href="../namespaces/AppBundle.Controller.Security.html" style="margin-left: 30px; padding-left: 0">Security</a>
             </div>
-            <div id="namespace-1735076341" class="accordion-body collapse ">
+            <div id="namespace-1336966995" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -207,10 +207,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2064161340"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-556088098"></a>
                                 <a href="../namespaces/AppBundle.Controller.Thesis.html" style="margin-left: 30px; padding-left: 0">Thesis</a>
             </div>
-            <div id="namespace-2064161340" class="accordion-body collapse ">
+            <div id="namespace-556088098" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -227,10 +227,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1426300877"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1810445854"></a>
                                 <a href="../namespaces/AppBundle.Controller.Topics.html" style="margin-left: 30px; padding-left: 0">Topics</a>
             </div>
-            <div id="namespace-1426300877" class="accordion-body collapse ">
+            <div id="namespace-1810445854" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -253,19 +253,19 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1472958106"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-878398351"></a>
                                 <a href="../namespaces/AppBundle.DataFixtures.html" style="margin-left: 30px; padding-left: 0">DataFixtures</a>
             </div>
-            <div id="namespace-1472958106" class="accordion-body collapse ">
+            <div id="namespace-878398351" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-206836896"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-811029557"></a>
                                 <a href="../namespaces/AppBundle.DataFixtures.ORM.html" style="margin-left: 30px; padding-left: 0">ORM</a>
             </div>
-            <div id="namespace-206836896" class="accordion-body collapse ">
+            <div id="namespace-811029557" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -292,10 +292,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-326629615"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-452985715"></a>
                                 <a href="../namespaces/AppBundle.Entity.html" style="margin-left: 30px; padding-left: 0">Entity</a>
             </div>
-            <div id="namespace-326629615" class="accordion-body collapse ">
+            <div id="namespace-452985715" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -317,10 +317,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1045978420"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-568947647"></a>
                                 <a href="../namespaces/AppBundle.Exceptions.html" style="margin-left: 30px; padding-left: 0">Exceptions</a>
             </div>
-            <div id="namespace-1045978420" class="accordion-body collapse ">
+            <div id="namespace-568947647" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -337,10 +337,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-282227623"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1145469731"></a>
                                 <a href="../namespaces/AppBundle.Factory.html" style="margin-left: 30px; padding-left: 0">Factory</a>
             </div>
-            <div id="namespace-282227623" class="accordion-body collapse ">
+            <div id="namespace-1145469731" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -355,10 +355,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1536877832"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-883656018"></a>
                                 <a href="../namespaces/AppBundle.Models.html" style="margin-left: 30px; padding-left: 0">Models</a>
             </div>
-            <div id="namespace-1536877832" class="accordion-body collapse ">
+            <div id="namespace-883656018" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -377,10 +377,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-134567205"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1743300238"></a>
                                 <a href="../namespaces/AppBundle.Repository.html" style="margin-left: 30px; padding-left: 0">Repository</a>
             </div>
-            <div id="namespace-134567205" class="accordion-body collapse ">
+            <div id="namespace-1743300238" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -404,19 +404,19 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1917695051"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-751565725"></a>
                                 <a href="../namespaces/AppBundle.Security.html" style="margin-left: 30px; padding-left: 0">Security</a>
             </div>
-            <div id="namespace-1917695051" class="accordion-body collapse ">
+            <div id="namespace-751565725" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-865026839"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-37297087"></a>
                                 <a href="../namespaces/AppBundle.Security.User.html" style="margin-left: 30px; padding-left: 0">User</a>
             </div>
-            <div id="namespace-865026839" class="accordion-body collapse ">
+            <div id="namespace-37297087" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -431,10 +431,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-740051460"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1248422098"></a>
                                 <a href="../namespaces/AppBundle.Security.Voters.html" style="margin-left: 30px; padding-left: 0">Voters</a>
             </div>
-            <div id="namespace-740051460" class="accordion-body collapse ">
+            <div id="namespace-1248422098" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -458,19 +458,19 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1663964554"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1070772729"></a>
                                 <a href="../namespaces/AppBundle.Serializer.html" style="margin-left: 30px; padding-left: 0">Serializer</a>
             </div>
-            <div id="namespace-1663964554" class="accordion-body collapse ">
+            <div id="namespace-1070772729" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1225410238"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-797229046"></a>
                                 <a href="../namespaces/AppBundle.Serializer.Normalizer.html" style="margin-left: 30px; padding-left: 0">Normalizer</a>
             </div>
-            <div id="namespace-1225410238" class="accordion-body collapse ">
+            <div id="namespace-797229046" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -495,10 +495,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2042374574"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1276880500"></a>
                                 <a href="../namespaces/AppBundle.Services.html" style="margin-left: 30px; padding-left: 0">Services</a>
             </div>
-            <div id="namespace-2042374574" class="accordion-body collapse ">
+            <div id="namespace-1276880500" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -539,63 +539,91 @@
             <div class="row-fluid">
                 <div class="span8 content class">
                     <nav>
-                                                <a href="../namespaces/AppBundle.Repository.html">\AppBundle\Repository</a>
+                                                <a href="../namespaces/AppBundle.DataFixtures.ORM.html">\AppBundle\DataFixtures\ORM</a> <i class="icon-level-up"></i>
                                             </nav>
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
 
-                    <h1><small>\AppBundle\Repository</small>ThesisRepositoryInterface</h1>
-                    <p><em>Interface ThesisRepositoryInterface</em></p>
+                    <h1><small>\AppBundle\DataFixtures\ORM</small>LoadDraftsData</h1>
+                    <p><em></em></p>
                     
-
+                    
+                                        
                     <section id="summary">
                         <h2>Summary</h2>
                         <section class="row-fluid heading">
-                            <section class="span6">
+                            <section class="span4">
                                 <a href="#methods">Methods</a>
                             </section>
-                            <section class="span6">
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
                                 <a href="#constants">Constants</a>
                             </section>
                         </section>
                         <section class="row-fluid public">
-                            <section class="span6">
-                                                                    <a href="../classes/AppBundle.Repository.ThesisRepositoryInterface.html#method_findToBeReviewed">findToBeReviewed()</a><br />
-                                                                    <a href="../classes/AppBundle.Repository.ThesisRepositoryInterface.html#method_findAllToReviewBy">findAllToReviewBy()</a><br />
-                                                                    <a href="../classes/AppBundle.Repository.ThesisRepositoryInterface.html#method_findAllSupervisedBy">findAllSupervisedBy()</a><br />
-                                                                    <a href="../classes/AppBundle.Repository.ThesisRepositoryInterface.html#method_save">save()</a><br />
+                            <section class="span4">
+                                                                    <a href="../classes/AppBundle.DataFixtures.ORM.LoadDraftsData.html#method_load" class="">load()</a><br />
+                                                                    <a href="../classes/AppBundle.DataFixtures.ORM.LoadDraftsData.html#method_getOrder" class="">getOrder()</a><br />
                                                             </section>
-                            <section class="span6">
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
                                                                     <em>No constants found</em>
                                                             </section>
                         </section>
                         <section class="row-fluid protected">
-                            <section class="span6">
+                            <section class="span4">
                                                                     <em>No protected methods found</em>
                                                             </section>
-                            <section class="span6">
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
                                 <em>N/A</em>
                             </section>
                         </section>
                         <section class="row-fluid private">
-                            <section class="span6">
-                                                                    <em>No private methods found</em>
+                            <section class="span4">
+                                                                    <a href="../classes/AppBundle.DataFixtures.ORM.LoadDraftsData.html#method_addDraft" class="">addDraft()</a><br />
                                                             </section>
-                            <section class="span6">
+                            <section class="span4">
+                                                                    <a href="../classes/AppBundle.DataFixtures.ORM.LoadDraftsData.html#property_om" class="">$om</a><br />
+                                                            </section>
+                            <section class="span4">
                                 <em>N/A</em>
                             </section>
                         </section>
                     </section>
                 </div>
                 <aside class="span4 detailsbar">
-                                        <dl>
+                                        
+                    
+                    <dl>
                         <dt>File</dt>
-                            <dd>
-                                <a href="../files/Repository.ThesisRepositoryInterface.html"><div class="path-wrapper">Repository/ThesisRepositoryInterface.php</div></a>
-                            </dd>
+                            <dd><a href="../files/DataFixtures.ORM.LoadDraftsData.html"><div class="path-wrapper">DataFixtures/ORM/LoadDraftsData.php</div></a></dd>
                                                 <dt>Package</dt>
-                            <dd><div class="namespace-wrapper">\AppBundle\Repository</div></dd>
-                                                
-                                            </dl>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                
+                                        <div class="namespace-wrapper">\Doctrine\Common\DataFixtures\AbstractFixture</div>
+                                                                                                    <div class="namespace-wrapper">\AppBundle\DataFixtures\ORM\LoadDraftsData</div>
+                            </dd>
+
+                                                                            <dt>Implements</dt>
+                                                        <dd><a href=""><div class="namespace-wrapper"></div></a></dd>
+                                                                                <dd><a href=""><div class="namespace-wrapper"></div></a></dd>
+                        
+                                                                                    <dt>Uses traits</dt>
+                                                        <dd>
+                                                                    <div class="namespace-wrapper">\Symfony\Component\DependencyInjection\ContainerAwareTrait</div>
+                                                            </dd>
+                        
+                        
+                        
+                                                                        </dl>
                     <h2>Tags</h2>
                     <table class="table table-condensed">
                                             <tr><td colspan="2"><em>None found</em></td></tr>
@@ -603,65 +631,67 @@
                 </aside>
             </div>
 
-            
-                        <div class="row-fluid">
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
                 <div class="span8 content class">
-                    <h2>Methods</h2>
+                    <h2>Properties</h2>
                 </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_om" name="property_om" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$om</h3>
+                <pre class="signature">$om : \Doctrine\Common\Persistence\ObjectManager</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                \Doctrine\Common\Persistence\ObjectManager
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
                 <aside class="span4 detailsbar"></aside>
             </div>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_findToBeReviewed" name="method_findToBeReviewed" class="anchor"></a>
+            <a id="method_load" name="method_load" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">findToBeReviewed()</h3>
+                <h3 class="public ">load()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">findToBeReviewed() : array&lt;mixed,\AppBundle\Entity\Thesis&gt;</pre>
-                <p><em>Returns a list of theses with less than 2 reviewers.</em></p>
-                
-
-                
-                
-                                    <h4>Returns</h4>
-                    array&lt;mixed,<a href="../classes/AppBundle.Entity.Thesis.html">\AppBundle\Entity\Thesis</a>&gt;
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_findAllToReviewBy" name="method_findAllToReviewBy" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">findAllToReviewBy()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">findAllToReviewBy(\AppBundle\Entity\Worker  <span class="argument">$worker</span>) : array&lt;mixed,\AppBundle\Entity\Thesis&gt;</pre>
-                <p><em>Returns a list of theses containing worker as a reviewer.</em></p>
+                <pre class="signature" style="margin-right: 54px;">load(\Doctrine\Common\Persistence\ObjectManager  <span class="argument">$manager</span>) </pre>
+                <p><em>Load data fixtures with the passed EntityManager</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td><a href="../classes/AppBundle.Entity.Worker.html">\AppBundle\Entity\Worker</a></td>
-                                <td>$worker </td>
+                                <td>\Doctrine\Common\Persistence\ObjectManager</td>
+                                <td>$manager </td>
                                 <td></td>
                             </tr>
                                             </table>
                 
                 
-                                    <h4>Returns</h4>
-                    array&lt;mixed,<a href="../classes/AppBundle.Entity.Thesis.html">\AppBundle\Entity\Thesis</a>&gt;
-                                    				
+                				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -677,27 +707,53 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_findAllSupervisedBy" name="method_findAllSupervisedBy" class="anchor"></a>
+            <a id="method_getOrder" name="method_getOrder" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">findAllSupervisedBy()</h3>
+                <h3 class="public ">getOrder()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">findAllSupervisedBy(\AppBundle\Entity\Worker  <span class="argument">$worker</span>) : array&lt;mixed,\AppBundle\Entity\Thesis&gt;</pre>
-                <p><em>Returns a list of theses supervised by worker.</em></p>
+                <pre class="signature" style="margin-right: 54px;">getOrder() : integer</pre>
+                <p><em>Get the order of this fixture</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    integer
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_addDraft" name="method_addDraft" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">addDraft()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">addDraft(array  <span class="argument">$data</span>) </pre>
+                <p><em></em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td><a href="../classes/AppBundle.Entity.Worker.html">\AppBundle\Entity\Worker</a></td>
-                                <td>$worker </td>
+                                <td>array</td>
+                                <td>$data </td>
                                 <td></td>
                             </tr>
                                             </table>
                 
                 
-                                    <h4>Returns</h4>
-                    array&lt;mixed,<a href="../classes/AppBundle.Entity.Thesis.html">\AppBundle\Entity\Thesis</a>&gt;
-                                    				
+                				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -711,58 +767,16 @@
         </aside>
     </div>
 
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_save" name="method_save" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">save()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">save(\AppBundle\Entity\Thesis  <span class="argument">$thesis</span>, boolean  <span class="argument">$flush = true</span>) : \AppBundle\Entity\Thesis</pre>
-                <p><em>Saves a thesis.</em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td><a href="../classes/AppBundle.Entity.Thesis.html">\AppBundle\Entity\Thesis</a></td>
-                                <td>$thesis </td>
-                                <td><p>Thesis to be saved</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>boolean</td>
-                                <td>$flush </td>
-                                <td><p>Whether to immediately save to database</p></td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    <a href="../classes/AppBundle.Entity.Thesis.html">\AppBundle\Entity\Thesis</a>
-                                            &mdash; <p>Saved thesis</p>
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                                                    </div>
+                                    </div>
     </section>
 
     <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="source-view-label">ThesisRepositoryInterface.php</h3>
+            <h3 id="source-view-label">LoadDraftsData.php</h3>
         </div>
         <div class="modal-body">
-            <pre data-src="../files/Repository/ThesisRepositoryInterface.php.txt" class="language-php"></pre>
+            <pre data-src="../files/DataFixtures/ORM/LoadDraftsData.php.txt" class="language-php line-numbers"></pre>
         </div>
     </div>
 

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Serializer\Normalizer;
 
+use AppBundle\Entity\Reservation;
 use AppBundle\Entity\Student;
 use AppBundle\Entity\Topic;
 use AppBundle\Entity\User;
@@ -41,7 +42,7 @@ class TopicNormalizer implements NormalizerInterface, SerializerAwareInterface {
             'supervisor'    => $this->serializer->normalize($object->getSupervisor()),
             'reservation'   => false,
             'reservations'  => [
-                'count' => $object->getReservations()->count(),
+                'count' => $object->getReservations(Reservation::STATUS_NEW)->count(),
             ],
         ];
 

@@ -139,11 +139,14 @@ class ReviewController extends Controller
 
 
             try {
+                $this->get('thesis.service')->assignReviewer($thesis, $reviewer, false);
+
                 if (!$thesis->getReviewers()->contains($thesis->getSupervisor())) {
                     $this->get('thesis.service')->assignReviewer($thesis, $thesis->getSupervisor(), false);
                 }
-                $this->get('thesis.service')->assignReviewer($thesis, $reviewer, false);
+
                 $thesis->setStatus(Thesis::STATUS_REVIEWING);
+                
                 $this->get('thesis.repository')->save($thesis);
                 $savedIds[] = $id;
             } catch (ReviewerDuplicatedException $e) {

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Topics;
 
+use AppBundle\Entity\Reservation;
 use AppBundle\Entity\Topic;
 use AppBundle\Exceptions\TopicReservedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -49,11 +50,21 @@ class TopicsController extends Controller
      */
     public function ajaxReserveTopicAction(Request $request, int $id)
     {
+        /** @var Topic $topic */
         $topic = $this->get('topic.repository')->findByIdAndStatus($id, Topic::STATUS_APPROVED);
 
         if (!$topic) {
             return new JsonResponse([
                 'message' => 'not found'
+            ]);
+        }
+
+        $clientReservationsCount = $request->request->getInt('rescnt', 0);
+
+        if ($clientReservationsCount < $topic->getReservations(Reservation::STATUS_NEW)->count()) {
+            return new JsonResponse([
+                'message' => 'new_reservation',
+                'topic'   => $this->get('serializer')->normalize($topic),
             ]);
         }
 
