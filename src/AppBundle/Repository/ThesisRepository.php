@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\Review;
 use AppBundle\Entity\Thesis;
 use AppBundle\Entity\Worker;
 use Doctrine\ORM\EntityRepository;
@@ -61,7 +62,17 @@ WHERE r = :worker'
 
         $query->setParameter('worker', $worker);
 
-        return $query->getResult();
+        /** @var Thesis[] $theses */
+        $theses = $query->getResult();
+        $theses = array_filter($theses, function($t) use ($worker) {
+            /** @var Thesis $t */
+            return !$t->getReviews()->map(function($r) {
+                /** @var Review $r */
+                return $r->getReviewer();
+            })->contains($worker);
+        });
+
+        return $theses;
     }
 
     /**
