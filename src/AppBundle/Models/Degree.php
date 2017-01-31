@@ -11,9 +11,13 @@ namespace AppBundle\Models;
 
 final class Degree
 {
-    const PHD = 'phd';
-    const BACHELOR = 'bachelor';
-    const MASTER = 'master';
-    const DOCTOR = 'doc';
-    const JURIS_DOCTOR = 'jdoc';
+    public const PHD = 'phd';
+    public const BACHELOR = 'bachelor';
+    public const MASTER = 'master';
+    public const DOCTOR = 'doc';
+    public const JURIS_DOCTOR = 'jdoc';
+
+    private function __construct()
+    {
+    }
 }

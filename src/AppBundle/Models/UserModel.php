@@ -2,7 +2,7 @@
 
 namespace AppBundle\Models;
 
-class UserModel
+final class UserModel
 {
     /** @var string Valid email */
     public $email;

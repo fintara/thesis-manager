@@ -19,7 +19,7 @@ use AppBundle\Exceptions\UnknownUserTypeException;
  *
  * @package AppBundle\Factory
  */
-class UserFactory
+class UserFactory implements UserFactoryInterface
 {
     /**
      * Creates an instance of provided user type.
