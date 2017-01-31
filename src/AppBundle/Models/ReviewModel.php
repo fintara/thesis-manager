@@ -12,7 +12,7 @@ class ReviewModel
      * @var UploadedFile
      *
      * @Assert\NotNull()
-     * @Assert\File(maxSize="51200000")
+     * @Assert\File(maxSize="512000000")
      */
     public $file;
 

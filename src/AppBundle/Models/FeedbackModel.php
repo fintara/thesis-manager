@@ -11,7 +11,7 @@ class FeedbackModel
     /**
      * @var UploadedFile
      *
-     * @Assert\File(maxSize="51200000")
+     * @Assert\File(maxSize="512000000")
      */
     public $file;
 
