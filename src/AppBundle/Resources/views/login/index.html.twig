@@ -12,11 +12,6 @@
 
                         <form class="form-signin" method="post" action="{{ url('app_login_post') }}">
 
-                            <div style="margin-bottom: 2em ">
-                                <em>abc@student.org / 123</em><br />
-                                <em>abc@dean.org / 123</em><br />
-                            </div>
-
                             {% if error %}
                                 <span>Error: {{ error.messageData | join(', ') }}</span>
                             {% endif %}
